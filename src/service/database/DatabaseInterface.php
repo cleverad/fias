@@ -19,6 +19,11 @@ interface DatabaseInterface
     public function truncateTable(string $tableName): DatabaseInterface;
 
     /**
+     * Удаляет таблицу с указанным именем, если она существует.
+     */
+    public function dropTable(string $tableName): DatabaseInterface;
+
+    /**
      * Множественная вставка данных в таблицу.
      *
      * @param string $tableName
@@ -72,4 +77,16 @@ interface DatabaseInterface
      * @return self
      */
     public function deleteItemByFieldValue(string $tableName, string $fieldName, $value): DatabaseInterface;
+
+    /**
+     * Запускает запрос на исполнение и обрабатывает исключительные ситуации.
+     *
+     * @param string $sql
+     * @param array  $data
+     *
+     * @return mixed
+     *
+     * @throws \marvin255\fias\service\database\Exception
+     */
+    public function exec(string $sql, array $data = []);
 }

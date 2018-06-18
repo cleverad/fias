@@ -38,6 +38,19 @@ class Mysql implements DatabaseInterface
     public function truncateTable(string $tableName): DatabaseInterface
     {
         $sql = 'DELETE FROM ' . $this->quoteIdent($tableName);
+
+        $this->exec($sql);
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function dropTable(string $tableName): DatabaseInterface
+    {
+        $sql = 'DROP TABLE IF EXISTS ' . $this->quoteIdent($tableName);
+
         $this->exec($sql);
 
         return $this;
@@ -121,9 +134,29 @@ class Mysql implements DatabaseInterface
         $sql = 'DELETE  FROM ' . $this->quoteIdent($tableName)
             . ' WHERE ' . $this->quoteIdent($fieldName) . ' = ?';
 
-        $res = $this->fetch($sql, [$value]);
+        $this->fetch($sql, [$value]);
 
         return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function exec(string $sql, array $data = [])
+    {
+        try {
+            $statement = $this->getStatement($sql);
+            $res = $statement->execute($data);
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage(), 0, $e);
+        }
+
+        if (!$res) {
+            $error = $statement->errorInfo();
+            throw new Exception($error[2]);
+        }
+
+        return $res;
     }
 
     /**
@@ -151,33 +184,6 @@ class Mysql implements DatabaseInterface
         }
 
         return $list;
-    }
-
-    /**
-     * Запускает запрос на исполнение и обрабатывает исключительные ситуации.
-     *
-     * @param string $sql
-     * @param array  $data
-     *
-     * @return mixed
-     *
-     * @throws \marvin255\fias\service\database\Exception
-     */
-    protected function exec(string $sql, array $data = [])
-    {
-        try {
-            $statement = $this->getStatement($sql);
-            $res = $statement->execute($data);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 0, $e);
-        }
-
-        if (!$res) {
-            $error = $statement->errorInfo();
-            throw new Exception($error[2]);
-        }
-
-        return $res;
     }
 
     /**

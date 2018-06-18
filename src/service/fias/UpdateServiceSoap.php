@@ -7,12 +7,13 @@ use SoapClient;
 /**
  * Объекта, который обращается к сервису обновления ФИАС.
  */
-class UpdateSericeSoap implements UpdateServiceInterface
+class UpdateServiceSoap implements UpdateServiceInterface
 {
     /**
      * @const
      */
     const DEFAULT_FIAS_WSDL = 'http://fias.nalog.ru/WebServices/Public/DownloadService.asmx?WSDL';
+
     /**
      * @var \SoapClient
      */

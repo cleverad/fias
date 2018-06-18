@@ -3,11 +3,11 @@
 namespace marvin255\fias\tests\service\fias;
 
 use marvin255\fias\tests\BaseTestCase;
-use marvin255\fias\service\fias\UpdateSericeSoap;
+use marvin255\fias\service\fias\UpdateServiceSoap;
 use Mockery;
 use SoapClient;
 
-class UpdateSericeSoapTest extends BaseTestCase
+class UpdateServiceSoapTest extends BaseTestCase
 {
     public function testGetUrlForCompleteData()
     {
@@ -19,7 +19,7 @@ class UpdateSericeSoapTest extends BaseTestCase
         $soapClient = Mockery::mock(SoapClient::class);
         $soapClient->shouldReceive('GetLastDownloadFileInfo')->once()->andReturn($result);
 
-        $service = new UpdateSericeSoap($soapClient);
+        $service = new UpdateServiceSoap($soapClient);
 
         $this->assertSame(
             [
@@ -54,7 +54,7 @@ class UpdateSericeSoapTest extends BaseTestCase
         $soapClient = Mockery::mock(SoapClient::class);
         $soapClient->shouldReceive('GetAllDownloadFileInfo')->once()->andReturn($result);
 
-        $service = new UpdateSericeSoap($soapClient);
+        $service = new UpdateServiceSoap($soapClient);
 
         $this->assertSame(
             ['url' => $nextUrl, 'version' => $nextDelta],
