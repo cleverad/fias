@@ -91,7 +91,7 @@ $tables = [
             POSTALCODE varchar(255) not null,
             IFNSFL varchar(255) not null,
             IFNSUL varchar(255) not null,
-            OKATO varchar(255) not null,
+            OKATO varchar(30) not null,
             UPDATEDATE varchar(255) not null,
             PARENTGUID varchar(255) not null,
             STEADID varchar(255) not null,
@@ -141,7 +141,7 @@ $tables = [
             STATSTATUS varchar(255) not null,
             IFNSFL varchar(255) not null,
             IFNSUL varchar(255) not null,
-            OKATO int(15) not null,
+            OKATO varchar(30) not null,
             OKTMO varchar(255) not null,
             POSTALCODE varchar(255) not null,
             STARTDATE varchar(255) not null,
@@ -149,7 +149,7 @@ $tables = [
             UPDATEDATE varchar(255) not null,
             COUNTER varchar(255) not null,
             DIVTYPE varchar(255) not null
-        ) CHARACTER SET utf8 COLLATE utf8_general_ci PARTITION BY LINEAR HASH (OKATO) PARTITIONS 4;
+        ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
     'address_objects' => 'CREATE TABLE address_objects
         (
@@ -181,7 +181,7 @@ $tables = [
             IFNSUL varchar(255) not null,
             TERRIFNSFL varchar(255) not null,
             TERRIFNSUL varchar(255) not null,
-            OKATO varchar(255) not null,
+            OKATO varchar(30) not null,
             OKTMO varchar(255) not null,
             POSTALCODE varchar(255) not null,
             STARTDATE date,
