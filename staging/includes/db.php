@@ -149,7 +149,7 @@ $tables = [
             UPDATEDATE varchar(255) not null,
             COUNTER varchar(255) not null,
             DIVTYPE varchar(255) not null
-        ) CHARACTER SET utf8 COLLATE utf8_general_ci PARTITION BY KEY(OKATO) PARTITIONS 8;
+        ) CHARACTER SET utf8 COLLATE utf8_general_ci PARTITION BY KEY(HOUSEID) PARTITIONS 8;
     ',
     'address_objects' => 'CREATE TABLE address_objects
         (
