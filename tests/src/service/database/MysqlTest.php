@@ -28,6 +28,21 @@ class MysqlTest extends DbTestCase
         $this->assertTablesEqual($expectedTable, $queryTable);
     }
 
+    public function testDropTable()
+    {
+        $dbPdo = new Mysql($this->getPdo());
+
+        $dbPdo->dropTable('dropTable');
+
+        $isTableExistsStatement = $this->getPdo()->prepare(
+            'SELECT name FROM sqlite_master WHERE type="table" AND name="dropTable"'
+        );
+        $isTableExistsStatement->execute();
+        $isTableExists = $isTableExistsStatement->fetchColumn();
+
+        $this->assertFalse($isTableExists);
+    }
+
     public function testBulkInsert()
     {
         $dbPdo = new Mysql($this->getPdo());
@@ -206,6 +221,13 @@ class MysqlTest extends DbTestCase
             PRIMARY KEY(id)
         )');
 
+        $pdo->exec('CREATE TABLE dropTable (
+            id int(11) not null,
+            row1 varchar(30),
+            row2 varchar(30),
+            PRIMARY KEY(id)
+        )');
+
         $pdo->exec('CREATE TABLE bulkInsertTable (
             id int(11) not null,
             row1 varchar(30),
@@ -246,6 +268,7 @@ class MysqlTest extends DbTestCase
     public function tearDown()
     {
         $this->getPdo()->exec('DROP TABLE IF EXISTS truncateTable');
+        $this->getPdo()->exec('DROP TABLE IF EXISTS dropTable');
         $this->getPdo()->exec('DROP TABLE IF EXISTS bulkInsertTable');
         $this->getPdo()->exec('DROP TABLE IF EXISTS fetchItemByFieldValueTable');
         $this->getPdo()->exec('DROP TABLE IF EXISTS updateItemByFieldValueTable');

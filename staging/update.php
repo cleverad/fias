@@ -1,34 +1,39 @@
 <?php
 
+use PDO;
 use marvin255\fias\Pipe;
-use marvin255\fias\ServiceLocator;
-use marvin255\fias\service\fias\UpdateSericeSoap;
+use marvin255\fias\service\bag\Bag;
+use marvin255\fias\service\console\Logger;
+use marvin255\fias\service\database\Mysql;
 use marvin255\fias\service\downloader\Curl;
+use marvin255\fias\service\fias\UpdateServiceSoap;
+use marvin255\fias\service\filesystem\Directory;
 use marvin255\fias\service\unpacker\Rar;
 use marvin255\fias\service\xml\Reader;
-use marvin255\fias\service\database\Mysql;
-use marvin255\fias\service\filesystem\Directory;
-use marvin255\fias\service\console\Logger;
-use marvin255\fias\service\bag\Bag;
-use marvin255\fias\TaskFactory;
+use marvin255\fias\ServiceLocator;
+use marvin255\fias\task\Cleanup;
 use marvin255\fias\task\DownloadDeltaData;
 use marvin255\fias\task\Unpack;
-use marvin255\fias\task\Cleanup;
+use marvin255\fias\TaskFactory;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$dir = new Directory(__DIR__ . '/workdir');
+$config = require_once __DIR__ . '/config.php';
+
+$dir = new Directory($config['work_dir']);
 $dir->create();
+
+$pdo = new PDO($config['dsn'], $config['username'], $config['password']);
 
 $serviceLocator = new ServiceLocator;
 $serviceLocator->register(new Logger);
 $serviceLocator->register((new Bag)->set(DownloadDeltaData::ARCHIVE_CURRENT_VERSION_PARAMETER, 440));
-$serviceLocator->register(new UpdateSericeSoap);
+$serviceLocator->register(new UpdateServiceSoap);
 $serviceLocator->register($dir);
 $serviceLocator->register(new Curl);
 $serviceLocator->register(new Rar);
 $serviceLocator->register(new Reader);
-$serviceLocator->register(new Mysql(require_once __DIR__ . '/includes/db_primary.php'));
+$serviceLocator->register(new Mysql($pdo));
 
 $factory = new TaskFactory;
 
