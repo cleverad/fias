@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace marvin255\fias\tests;
 
 use PHPUnit\Framework\TestCase;
