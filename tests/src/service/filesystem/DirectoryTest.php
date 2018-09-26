@@ -1,0 +1,65 @@
+<?php
+
+declare(strict_types=1);
+
+namespace marvin255\fias\tests\service\filesystem;
+
+use marvin255\fias\tests\BaseTestCase;
+use marvin255\fias\service\filesystem\Directory;
+
+/**
+ * Тест для объекта, который инкапсулирует доступ к каталогу на жестком диске.
+ */
+class DirectoryTest extends BaseTestCase
+{
+    /**
+     * Возвращает ли объект полный путь до текущего открытого каталога.
+     */
+    public function testGetPath()
+    {
+        $dirName = __DIR__ . '/_fixtures/dir';
+        $dir = new Directory;
+        $dir->open($dirName);
+
+        $this->assertSame($dirName, $dir->getPath());
+    }
+
+    /**
+     * Возвращает ли объект путь до каталога, в котором располежен открытый каталог.
+     */
+    public function testGetDirName()
+    {
+        $dirName = __DIR__ . '/_fixtures/dir';
+        $dir = new Directory;
+        $dir->open($dirName);
+
+        $this->assertSame(dirname($dirName), $dir->getDirName());
+    }
+
+    /**
+     * Возвращает ли объект имя каталога без пути.
+     */
+    public function testGetBaseName()
+    {
+        $dirName = __DIR__ . '/_fixtures/dir';
+        $dir = new Directory;
+        $dir->open($dirName);
+
+        $this->assertSame('dir', $dir->getBaseName());
+    }
+
+    /**
+     * Проверяет как объект определяет существует ли заданная папка.
+     */
+    public function testGetPathName()
+    {
+        $dir = new Directory;
+        $dir->open(__DIR__ . '/_fixtures/dir');
+
+        $unexistedDir = new Directory;
+        $unexistedDir->open(__DIR__ . '/_fixtures/unexisted');
+
+        $this->assertTrue($dir->isExists());
+        $this->assertFalse($unexistedDir->isExists());
+    }
+}
