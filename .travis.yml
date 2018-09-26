@@ -8,10 +8,7 @@ before_script:
   - composer self-update
   - composer install --no-interaction --prefer-source --dev
 script:
-  - vendor/bin/php-cs-fixer -V
   - vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no
-  - vendor/bin/phpunit --version
   - vendor/bin/phpunit -c phpunit.xml.dist
   - vendor/bin/phpcpd src tests
-  - vendor/bin/psalm -v
   - vendor/bin/psalm
