@@ -2,22 +2,23 @@
 
 namespace marvin255\fias\tests;
 
-abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
-{
-    use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+use Faker;
 
+abstract class BaseTestCase extends TestCase
+{
     /**
-     * @var \Faker\Generator
+     * @var \Faker\Generator|null
      */
     private $faker;
 
     /**
      * @return \Faker\Generator
      */
-    public function faker(): \Faker\Generator
+    public function faker(): Faker\Generator
     {
         if ($this->faker === null) {
-            $this->faker = \Faker\Factory::create();
+            $this->faker = Faker\Factory::create();
         }
 
         return $this->faker;

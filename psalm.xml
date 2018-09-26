@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<psalm
+    totallyTyped="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config file:///var/www/fias70/vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="./" />
+        <ignoreFiles>
+            <directory name=".git" />
+            <directory name="documents" />
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="info" />
+    </issueHandlers>
+</psalm>
