@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace marvin255\fias;
 
 use marvin255\fias\task\Task;
-use marvin255\fias\task\State;
 use marvin255\fias\task\RuntimeException;
+use marvin255\fias\state\State;
 use Exception;
 
 /**
@@ -37,7 +37,7 @@ class Pipe
     /**
      * Запускает все операции на выполнение.
      *
-     * @param \marvin255\fias\task\State $state
+     * @param \marvin255\fias\state\State $state
      *
      * @return $this
      *

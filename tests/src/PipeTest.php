@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\tests;
 
 use marvin255\fias\task\Task;
-use marvin255\fias\task\State;
+use marvin255\fias\state\State;
 use marvin255\fias\task\RuntimeException;
 use marvin255\fias\Pipe;
 use InvalidArgumentException;
