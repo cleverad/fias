@@ -36,6 +36,32 @@ class PipeTest extends BaseTestCase
     }
 
     /**
+     * Проверяет, что задачи могут остановить выполнения цепочки
+     * с помощью объекта состояния.
+     */
+    public function testRunWithCompleted()
+    {
+        $state = $this->getMockBuilder(State::class)->getMock();
+        $state->expects($this->at(0))->method('isCompleted')->will($this->returnValue(false));
+        $state->expects($this->at(1))->method('isCompleted')->will($this->returnValue(true));
+
+        $task1 = $this->getMockBuilder(Task::class)->getMock();
+        $task1->expects($this->once())->method('run')->with($this->equalTo($state));
+
+        $task2 = $this->getMockBuilder(Task::class)->getMock();
+        $task2->expects($this->once())->method('run')->with($this->equalTo($state));
+
+        $task3 = $this->getMockBuilder(Task::class)->getMock();
+        $task3->expects($this->never())->method('run');
+
+        $pipe = new Pipe;
+        $pipe->pipe($task1);
+        $pipe->pipe($task2);
+        $pipe->pipe($task3);
+        $pipe->run($state);
+    }
+
+    /**
      * Проверяет, что объект приложения перехватит любое исключение и выбросит
      * унифицированный тип.
      */

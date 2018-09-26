@@ -26,4 +26,18 @@ class ArrayStateTest extends BaseTestCase
 
         $this->assertSame($parameterValue, $state->getParameter($parameterName));
     }
+
+    /**
+     * Проверяем флаг, который мягко прерывает исполнение операций.
+     */
+    public function testComplete()
+    {
+        $state = new ArrayState;
+
+        $stateCompleted = new ArrayState;
+        $stateCompleted->complete();
+
+        $this->assertFalse($state->isCompleted());
+        $this->assertTrue($stateCompleted->isCompleted());
+    }
 }

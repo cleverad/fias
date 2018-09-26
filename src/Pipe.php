@@ -51,6 +51,9 @@ class Pipe
             } catch (Exception $e) {
                 throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
             }
+            if ($state->isCompleted()) {
+                break;
+            }
         }
 
         return $this;

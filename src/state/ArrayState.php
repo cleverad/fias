@@ -13,11 +13,15 @@ class ArrayState implements State
      * @var mixed[]
      */
     private $parameters = [];
+    /**
+     * @var bool
+     */
+    private $isCompleted = false;
 
     /**
      * @inheritdoc
      */
-    public function setParameter(string $parameterName, $parameterValue)
+    public function setParameter(string $parameterName, $parameterValue): State
     {
         $unifiedName = $this->unifyParameterName($parameterName);
         $this->parameters[$unifiedName] = $parameterValue;
@@ -35,6 +39,24 @@ class ArrayState implements State
         return isset($this->parameters[$unifiedName])
             ? $this->parameters[$unifiedName]
             : null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function complete(): State
+    {
+        $this->isCompleted = true;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isCompleted(): bool
+    {
+        return $this->isCompleted;
     }
 
     /**
