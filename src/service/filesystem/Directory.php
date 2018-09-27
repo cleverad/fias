@@ -16,28 +16,28 @@ class Directory implements DirectoryInterface
      *
      * @var string
      */
-    protected $absolutePath = '';
+    protected $path = '';
 
     /**
      * Конструктор. Задает абсолютный путь к папке.
      *
-     * @param string $absolutePath
+     * @param string $path
      */
-    public function __construct(string $absolutePath)
+    public function __construct(string $path)
     {
-        if (trim($absolutePath, ' \t\n\r\0\x0B\\/') === '') {
+        if (trim($path, ' \t\n\r\0\x0B\\/') === '') {
             throw new InvalidArgumentException(
                 "absolutePath parameter can't be empty"
             );
         }
 
-        if (!preg_match('/^\/[a-z_]+.*[^\/]+$/', $absolutePath)) {
+        if (!preg_match('/^\/[a-z_]+.*[^\/]+$/', $path)) {
             throw new InvalidArgumentException(
                 'absolutePath must starts from root, and consist of digits and letters'
             );
         }
 
-        $this->absolutePath = $absolutePath;
+        $this->path = $path;
     }
 
     /**
@@ -45,7 +45,7 @@ class Directory implements DirectoryInterface
      */
     public function getPath(): string
     {
-        return $this->absolutePath;
+        return $this->path;
     }
 
     /**
@@ -53,7 +53,7 @@ class Directory implements DirectoryInterface
      */
     public function getDirName(): string
     {
-        return dirname($this->absolutePath);
+        return dirname($this->path);
     }
 
     /**
@@ -61,7 +61,7 @@ class Directory implements DirectoryInterface
      */
     public function getBaseName(): string
     {
-        return pathinfo($this->absolutePath, PATHINFO_BASENAME);
+        return pathinfo($this->path, PATHINFO_BASENAME);
     }
 
     /**
@@ -69,6 +69,6 @@ class Directory implements DirectoryInterface
      */
     public function isExists(): bool
     {
-        return (bool) is_dir($this->absolutePath);
+        return (bool) is_dir($this->path);
     }
 }
