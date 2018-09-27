@@ -6,6 +6,7 @@ namespace marvin255\fias\tests\service\filesystem;
 
 use marvin255\fias\tests\BaseTestCase;
 use marvin255\fias\service\filesystem\Directory;
+use InvalidArgumentException;
 
 /**
  * Тест для объекта, который инкапсулирует доступ к каталогу на жестком диске.
@@ -13,13 +14,30 @@ use marvin255\fias\service\filesystem\Directory;
 class DirectoryTest extends BaseTestCase
 {
     /**
+     * Будет ли выброшено исключение для пустого пути в конструкторе.
+     */
+    public function testEmptyPathInConstructException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $dir = new Directory('');
+    }
+
+    /**
+     * Будет ли выброшено исключение, если задать в конструкторе относительный путь.
+     */
+    public function testRelativePathInConstructException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $dir = new Directory('some/folder');
+    }
+
+    /**
      * Возвращает ли объект полный путь до текущего открытого каталога.
      */
     public function testGetPath()
     {
         $dirName = __DIR__ . '/_fixtures/dir';
-        $dir = new Directory;
-        $dir->open($dirName);
+        $dir = new Directory($dirName);
 
         $this->assertSame($dirName, $dir->getPath());
     }
@@ -30,8 +48,7 @@ class DirectoryTest extends BaseTestCase
     public function testGetDirName()
     {
         $dirName = __DIR__ . '/_fixtures/dir';
-        $dir = new Directory;
-        $dir->open($dirName);
+        $dir = new Directory($dirName);
 
         $this->assertSame(dirname($dirName), $dir->getDirName());
     }
@@ -42,8 +59,7 @@ class DirectoryTest extends BaseTestCase
     public function testGetBaseName()
     {
         $dirName = __DIR__ . '/_fixtures/dir';
-        $dir = new Directory;
-        $dir->open($dirName);
+        $dir = new Directory($dirName);
 
         $this->assertSame('dir', $dir->getBaseName());
     }
@@ -51,13 +67,10 @@ class DirectoryTest extends BaseTestCase
     /**
      * Проверяет как объект определяет существует ли заданная папка.
      */
-    public function testGetPathName()
+    public function testIsExists()
     {
-        $dir = new Directory;
-        $dir->open(__DIR__ . '/_fixtures/dir');
-
-        $unexistedDir = new Directory;
-        $unexistedDir->open(__DIR__ . '/_fixtures/unexisted');
+        $dir = new Directory(__DIR__ . '/_fixtures/dir');
+        $unexistedDir = new Directory(__DIR__ . '/_fixtures/unexisted');
 
         $this->assertTrue($dir->isExists());
         $this->assertFalse($unexistedDir->isExists());
