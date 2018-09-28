@@ -67,6 +67,30 @@ abstract class BaseTestCase extends TestCase
     }
 
     /**
+     * Создает тестовую директорию во временной папке и возвращает путь до нее.
+     *
+     * @param string $name
+     *
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    protected function getPathToTestDir(string $name = ''): string
+    {
+        if ($name === '') {
+            $name = preg_replace('/[^a-zA-Z0-9_]+/', '_', get_class($this));
+            $name = strtolower(trim($name, " \t\n\r\0\x0B_"));
+        }
+
+        $pathToFolder = $this->getTempDir() . DIRECTORY_SEPARATOR . $name;
+        if (!mkdir($pathToFolder, 0777, true)) {
+            throw new RuntimeException("Can't mkdir {$pathToFolder} folder");
+        }
+
+        return $pathToFolder;
+    }
+
+    /**
      * Создает тестовый файл во временной директории.
      *
      * @param string $name
@@ -75,7 +99,7 @@ abstract class BaseTestCase extends TestCase
      *
      * @throws \RuntimeException
      */
-    protected function getPathToTempFile(string $name = '', string $content = 'test'): string
+    protected function getPathToTestFile(string $name = ''): string
     {
         if ($name === '') {
             $name = preg_replace('/[^a-zA-Z0-9_]+/', '_', get_class($this));
@@ -83,7 +107,7 @@ abstract class BaseTestCase extends TestCase
         }
 
         $pathToFile = $this->getTempDir() . DIRECTORY_SEPARATOR . $name;
-        if (file_put_contents($pathToFile, $content) === false) {
+        if (file_put_contents($pathToFile, $this->faker()->unique()->word) === false) {
             throw new RuntimeException("Can't create file {$pathToFile}");
         }
 

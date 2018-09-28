@@ -35,7 +35,7 @@ class FileTest extends BaseTestCase
     public function testUnexistedPathInConstructException()
     {
         $this->expectException(InvalidArgumentException::class);
-        $dir = new File(__DIR__ . '/_fixture/unexisted/file.txt');
+        $dir = new File(__DIR__ . '/unexisted/file.txt');
     }
 
     /**
@@ -114,12 +114,11 @@ class FileTest extends BaseTestCase
      */
     public function testDelete()
     {
-        $filePath = $this->getPathToTempFile();
-        $file = new File($filePath);
+        $file = new File($this->fileName);
 
-        $this->assertFileExists($filePath);
+        $this->assertFileExists($this->fileName);
         $this->assertTrue($file->delete());
-        $this->assertFileNotExists($filePath);
+        $this->assertFileNotExists($this->fileName);
     }
 
     /**
@@ -127,7 +126,7 @@ class FileTest extends BaseTestCase
      */
     public function setUp()
     {
-        $this->fileName = __DIR__ . '/_fixtures/dir/file.txt';
+        $this->fileName = $this->getPathToTestFile();
 
         return parent::setUp();
     }

@@ -14,6 +14,13 @@ use InvalidArgumentException;
 class DirectoryTest extends BaseTestCase
 {
     /**
+     * Путь к тестовому каталогу.
+     *
+     * @var string
+     */
+    protected $dirName = '';
+
+    /**
      * Будет ли выброшено исключение для пустого пути в конструкторе.
      */
     public function testEmptyPathInConstructException()
@@ -36,10 +43,9 @@ class DirectoryTest extends BaseTestCase
      */
     public function testGetPath()
     {
-        $dirName = __DIR__ . '/_fixtures/dir';
-        $dir = new Directory($dirName);
+        $dir = new Directory($this->dirName);
 
-        $this->assertSame($dirName, $dir->getPath());
+        $this->assertSame($this->dirName, $dir->getPath());
     }
 
     /**
@@ -47,10 +53,9 @@ class DirectoryTest extends BaseTestCase
      */
     public function testGetDirName()
     {
-        $dirName = __DIR__ . '/_fixtures/dir';
-        $dir = new Directory($dirName);
+        $dir = new Directory($this->dirName);
 
-        $this->assertSame(dirname($dirName), $dir->getDirname());
+        $this->assertSame(dirname($this->dirName), $dir->getDirname());
     }
 
     /**
@@ -58,10 +63,12 @@ class DirectoryTest extends BaseTestCase
      */
     public function testGetBaseName()
     {
-        $dirName = __DIR__ . '/_fixtures/dir';
-        $dir = new Directory($dirName);
+        $dir = new Directory($this->dirName);
 
-        $this->assertSame('dir', $dir->getBasename());
+        $this->assertSame(
+            pathinfo($this->dirName, PATHINFO_BASENAME),
+            $dir->getBasename()
+        );
     }
 
     /**
@@ -69,10 +76,20 @@ class DirectoryTest extends BaseTestCase
      */
     public function testIsExists()
     {
-        $dir = new Directory(__DIR__ . '/_fixtures/dir');
-        $unexistedDir = new Directory(__DIR__ . '/_fixtures/unexisted');
+        $dir = new Directory($this->dirName);
+        $unexistedDir = new Directory(__DIR__ . '/unexisted');
 
         $this->assertTrue($dir->isExists());
         $this->assertFalse($unexistedDir->isExists());
+    }
+
+    /**
+     * Задает путь к каталогу для тестов.
+     */
+    public function setUp()
+    {
+        $this->dirName = $this->getPathToTestDir();
+
+        return parent::setUp();
     }
 }

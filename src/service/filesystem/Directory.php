@@ -57,7 +57,7 @@ class Directory implements DirectoryInterface
     /**
      * @inheritdoc
      */
-    public function getDirName(): string
+    public function getDirname(): string
     {
         return $this->info['dirname'];
     }
