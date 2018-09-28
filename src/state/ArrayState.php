@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\state;
 
 /**
- * бъект, который хранит состояние во внутреннем массиве.
+ * Объект, который хранит состояние во внутреннем массиве.
  */
 class ArrayState implements State
 {
