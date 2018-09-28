@@ -78,8 +78,7 @@ abstract class BaseTestCase extends TestCase
     protected function getPathToTestDir(string $name = ''): string
     {
         if ($name === '') {
-            $name = preg_replace('/[^a-zA-Z0-9_]+/', '_', get_class($this));
-            $name = strtolower(trim($name, " \t\n\r\0\x0B_"));
+            $name = $this->faker()->unique()->word;
         }
 
         $pathToFolder = $this->getTempDir() . DIRECTORY_SEPARATOR . $name;
@@ -102,8 +101,7 @@ abstract class BaseTestCase extends TestCase
     protected function getPathToTestFile(string $name = ''): string
     {
         if ($name === '') {
-            $name = preg_replace('/[^a-zA-Z0-9_]+/', '_', get_class($this));
-            $name = strtolower(trim($name, " \t\n\r\0\x0B_")) . '.txt';
+            $name = $this->faker()->unique()->word . '.txt';
         }
 
         $pathToFile = $this->getTempDir() . DIRECTORY_SEPARATOR . $name;
