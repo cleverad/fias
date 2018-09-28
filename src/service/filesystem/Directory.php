@@ -57,7 +57,7 @@ class Directory implements DirectoryInterface
     /**
      * @inheritdoc
      */
-    public function getBaseName(): string
+    public function getBasename(): string
     {
         return pathinfo($this->path, PATHINFO_BASENAME);
     }

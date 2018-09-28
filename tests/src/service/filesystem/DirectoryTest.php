@@ -50,7 +50,7 @@ class DirectoryTest extends BaseTestCase
         $dirName = __DIR__ . '/_fixtures/dir';
         $dir = new Directory($dirName);
 
-        $this->assertSame(dirname($dirName), $dir->getDirName());
+        $this->assertSame(dirname($dirName), $dir->getDirname());
     }
 
     /**
@@ -61,7 +61,7 @@ class DirectoryTest extends BaseTestCase
         $dirName = __DIR__ . '/_fixtures/dir';
         $dir = new Directory($dirName);
 
-        $this->assertSame('dir', $dir->getBaseName());
+        $this->assertSame('dir', $dir->getBasename());
     }
 
     /**

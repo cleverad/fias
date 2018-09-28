@@ -22,14 +22,14 @@ interface DirectoryInterface
      *
      * @return string
      */
-    public function getDirName(): string;
+    public function getDirname(): string;
 
     /**
      * Возвращает имя папки.
      *
      * @return string
      */
-    public function getBaseName(): string;
+    public function getBasename(): string;
 
     /**
      * Возвращает true, если папка существует в файловой системе.
