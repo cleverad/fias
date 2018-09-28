@@ -62,7 +62,7 @@ class File implements FileInterface
      */
     public function getDirname(): string
     {
-        return isset($this->info['dirname']) ? $this->info['dirname'] : '';
+        return $this->info['dirname'];
     }
 
     /**
@@ -70,7 +70,7 @@ class File implements FileInterface
      */
     public function getFilename(): string
     {
-        return isset($this->info['filename']) ? $this->info['filename'] : '';
+        return $this->info['filename'];
     }
 
     /**
@@ -78,7 +78,7 @@ class File implements FileInterface
      */
     public function getExtension(): string
     {
-        return isset($this->info['extension']) ? $this->info['extension'] : '';
+        return $this->info['extension'];
     }
 
     /**
@@ -86,7 +86,7 @@ class File implements FileInterface
      */
     public function getBasename(): string
     {
-        return isset($this->info['basename']) ? $this->info['basename'] : '';
+        return $this->info['basename'];
     }
 
     /**

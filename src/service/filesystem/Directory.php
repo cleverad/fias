@@ -7,20 +7,24 @@ namespace marvin255\fias\service\filesystem;
 use InvalidArgumentException;
 
 /**
- * Объект, который инкапсулирует обращение к папке в локальной файловой системе.
+ * Объект, который инкапсулирует обращение к каталогу в локальной файловой системе.
  */
 class Directory implements DirectoryInterface
 {
     /**
-     * Абсолютный путь к папке.
+     * Абсолютный путь к каталогу.
      *
      * @var string
      */
     protected $path = '';
+    /**
+     * Информация о каталоге.
+     *
+     * @var string[]
+     */
+    protected $info = [];
 
     /**
-     * Конструктор. Задает абсолютный путь к папке.
-     *
      * @param string $path
      *
      * @throws \InvalidArgumentException
@@ -36,6 +40,10 @@ class Directory implements DirectoryInterface
         }
 
         $this->path = $path;
+        $this->info = [
+            'dirname' => dirname($path),
+            'basename' => pathinfo($this->path, PATHINFO_BASENAME),
+        ];
     }
 
     /**
@@ -51,7 +59,7 @@ class Directory implements DirectoryInterface
      */
     public function getDirName(): string
     {
-        return dirname($this->path);
+        return $this->info['dirname'];
     }
 
     /**
@@ -59,7 +67,7 @@ class Directory implements DirectoryInterface
      */
     public function getBasename(): string
     {
-        return pathinfo($this->path, PATHINFO_BASENAME);
+        return $this->info['basename'];
     }
 
     /**
@@ -67,6 +75,6 @@ class Directory implements DirectoryInterface
      */
     public function isExists(): bool
     {
-        return (bool) is_dir($this->path);
+        return is_dir($this->path);
     }
 }
