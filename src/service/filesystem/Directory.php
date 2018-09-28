@@ -22,19 +22,17 @@ class Directory implements DirectoryInterface
      * Конструктор. Задает абсолютный путь к папке.
      *
      * @param string $path
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(string $path)
     {
         if (trim($path, ' \t\n\r\0\x0B\\/') === '') {
-            throw new InvalidArgumentException(
-                "absolutePath parameter can't be empty"
-            );
+            throw new InvalidArgumentException("path parameter can't be empty");
         }
 
-        if (!preg_match('/^\/[a-z_]+.*[^\/]+$/', $path)) {
-            throw new InvalidArgumentException(
-                'absolutePath must starts from root, and consist of digits and letters'
-            );
+        if (!preg_match('/^(\/|[a-zA-Z]{1}:\\\).+$/', $path)) {
+            throw new InvalidArgumentException('path must starts from root');
         }
 
         $this->path = $path;
