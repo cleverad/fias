@@ -22,7 +22,7 @@ interface FileInterface
      *
      * @return string
      */
-    public function getPath(): string;
+    public function getDirname(): string;
 
     /**
      * Возвращает имя файла (без расширения).
