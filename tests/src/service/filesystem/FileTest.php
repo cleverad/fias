@@ -117,7 +117,7 @@ class FileTest extends BaseTestCase
         $file = new File($this->fileName);
 
         $this->assertFileExists($this->fileName);
-        $this->assertTrue($file->delete());
+        $file->delete();
         $this->assertFileNotExists($this->fileName);
     }
 

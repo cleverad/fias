@@ -54,8 +54,6 @@ interface FileInterface
 
     /**
      * Удаляет файл из файловой системы.
-     *
-     * @return bool
      */
-    public function delete(): bool;
+    public function delete();
 }

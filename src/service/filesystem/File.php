@@ -36,17 +36,20 @@ class File implements FileInterface
      */
     public function __construct(string $path)
     {
-        if (empty($path)) {
+        $trimmed = trim($path);
+
+        if (empty($trimmed)) {
             throw new InvalidArgumentException("path parameter can't be empty");
         }
-        if (!is_dir(dirname($path))) {
+
+        if (!is_dir(dirname($trimmed))) {
             throw new InvalidArgumentException(
-                "Directory for file must exist, got: {$path}"
+                "Directory for file {$path} must exist"
             );
         }
 
-        $this->path = $path;
-        $this->info = array_map('trim', pathinfo($path));
+        $this->path = $trimmed;
+        $this->info = array_map('trim', pathinfo($trimmed));
     }
 
     /**
@@ -100,13 +103,8 @@ class File implements FileInterface
     /**
      * @inheritdoc
      */
-    public function delete(): bool
+    public function delete()
     {
-        $return = false;
-        if ($this->isExists()) {
-            $return = unlink($this->path);
-        }
-
-        return $return;
+        unlink($this->path);
     }
 }

@@ -8,6 +8,7 @@ use Iterator;
 use CallbackFilterIterator;
 use DirectoryIterator;
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Объект, который инкапсулирует обращение к каталогу в локальной файловой системе.
@@ -40,18 +41,20 @@ class Directory implements DirectoryInterface
      */
     public function __construct(string $path)
     {
-        if (trim($path, ' \t\n\r\0\x0B\\/') === '') {
+        $trimmed = trim($path);
+
+        if ($trimmed === '') {
             throw new InvalidArgumentException("path parameter can't be empty");
         }
 
-        if (!preg_match('/^(\/|[a-zA-Z]{1}:\\\).+$/', $path)) {
-            throw new InvalidArgumentException('path must starts from root');
+        if (!preg_match('/^(\/|[a-zA-Z]{1}:\\\).+$/', $trimmed)) {
+            throw new InvalidArgumentException("Path {$path} must starts from root");
         }
 
-        $this->path = $path;
+        $this->path = $trimmed;
         $this->info = [
-            'dirname' => dirname($path),
-            'basename' => pathinfo($this->path, PATHINFO_BASENAME),
+            'dirname' => dirname($trimmed),
+            'basename' => pathinfo($trimmed, PATHINFO_BASENAME),
         ];
     }
 
@@ -85,6 +88,55 @@ class Directory implements DirectoryInterface
     public function isExists(): bool
     {
         return is_dir($this->path);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException
+     */
+    public function create(): DirectoryInterface
+    {
+        if (!@mkdir($this->getPath(), 0777, true)) {
+            throw new RuntimeException(
+                "Can't create directory " . $this->getPath()
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException
+     */
+    public function delete(): DirectoryInterface
+    {
+        foreach ($this as $child) {
+            $child->delete();
+        }
+        if (!@rmdir($this->getPath())) {
+            throw new RuntimeException(
+                "Can't delete directory: " . $this->getPath()
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException
+     */
+    public function empty(): DirectoryInterface
+    {
+        foreach ($this as $child) {
+            $child->delete();
+        }
+
+        return $this;
     }
 
     /**

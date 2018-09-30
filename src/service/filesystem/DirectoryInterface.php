@@ -41,6 +41,27 @@ interface DirectoryInterface extends Iterator
     public function isExists(): bool;
 
     /**
+     * Создает каталог и все родительские каталоги, если потребуется.
+     *
+     * @return $this
+     */
+    public function create(): DirectoryInterface;
+
+    /**
+     * Удаляет каталог из файловой системы.
+     *
+     * @return $this
+     */
+    public function delete(): DirectoryInterface;
+
+    /**
+     * Удаляет все содержимое каталога, сам каталог остается нетронутым.
+     *
+     * @return $this
+     */
+    public function empty(): DirectoryInterface;
+
+    /**
      * Создает вложенный каталог.
      *
      * @param string $name

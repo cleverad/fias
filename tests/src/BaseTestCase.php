@@ -56,6 +56,7 @@ abstract class BaseTestCase extends TestCase
                 );
             }
             $this->tempDir .= DIRECTORY_SEPARATOR . 'bxcodegen';
+            $this->removeDir($this->tempDir);
             if (!mkdir($this->tempDir, 0777, true)) {
                 throw new RuntimeException(
                     "Can't create temporary folder: {$this->tempDir}"

@@ -7,6 +7,7 @@ namespace marvin255\fias\tests\service\filesystem;
 use marvin255\fias\tests\BaseTestCase;
 use marvin255\fias\service\filesystem\Directory;
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Тест для объекта, который инкапсулирует доступ к каталогу на жестком диске.
@@ -81,6 +82,76 @@ class DirectoryTest extends BaseTestCase
 
         $this->assertTrue($dir->isExists());
         $this->assertFalse($unexistedDir->isExists());
+    }
+
+    /**
+     * Проверяет, что объект может создать каталог, для которого инициирован,
+     * если каталога не существует.
+     */
+    public function testCreate()
+    {
+        $pathToDir = $this->pathToDir . '/' . $this->faker()->unique()->word
+            . '/' . $this->faker()->unique()->word;
+
+        $dir = new Directory($pathToDir);
+
+        $this->assertFalse(is_dir($pathToDir));
+        $dir->create();
+        $this->assertTrue(is_dir($pathToDir));
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение, если не сможет создать
+     * каталог, для которого инициирован.
+     */
+    public function testCreateException()
+    {
+        $dir = new Directory($this->pathToDir);
+
+        $this->expectException(RuntimeException::class);
+        $dir->create();
+    }
+
+    /**
+     * Проверяет, что объект удалит каталог, для которого инициирован,
+     * вместе со всеми его вложенными файлами и каталогами.
+     */
+    public function testDelete()
+    {
+        $dirName = pathinfo($this->pathToDir, PATHINFO_BASENAME);
+        $testDir = $this->getPathToTestDir($dirName . '/' . $this->faker()->unique()->word);
+        $testFile = $this->getPathToTestFile($dirName . '/' . $this->faker()->unique()->word);
+
+        $dir = new Directory($this->pathToDir);
+
+        $this->assertTrue(is_dir($this->pathToDir));
+        $this->assertTrue(is_dir($testDir));
+        $this->assertTrue(file_exists($testFile));
+        $dir->delete();
+        $this->assertFalse(is_dir($this->pathToDir));
+        $this->assertFalse(is_dir($testDir));
+        $this->assertFalse(file_exists($testFile));
+    }
+
+    /**
+     * Проверяет, что объект удалит все вложенные каталоги и файлы для своего каталога,
+     * но каталог оставит нетронутым.
+     */
+    public function testEmpty()
+    {
+        $dirName = pathinfo($this->pathToDir, PATHINFO_BASENAME);
+        $testDir = $this->getPathToTestDir($dirName . '/' . $this->faker()->unique()->word);
+        $testFile = $this->getPathToTestFile($dirName . '/' . $this->faker()->unique()->word);
+
+        $dir = new Directory($this->pathToDir);
+
+        $this->assertTrue(is_dir($this->pathToDir));
+        $this->assertTrue(is_dir($testDir));
+        $this->assertTrue(file_exists($testFile));
+        $dir->empty();
+        $this->assertTrue(is_dir($this->pathToDir));
+        $this->assertFalse(is_dir($testDir));
+        $this->assertFalse(file_exists($testFile));
     }
 
     /**
