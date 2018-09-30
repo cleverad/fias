@@ -15,7 +15,7 @@ interface FileInterface
      *
      * @return string
      */
-    public function getPathname(): string;
+    public function getPath(): string;
 
     /**
      * Возвращает путь без имени файла.

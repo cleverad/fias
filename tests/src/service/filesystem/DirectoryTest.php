@@ -18,7 +18,7 @@ class DirectoryTest extends BaseTestCase
      *
      * @var string
      */
-    protected $dirName = '';
+    protected $pathToDir = '';
 
     /**
      * Будет ли выброшено исключение для пустого пути в конструкторе.
@@ -43,19 +43,19 @@ class DirectoryTest extends BaseTestCase
      */
     public function testGetPath()
     {
-        $dir = new Directory($this->dirName);
+        $dir = new Directory($this->pathToDir);
 
-        $this->assertSame($this->dirName, $dir->getPath());
+        $this->assertSame($this->pathToDir, $dir->getPath());
     }
 
     /**
-     * Возвращает ли объект путь до каталога, в котором располежен открытый каталог.
+     * Возвращает ли объект путь до каталога, в котором расположен открытый каталог.
      */
-    public function testGetDirName()
+    public function testGetDirnamer()
     {
-        $dir = new Directory($this->dirName);
+        $dir = new Directory($this->pathToDir);
 
-        $this->assertSame(dirname($this->dirName), $dir->getDirname());
+        $this->assertSame(dirname($this->pathToDir), $dir->getDirname());
     }
 
     /**
@@ -63,10 +63,10 @@ class DirectoryTest extends BaseTestCase
      */
     public function testGetBaseName()
     {
-        $dir = new Directory($this->dirName);
+        $dir = new Directory($this->pathToDir);
 
         $this->assertSame(
-            pathinfo($this->dirName, PATHINFO_BASENAME),
+            pathinfo($this->pathToDir, PATHINFO_BASENAME),
             $dir->getBasename()
         );
     }
@@ -76,7 +76,7 @@ class DirectoryTest extends BaseTestCase
      */
     public function testIsExists()
     {
-        $dir = new Directory($this->dirName);
+        $dir = new Directory($this->pathToDir);
         $unexistedDir = new Directory(__DIR__ . '/unexisted');
 
         $this->assertTrue($dir->isExists());
@@ -84,11 +84,61 @@ class DirectoryTest extends BaseTestCase
     }
 
     /**
+     * Проверяет, что объект выбросит исключение при попытке создать каталог
+     * уровнем выше своего.
+     */
+    public function testWrongChildDirName()
+    {
+        $dir = new Directory($this->pathToDir);
+
+        $this->expectException(InvalidArgumentException::class);
+        $dir->createChildDirectory('test/../test');
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение при попытке создать файл
+     * уровнем выше своего.
+     */
+    public function testWrongChildFileName()
+    {
+        $dir = new Directory($this->pathToDir);
+
+        $this->expectException(InvalidArgumentException::class);
+        $dir->createChildFile('../test.txt');
+    }
+
+    /**
+     * Проверяет, что объект работает как итератор.
+     */
+    public function testIterator()
+    {
+        $dirName = pathinfo($this->pathToDir, PATHINFO_BASENAME);
+        $children = [
+            $this->getPathToTestDir($dirName . '/.' . $this->faker()->unique()->word),
+            $this->getPathToTestDir($dirName . '/' . $this->faker()->unique()->word),
+            $this->getPathToTestFile($dirName . '/.' . $this->faker()->unique()->word),
+            $this->getPathToTestFile($dirName . '/' . $this->faker()->unique()->word),
+        ];
+
+        $dir = new Directory($this->pathToDir);
+
+        $tested = [];
+        foreach ($dir as $key => $child) {
+            $tested[] = $child->getPath();
+        }
+
+        sort($tested);
+        sort($children);
+
+        $this->assertSame($children, $tested);
+    }
+
+    /**
      * Задает путь к каталогу для тестов.
      */
     public function setUp()
     {
-        $this->dirName = $this->getPathToTestDir();
+        $this->pathToDir = $this->getPathToTestDir();
 
         return parent::setUp();
     }

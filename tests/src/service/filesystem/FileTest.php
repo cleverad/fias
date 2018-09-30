@@ -41,11 +41,11 @@ class FileTest extends BaseTestCase
     /**
      * Возвращает ли объект путь к файлу и его имя.
      */
-    public function testGetPathname()
+    public function testGetPath()
     {
         $file = new File($this->fileName);
 
-        $this->assertSame($this->fileName, $file->getPathname());
+        $this->assertSame($this->fileName, $file->getPath());
     }
 
     /**
