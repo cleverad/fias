@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\service\filesystem;
 
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Объект, который инкапсулирует обращение к файлу в локальной
@@ -101,10 +102,16 @@ class File implements FileInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException
      */
     public function delete()
     {
-        unlink($this->path);
+        if (!@unlink($this->path)) {
+            throw new RuntimeException(
+                "Can't unlink file " . $this->getPath()
+            );
+        }
     }
 }
