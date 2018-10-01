@@ -9,6 +9,7 @@ $rules = [
     'concat_space' => ['spacing' => 'one'],
     'array_syntax' => ['syntax' => 'short'],
     'yoda_style' => false,
+    'phpdoc_no_empty_return' => false,
 ];
 
 return PhpCsFixer\Config::create()->setRules($rules)->setFinder($finder);

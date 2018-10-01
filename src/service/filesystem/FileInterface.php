@@ -54,6 +54,8 @@ interface FileInterface
 
     /**
      * Удаляет файл из файловой системы.
+     *
+     * @return void
      */
     public function delete();
 }
