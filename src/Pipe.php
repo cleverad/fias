@@ -6,7 +6,7 @@ namespace marvin255\fias;
 
 use marvin255\fias\task\Task;
 use marvin255\fias\task\RuntimeException;
-use marvin255\fias\state\State;
+use marvin255\fias\state\StateInterface;
 use Exception;
 
 /**
@@ -37,13 +37,13 @@ class Pipe
     /**
      * Запускает все операции на выполнение.
      *
-     * @param \marvin255\fias\state\State $state
+     * @param \marvin255\fias\state\StateInterface $state
      *
      * @return $this
      *
      * @throws \marvin255\fias\task\RuntimeException
      */
-    public function run(State $state): self
+    public function run(StateInterface $state): self
     {
         foreach ($this->tasks as $task) {
             try {

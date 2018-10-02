@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\tests;
 
 use marvin255\fias\task\Task;
-use marvin255\fias\state\State;
+use marvin255\fias\state\StateInterface;
 use marvin255\fias\task\RuntimeException;
 use marvin255\fias\Pipe;
 use InvalidArgumentException;
@@ -21,7 +21,7 @@ class PipeTest extends BaseTestCase
      */
     public function testRun()
     {
-        $state = $this->getMockBuilder(State::class)->getMock();
+        $state = $this->getMockBuilder(StateInterface::class)->getMock();
 
         $task1 = $this->getMockBuilder(Task::class)->getMock();
         $task1->expects($this->once())->method('run')->with($this->equalTo($state));
@@ -41,7 +41,7 @@ class PipeTest extends BaseTestCase
      */
     public function testRunWithCompleted()
     {
-        $state = $this->getMockBuilder(State::class)->getMock();
+        $state = $this->getMockBuilder(StateInterface::class)->getMock();
         $state->expects($this->at(0))->method('isCompleted')->will($this->returnValue(false));
         $state->expects($this->at(1))->method('isCompleted')->will($this->returnValue(true));
 
@@ -67,7 +67,7 @@ class PipeTest extends BaseTestCase
      */
     public function testRunException()
     {
-        $state = $this->getMockBuilder(State::class)->getMock();
+        $state = $this->getMockBuilder(StateInterface::class)->getMock();
 
         $task1 = $this->getMockBuilder(Task::class)->getMock();
 

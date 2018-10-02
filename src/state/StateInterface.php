@@ -7,7 +7,7 @@ namespace marvin255\fias\state;
 /**
  * Интерфейс для объекта, который передает состояние между операциями.
  */
-interface State
+interface StateInterface
 {
     /**
      * Задает параметр состояния по его имени.
@@ -17,7 +17,7 @@ interface State
      *
      * @return $this
      */
-    public function setParameter(string $parameterName, $parameterValue): State;
+    public function setParameter(string $parameterName, $parameterValue): StateInterface;
 
     /**
      * Возвращает параметр состояния по его имени.
@@ -33,7 +33,7 @@ interface State
      *
      * @return $this
      */
-    public function complete(): State;
+    public function complete(): StateInterface;
 
     /**
      * Метод, который указывает, что цепочка должна быть прервана после текушей

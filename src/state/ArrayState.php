@@ -7,7 +7,7 @@ namespace marvin255\fias\state;
 /**
  * Объект, который хранит состояние во внутреннем массиве.
  */
-class ArrayState implements State
+class ArrayState implements StateInterface
 {
     /**
      * @var mixed[]
@@ -21,7 +21,7 @@ class ArrayState implements State
     /**
      * @inheritdoc
      */
-    public function setParameter(string $parameterName, $parameterValue): State
+    public function setParameter(string $parameterName, $parameterValue): StateInterface
     {
         $unifiedName = $this->unifyParameterName($parameterName);
         $this->parameters[$unifiedName] = $parameterValue;
@@ -44,7 +44,7 @@ class ArrayState implements State
     /**
      * @inheritdoc
      */
-    public function complete(): State
+    public function complete(): StateInterface
     {
         $this->isCompleted = true;
 
