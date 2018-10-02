@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace marvin255\fias\tests;
 
-use marvin255\fias\task\Task;
+use marvin255\fias\task\TaskInterface;
 use marvin255\fias\state\StateInterface;
 use marvin255\fias\task\RuntimeException;
 use marvin255\fias\Pipe;
@@ -23,10 +23,10 @@ class PipeTest extends BaseTestCase
     {
         $state = $this->getMockBuilder(StateInterface::class)->getMock();
 
-        $task1 = $this->getMockBuilder(Task::class)->getMock();
+        $task1 = $this->getMockBuilder(TaskInterface::class)->getMock();
         $task1->expects($this->once())->method('run')->with($this->equalTo($state));
 
-        $task2 = $this->getMockBuilder(Task::class)->getMock();
+        $task2 = $this->getMockBuilder(TaskInterface::class)->getMock();
         $task2->expects($this->once())->method('run')->with($this->equalTo($state));
 
         $pipe = new Pipe;
@@ -45,13 +45,13 @@ class PipeTest extends BaseTestCase
         $state->expects($this->at(0))->method('isCompleted')->will($this->returnValue(false));
         $state->expects($this->at(1))->method('isCompleted')->will($this->returnValue(true));
 
-        $task1 = $this->getMockBuilder(Task::class)->getMock();
+        $task1 = $this->getMockBuilder(TaskInterface::class)->getMock();
         $task1->expects($this->once())->method('run')->with($this->equalTo($state));
 
-        $task2 = $this->getMockBuilder(Task::class)->getMock();
+        $task2 = $this->getMockBuilder(TaskInterface::class)->getMock();
         $task2->expects($this->once())->method('run')->with($this->equalTo($state));
 
-        $task3 = $this->getMockBuilder(Task::class)->getMock();
+        $task3 = $this->getMockBuilder(TaskInterface::class)->getMock();
         $task3->expects($this->never())->method('run');
 
         $pipe = new Pipe;
@@ -69,9 +69,9 @@ class PipeTest extends BaseTestCase
     {
         $state = $this->getMockBuilder(StateInterface::class)->getMock();
 
-        $task1 = $this->getMockBuilder(Task::class)->getMock();
+        $task1 = $this->getMockBuilder(TaskInterface::class)->getMock();
 
-        $task2 = $this->getMockBuilder(Task::class)->getMock();
+        $task2 = $this->getMockBuilder(TaskInterface::class)->getMock();
         $task2->method('run')->will($this->throwException(new InvalidArgumentException));
 
         $pipe = new Pipe;

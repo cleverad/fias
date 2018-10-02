@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace marvin255\fias;
 
-use marvin255\fias\task\Task;
+use marvin255\fias\task\TaskInterface;
 use marvin255\fias\task\RuntimeException;
 use marvin255\fias\state\StateInterface;
 use Exception;
@@ -16,18 +16,18 @@ use Exception;
 class Pipe
 {
     /**
-     * @var \marvin255\fias\task\Task[]
+     * @var \marvin255\fias\task\TaskInterface[]
      */
     private $tasks = [];
 
     /**
      * Регистрирует операцию в приложении.
      *
-     * @param \marvin255\fias\task\Task $task
+     * @param \marvin255\fias\task\TaskInterface $task
      *
      * @return $this
      */
-    public function pipe(Task $task): self
+    public function pipe(TaskInterface $task): self
     {
         $this->tasks[] = $task;
 

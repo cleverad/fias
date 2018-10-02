@@ -10,7 +10,7 @@ use marvin255\fias\state\StateInterface;
  * Интерфейс для объекта, который выполняет отдельную операцию для импорта или
  * обновления.
  */
-interface Task
+interface TaskInterface
 {
     /**
      * Запускает операцию на исполнение.
