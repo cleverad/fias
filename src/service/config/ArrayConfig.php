@@ -10,7 +10,7 @@ use UnexpectedValueException;
  * Объект, который хранит конфигурацию запуска во внутрннем массиве и настраивается
  * при создании.
  */
-class ArrayConfig implements Config
+class ArrayConfig implements ConfigInterface
 {
     /**
      * @var array
