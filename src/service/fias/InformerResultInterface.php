@@ -43,4 +43,11 @@ interface InformerResultInterface
      * @return string
      */
     public function getUrl(): string;
+
+    /**
+     * Проверяет содержит ли данный объект ответ от сервиса или нет.
+     *
+     * @return bool
+     */
+    public function hasResult(): bool;
 }

@@ -60,4 +60,12 @@ class InformerResult implements InformerResultInterface
     {
         return $this->url;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasResult(): bool
+    {
+        return $this->url !== '' && $this->version !== 0;
+    }
 }

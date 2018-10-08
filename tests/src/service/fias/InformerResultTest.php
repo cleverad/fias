@@ -31,6 +31,21 @@ class InformerResultTest extends BaseTestCase
     }
 
     /**
+     * Проверяет метод, который возвращает наличие результата в объекте.
+     */
+    public function testHasResult()
+    {
+        $res = new InformerResult;
+
+        $this->assertFalse($res->hasResult());
+
+        $res->setVersion($this->faker()->unique()->randomNumber);
+        $res->setUrl($this->faker()->unique()->url);
+
+        $this->assertTrue($res->hasResult());
+    }
+
+    /**
      * Проверяет, чтобы сеттер для url выбрасывал исключение при попытке
      * ввести не url.
      */
