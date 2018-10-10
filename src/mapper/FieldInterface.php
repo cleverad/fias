@@ -12,9 +12,9 @@ interface FieldInterface
     /**
      * Конвертирует входящий параметр к типу, соответсвующему данному полю.
      *
-     * @param mixed $input
+     * @param string $input
      *
      * @return mixed
      */
-    public function convert($input);
+    public function convert(string $input);
 }

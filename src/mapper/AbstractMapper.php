@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper;
 
 use SimpleXMLElement;
+use Throwable;
+use RuntimeException;
 
 /**
  * Базовый класс для универсального маппера.
@@ -46,20 +48,26 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * {@inhertitdoc}.
+     *
+     * @throws \RuntimeException
      */
     public function extractArrayFromXml(string $xml): array
     {
         $return = [];
         $fields = $this->getMap();
-        $simpleXml = $this->convertStringToSimpleXml($xml);
-        $attributes = $simpleXml->attributes();
 
-        foreach ($fields as $fieldName => $field) {
-            $value = isset($attributes[$fieldName])
-                ? (string) $attributes[$fieldName]
-                : null;
-            $return[$fieldName] = $field->convert($value);
+        try {
+            $simpleXml = $this->convertStringToSimpleXml($xml);
+            $attributes = $simpleXml->attributes();
+            foreach ($fields as $fieldName => $field) {
+                $value = isset($attributes[$fieldName])
+                    ? (string) $attributes[$fieldName]
+                    : null;
+                $return[$fieldName] = $field->convert($value);
+            }
+        } catch (Throwable $e) {
+            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $return;
@@ -95,9 +103,17 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
      * @param string $xml
      *
      * @return \SimpleXMLElement
+     *
+     * @throws \RuntimeException
      */
     protected function convertStringToSimpleXml(string $xml): SimpleXMLElement
     {
-        return simplexml_load_string($xml);
+        try {
+            $return = simplexml_load_string($xml);
+        } catch (Throwable $e) {
+            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        return $return;
     }
 }
