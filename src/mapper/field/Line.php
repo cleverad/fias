@@ -12,6 +12,31 @@ use marvin255\fias\mapper\FieldInterface;
 class Line implements FieldInterface
 {
     /**
+     * Максимальная длина строки.
+     *
+     * @var int
+     */
+    protected $length = 255;
+
+    /**
+     * @param int $length
+     */
+    public function __construct(int $length = 255)
+    {
+        $this->length = $length;
+    }
+
+    /**
+     * Возвращает максимальную длину строки.
+     *
+     * @return int
+     */
+    public function getLength(): int
+    {
+        return $this->length;
+    }
+
+    /**
      * @inheritdoc
      */
     public function convert(string $input): string

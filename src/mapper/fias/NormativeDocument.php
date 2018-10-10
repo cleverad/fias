@@ -18,7 +18,7 @@ class NormativeDocument extends AbstractMapper
     protected function createFields(): array
     {
         return [
-            'NORMDOCID' => new field\Line,
+            'NORMDOCID' => new field\Line(36),
             'DOCNAME' => new field\Line,
             'DOCDATE' => new field\Date,
             'DOCNUM' => new field\Line,
