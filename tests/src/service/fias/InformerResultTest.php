@@ -19,7 +19,7 @@ class InformerResultTest extends BaseTestCase
      */
     public function testGettersAnsSetters()
     {
-        $version = $this->faker()->unique()->randomNumber;
+        $version = $this->faker()->unique()->randomNumber + 1;
         $url = $this->faker()->unique()->url;
 
         $res = new InformerResult;
@@ -39,7 +39,7 @@ class InformerResultTest extends BaseTestCase
 
         $this->assertFalse($res->hasResult());
 
-        $res->setVersion($this->faker()->unique()->randomNumber);
+        $res->setVersion($this->faker()->unique()->randomNumber + 1);
         $res->setUrl($this->faker()->unique()->url);
 
         $this->assertTrue($res->hasResult());

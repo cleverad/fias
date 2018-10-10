@@ -34,6 +34,14 @@ interface SqlMapperInterface extends MapperInterface
     public function getSqlPartitionsCount(): int;
 
     /**
+     * Возвращает массив названий полей, которые следуетиспользовать для разделения
+     * таблицы на части.
+     *
+     * @return string[]
+     */
+    public function getSqlPartitionsFields(): array;
+
+    /**
      * Возвращает массив с массивами, в которых содержатся имена полей сущности
      * для формирования дополнитедльных индексов в базе данных.
      *

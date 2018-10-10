@@ -98,6 +98,14 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
+     * @inhertitdoc
+     */
+    public function getSqlPartitionsFields(): array
+    {
+        return [];
+    }
+
+    /**
      * Преобразует строку xml в объект SimpleXml.
      *
      * @param string $xml
