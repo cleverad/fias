@@ -121,11 +121,11 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
         $return = simplexml_load_string($xml);
 
         if (libxml_get_errors()) {
-            libxml_clear_errors();
             $exceptionMessages = [];
             foreach (libxml_get_errors() as $error) {
                 $exceptionMessages[] = $error->message;
             }
+            libxml_clear_errors();
             throw new RuntimeException(implode(', ', $exceptionMessages));
         } elseif (!($return instanceof SimpleXMLElement)) {
             throw new RuntimeException(
