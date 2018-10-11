@@ -63,7 +63,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
             foreach ($fields as $fieldName => $field) {
                 $value = isset($attributes[$fieldName])
                     ? (string) $attributes[$fieldName]
-                    : null;
+                    : '';
                 $return[$fieldName] = $field->convert($value);
             }
         } catch (Throwable $e) {
@@ -116,11 +116,24 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
      */
     protected function convertStringToSimpleXml(string $xml): SimpleXMLElement
     {
-        try {
-            $return = simplexml_load_string($xml);
-        } catch (Throwable $e) {
-            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
+        libxml_use_internal_errors(true);
+
+        $return = simplexml_load_string($xml);
+
+        if (libxml_get_errors()) {
+            libxml_clear_errors();
+            $exceptionMessages = [];
+            foreach (libxml_get_errors() as $error) {
+                $exceptionMessages[] = $error->message;
+            }
+            throw new RuntimeException(implode(', ', $exceptionMessages));
+        } elseif (!($return instanceof SimpleXMLElement)) {
+            throw new RuntimeException(
+                "Can't parse xml to SimpleXMLElement while extracting"
+            );
         }
+
+        libxml_use_internal_errors(false);
 
         return $return;
     }
