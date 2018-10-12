@@ -26,6 +26,14 @@ interface SqlMapperInterface extends MapperInterface
     public function getSqlPrimary(): array;
 
     /**
+     * Возвращает массив с массивами, в которых содержатся имена полей сущности
+     * для формирования дополнитедльных индексов в базе данных.
+     *
+     * @return string[][]
+     */
+    public function getSqlIndexes(): array;
+
+    /**
      * Возвращает число разделов, на которые нужно разбить данные при хранении
      * в базе данных.
      *
@@ -34,18 +42,10 @@ interface SqlMapperInterface extends MapperInterface
     public function getSqlPartitionsCount(): int;
 
     /**
-     * Возвращает массив названий полей, которые следуетиспользовать для разделения
+     * Возвращает название поле, которое следует использовать для разделения
      * таблицы на части.
      *
-     * @return string[]
+     * @return string
      */
-    public function getSqlPartitionsFields(): array;
-
-    /**
-     * Возвращает массив с массивами, в которых содержатся имена полей сущности
-     * для формирования дополнитедльных индексов в базе данных.
-     *
-     * @return string[][]
-     */
-    public function getSqlIndexes(): array;
+    public function getSqlPartitionField(): string;
 }

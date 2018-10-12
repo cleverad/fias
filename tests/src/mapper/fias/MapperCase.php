@@ -116,10 +116,10 @@ abstract class MapperCase extends BaseTestCase
         $mapper = $this->getMapper();
         $fields = array_keys($mapper->getMap());
 
-        $partitionFields = $mapper->getSqlPartitionsFields();
+        $partitionField = $mapper->getSqlPartitionField();
 
-        $this->assertInternalType('array', $partitionFields);
-        foreach ($partitionFields as $partitionField) {
+        $this->assertInternalType('string', $partitionField);
+        if ($partitionField !== '') {
             $this->assertContains($partitionField, $fields);
         }
     }

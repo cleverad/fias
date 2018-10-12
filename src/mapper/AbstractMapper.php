@@ -100,9 +100,9 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     /**
      * @inhertitdoc
      */
-    public function getSqlPartitionsFields(): array
+    public function getSqlPartitionField(): string
     {
-        return [];
+        return '';
     }
 
     /**
