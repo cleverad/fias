@@ -52,7 +52,10 @@ abstract class MapperCase extends BaseTestCase
      */
     public function testGetSqlName()
     {
-        $this->assertNotEmpty($this->getMapper()->getSqlName());
+        $this->assertRegExp(
+            '#[a-z]+[a-z0-9_]*#',
+            $this->getMapper()->getSqlName()
+        );
     }
 
     /**
