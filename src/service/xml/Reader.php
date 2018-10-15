@@ -230,8 +230,8 @@ class Reader implements ReaderInterface
         $path = trim($this->mapper->getXmlPath(), '/');
         $currentPath = [];
         $isCompleted = false;
-
         $readResult = $this->reader->read();
+
         while ($readResult) {
             if ($this->reader->nodeType !== XMLReader::ELEMENT) {
                 $readResult = $this->reader->read();
