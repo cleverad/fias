@@ -90,6 +90,8 @@ class Mysql implements DbInterface
      */
     public function truncateTable(SqlMapperInterface $mapper)
     {
+        $tableName = $this->escapeDDLName($mapper->getSqlName());
+        $this->execute("DELETE FROM {$tableName}");
     }
 
     /**

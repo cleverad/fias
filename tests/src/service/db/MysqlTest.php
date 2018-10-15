@@ -70,11 +70,39 @@ class MysqlTest extends DbTestCase
     }
 
     /**
+     * Проверяет, что объект удаляет се содержимое таблицы, указанной в маппере.
+     */
+    public function testTruncateTable()
+    {
+        $tableName = 'testTruncateTable';
+
+        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+            ->getMock();
+        $mapper->method('getSqlName')->will($this->returnValue($tableName));
+
+        $mysql = new Mysql($this->getPdo());
+        $mysql->truncateTable($mapper);
+
+        $queryTable = $this->getConnection()->createQueryTable(
+            $tableName,
+            'SELECT * FROM ' . $tableName
+        );
+        $expectedTable = $this->createXmlDataSet(__DIR__ . '/_fixture/testTruncateTable_expected.xml')
+            ->getTable($tableName);
+
+        $this->assertTablesEqual($expectedTable, $queryTable);
+    }
+
+    /**
      * @return \PHPUnit\DbUnit\DataSet\IDataSet
      */
     public function getDataSet()
     {
         $compositeDs = new CompositeDataSet;
+
+        $compositeDs->addDataSet(
+            $this->createXmlDataSet(__DIR__ . '/_fixture/testTruncateTable.xml')
+        );
 
         return $compositeDs;
     }
@@ -92,6 +120,12 @@ class MysqlTest extends DbTestCase
             row2 varchar(30),
             PRIMARY KEY(id)
         )');
+        $pdo->exec('CREATE TABLE testTruncateTable (
+            id int(11) not null,
+            row1 varchar(30),
+            row2 varchar(30),
+            PRIMARY KEY(id)
+        )');
 
         return parent::setUp();
     }
@@ -103,6 +137,7 @@ class MysqlTest extends DbTestCase
     {
         $this->getPdo()->exec('DROP TABLE IF EXISTS testCreateTable');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testDropTable');
+        $this->getPdo()->exec('DROP TABLE IF EXISTS testTruncateTable');
 
         return parent::tearDown();
     }
