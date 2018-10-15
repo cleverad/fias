@@ -233,10 +233,6 @@ class Reader implements ReaderInterface
         $readResult = $this->reader->read();
 
         while ($readResult) {
-            if ($this->reader->nodeType !== XMLReader::ELEMENT) {
-                $readResult = $this->reader->read();
-                continue;
-            }
             array_push($currentPath, $this->reader->name);
             $currentPathStr = implode('/', $currentPath);
             if ($path === $currentPathStr) {
