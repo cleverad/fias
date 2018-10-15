@@ -143,7 +143,7 @@ abstract class BaseTestCase extends TestCase
     /**
      * Удаляет тестовую директорию и все ее содержимое.
      */
-    public function tearDown()
+    protected function tearDown()
     {
         if ($this->tempDir) {
             $this->removeDir($this->tempDir);

@@ -67,7 +67,7 @@ interface DbInterface
      *
      * @throws \marvin255\fias\service\db\Exception
      */
-    public function deleteTable(SqlMapperInterface $mapper);
+    public function dropTable(SqlMapperInterface $mapper);
 
     /**
      * Очищает от содержимого таблицу в базе данных, согласно описанию из маппера.
