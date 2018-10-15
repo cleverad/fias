@@ -16,7 +16,49 @@ use PHPUnit\DbUnit\DataSet\CompositeDataSet;
 class MysqlTest extends DbTestCase
 {
     /**
-     * Проверяет, что объект обновляет записи из таблицы указанной в маппере.
+     * Проверяет, что объект добавляет новые записи в таблицу, указанную в маппере.
+     */
+    public function testInsert()
+    {
+        $tableName = 'testInsert';
+        $columnsNames = [
+            'id',
+            'row1',
+            'row2',
+        ];
+        $columnsDefinitions = [
+            new field\IntNumber,
+            new field\Line,
+            new field\Line,
+        ];
+        $columns = array_combine($columnsNames, $columnsDefinitions);
+
+        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+            ->getMock();
+        $mapper->method('getMap')->will($this->returnValue($columns));
+        $mapper->method('getSqlName')->will($this->returnValue($tableName));
+        $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
+        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
+        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
+        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
+
+        $mysql = new Mysql($this->getPdo());
+        $mysql->insert($mapper, ['id' => 3, 'row1' => 'row 3 1', 'row2' => 'row 3 2']);
+        $mysql->insert($mapper, ['id' => 4, 'row1' => 'row 4 1', 'row2' => 'row 4 2']);
+        $mysql->complete();
+
+        $queryTable = $this->getConnection()->createQueryTable(
+            $tableName,
+            'SELECT * FROM ' . $tableName
+        );
+        $expectedTable = $this->createXmlDataSet(__DIR__ . '/_fixture/testInsert_expected.xml')
+            ->getTable($tableName);
+
+        $this->assertTablesEqual($expectedTable, $queryTable);
+    }
+
+    /**
+     * Проверяет, что объект обновляет записи из таблицы, указанной в маппере.
      */
     public function testUpdate()
     {
@@ -58,7 +100,7 @@ class MysqlTest extends DbTestCase
     }
 
     /**
-     * Проверяет, что объект удаляет записи из таблицы указанной в маппере.
+     * Проверяет, что объект удаляет записи из таблицы, указанной в маппере.
      */
     public function testDelete()
     {
@@ -183,6 +225,9 @@ class MysqlTest extends DbTestCase
         $compositeDs = new CompositeDataSet;
 
         $compositeDs->addDataSet(
+            $this->createXmlDataSet(__DIR__ . '/_fixture/testInsert.xml')
+        );
+        $compositeDs->addDataSet(
             $this->createXmlDataSet(__DIR__ . '/_fixture/testUpdate.xml')
         );
         $compositeDs->addDataSet(
@@ -202,6 +247,12 @@ class MysqlTest extends DbTestCase
     {
         $pdo = $this->getPdo();
 
+        $pdo->exec('CREATE TABLE testInsert (
+            id int(11) not null,
+            row1 varchar(30),
+            row2 varchar(30),
+            PRIMARY KEY(id)
+        )');
         $pdo->exec('CREATE TABLE testUpdate (
             id int(11) not null,
             row1 varchar(30),
@@ -233,6 +284,7 @@ class MysqlTest extends DbTestCase
      */
     public function tearDown()
     {
+        $this->getPdo()->exec('DROP TABLE IF EXISTS testInsert');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testUpdate');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testDelete');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testCreateTable');
