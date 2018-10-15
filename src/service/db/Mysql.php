@@ -138,6 +138,8 @@ class Mysql implements DbInterface
      * @param string $sql
      *
      * @return \PDOStatement
+     *
+     * @throws \marvin255\fias\service\db\Exception
      */
     protected function getStatement(string $sql): PDOStatement
     {
@@ -148,6 +150,10 @@ class Mysql implements DbInterface
         }
 
         $newPrepared = $this->pdoConnection->prepare($sql);
+        if (!($newPrepared instanceof PDOStatement)) {
+            throw new Exception("Can't prepare statement for {$sql}");
+        }
+
         $this->prepared[] = $newPrepared;
 
         return $newPrepared;
