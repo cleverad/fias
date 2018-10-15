@@ -171,8 +171,7 @@ class Reader implements ReaderInterface
         $nameFilter = array_pop($arPath);
         $currentDepth = $this->reader->depth;
 
-        //пропускаем все элементы, у которых неподходящее имя
-        while ($this->reader->depth === $currentDepth && $nameFilter !== $this->reader->name && $this->reader->next());
+        $this->skipUselessXml($nameFilter, $currentDepth);
 
         //мы можем выйти из цикла, если найдем нужный элемент
         //или попадем на уровень выше - проверяем, что нашли нужный
@@ -184,6 +183,23 @@ class Reader implements ReaderInterface
         }
 
         return $return;
+    }
+
+    /**
+     * Пропускает все xml элементы в текущем ридере, у которых имя или вложенность
+     * не совпадают с указанным параметром.
+     *
+     * @param string $nodeName
+     * @param int    $nodeDepth
+     */
+    protected function skipUselessXml(string $nodeName, int $nodeDepth)
+    {
+        while (
+            $this->reader
+            && $this->reader->depth === $nodeDepth
+            && $nodeName !== $this->reader->name
+            && $this->reader->next()
+        );
     }
 
     /**
@@ -250,6 +266,7 @@ class Reader implements ReaderInterface
 
         $this->unsetReader();
         $this->reader = new XmlReader;
+
         if ($this->reader->open($this->pathToFile) === false) {
             throw new RuntimeException(
                 "Can't open file {$this->pathToFile} for reading"
