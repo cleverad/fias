@@ -18,9 +18,9 @@ interface ReaderInterface extends Iterator
      *
      * @param \marvin255\fias\mapper\XmlMapperInterface $mapper
      *
-     * @return $this
+     * @return \marvin255\fias\mapper\XmlMapperInterface
      */
-    public function setMapper(XmlMapperInterface $mapper): self;
+    public function setMapper(XmlMapperInterface $mapper): ReaderInterface;
 
     /**
      * Открывает файл на чтение, пытается найти путь указанный в маппере, если
@@ -34,10 +34,9 @@ interface ReaderInterface extends Iterator
     public function openFile(string $path): bool;
 
     /**
-     * Закрывает открытый файл, если такой был. Возврщает правду, если
-     * файл был закрыт, и ложь, если файл не был закрыт.
+     * Закрывает открытый файл, если такой был.
      *
-     * @return bool
+     * @return void
      */
-    public function closeFile(): bool;
+    public function closeFile();
 }

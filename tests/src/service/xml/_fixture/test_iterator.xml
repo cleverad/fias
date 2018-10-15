@@ -26,10 +26,10 @@
                 fake="real item 2 fake attr"
             />
             <realItem
-                firstParam="real item 2 first param"
-                secondParam="real item 2 second param"
-                thirdParam="real item 2 third param"
-                fake="real item 2 fake attr"
+                firstParam="real item 3 first param"
+                secondParam="real item 3 second param"
+                thirdParam="real item 3 third param"
+                fake="real item 3 fake attr"
             />
             <trapItem>test 1</trapItem>
             <trapItem>test 1</trapItem>
