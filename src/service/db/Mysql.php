@@ -56,8 +56,6 @@ class Mysql implements DbInterface
      */
     public function createTable(SqlMapperInterface $mapper)
     {
-        $params = [];
-
         $fields = '';
         foreach ($mapper->getMap() as $fieldName => $field) {
             $fieldName = $this->escapeDDLName($fieldName);
