@@ -64,7 +64,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
                 $value = isset($attributes[$fieldName])
                     ? (string) $attributes[$fieldName]
                     : '';
-                $return[$fieldName] = $field->convert($value);
+                $return[$fieldName] = $field->convertToData($value);
             }
         } catch (Throwable $e) {
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);

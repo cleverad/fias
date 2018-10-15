@@ -16,5 +16,14 @@ interface FieldInterface
      *
      * @return mixed
      */
-    public function convert(string $input);
+    public function convertToData(string $input);
+
+    /**
+     * Конвертирует входящий параметр к строке, для записи в БД.
+     *
+     * @param mixed $input
+     *
+     * @return string
+     */
+    public function convertToString($input): string;
 }

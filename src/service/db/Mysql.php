@@ -56,7 +56,7 @@ class Mysql implements DbInterface
                 $paramName = ":set{$setCount}";
                 $fieldNameEscaped = $this->escapeDDLName($fieldName);
                 $set .= ($set ? ', ' : '') . "{$fieldNameEscaped} = {$paramName}";
-                $params[$paramName] = $field->convert((string) $item[$fieldName]);
+                $params[$paramName] = $field->convertToString($item[$fieldName]);
                 ++$setCount;
             }
         }

@@ -25,16 +25,30 @@ class IntNumberTest extends BaseTestCase
     }
 
     /**
-     * Проверяет, что поле верно конвертирует результат.
+     * Проверяет, что поле верно конвертирует строку в данные.
      */
-    public function testConvert()
+    public function testConvertToData()
     {
         $value = (string) $this->faker()->unique()->randomNumber;
         $valueString = $this->faker()->unique()->randomNumber . 'word';
 
         $field = new IntNumber;
 
-        $this->assertSame((int) $value, $field->convert($value));
-        $this->assertSame((int) $valueString, $field->convert($valueString));
+        $this->assertSame((int) $value, $field->convertToData($value));
+        $this->assertSame((int) $valueString, $field->convertToData($valueString));
+    }
+
+    /**
+     * Проверяет, что поле верно конвертирует данные в строку.
+     */
+    public function testConvertToString()
+    {
+        $value = (string) $this->faker()->unique()->randomNumber;
+        $valueString = $this->faker()->unique()->randomNumber . 'word';
+
+        $field = new IntNumber;
+
+        $this->assertSame((string) $value, $field->convertToString($value));
+        $this->assertSame((string) $valueString, $field->convertToString($valueString));
     }
 }

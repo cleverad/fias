@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace marvin255\fias\mapper\field;
 
-use marvin255\fias\mapper\FieldInterface;
-
 /**
  * Строковый тип поля.
  */
-class Line implements FieldInterface
+class Line extends AbstractField
 {
     /**
      * Максимальная длина строки.
@@ -34,13 +32,5 @@ class Line implements FieldInterface
     public function getLength(): int
     {
         return $this->length;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function convert(string $input): string
-    {
-        return $input;
     }
 }

@@ -25,14 +25,26 @@ class LineTest extends BaseTestCase
     }
 
     /**
-     * Проверяет, что поле верно конвертирует результат.
+     * Проверяет, что поле верно конвертирует строку в данные.
      */
-    public function testConvert()
+    public function testConvertToData()
     {
         $value = $this->faker()->unique()->text;
 
         $field = new Line;
 
-        $this->assertSame($value, $field->convert($value));
+        $this->assertSame($value, $field->convertToData($value));
+    }
+
+    /**
+     * Проверяет, что поле верно конвертирует данные в строку.
+     */
+    public function testConvertToString()
+    {
+        $value = $this->faker()->unique()->text;
+
+        $field = new Line;
+
+        $this->assertSame($value, $field->convertToString($value));
     }
 }
