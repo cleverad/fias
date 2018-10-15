@@ -8,6 +8,7 @@ use marvin255\fias\mapper\SqlMapperInterface;
 use marvin255\fias\mapper\FieldInterface;
 use marvin255\fias\mapper\field;
 use PDO;
+use PDOStatement;
 use PDOException;
 
 /**
@@ -19,6 +20,10 @@ class Mysql implements DbInterface
      * @var \PDO
      */
     protected $pdoConnection;
+    /**
+     * @var array
+     */
+    protected $prepared = [];
 
     /**
      * Задает объект PDO для соединения с базой данных.
@@ -112,7 +117,7 @@ class Mysql implements DbInterface
     public function execute(string $sql, array $params = []): bool
     {
         try {
-            $statement = $this->pdoConnection->prepare($sql);
+            $statement = $this->getStatement($sql);
             $res = $statement->execute($params);
         } catch (PDOException $e) {
             throw new Exception($e->getMessage(), 0, $e);
@@ -124,6 +129,28 @@ class Mysql implements DbInterface
         }
 
         return $res;
+    }
+
+    /**
+     * Возвращает подговтовленное выражение, если оно уже есть,
+     * либо создает новое и добавляет в список.
+     *
+     * @param string $sql
+     *
+     * @return \PDOStatement
+     */
+    protected function getStatement(string $sql): PDOStatement
+    {
+        foreach ($this->prepared as $prepared) {
+            if ($prepared->queryString === $sql) {
+                return $prepared;
+            }
+        }
+
+        $newPrepared = $this->pdoConnection->prepare($sql);
+        $this->prepared[] = $newPrepared;
+
+        return $newPrepared;
     }
 
     /**
