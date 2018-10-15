@@ -54,6 +54,12 @@ class Mysql implements DbInterface
      */
     public function delete(SqlMapperInterface $mapper, array $item)
     {
+        list($where, $params) = $this->createPrimaryCondition($mapper, $item);
+
+        $sql = 'DELETE FROM ' . $this->escapeDDLName($mapper->getSqlName());
+        $sql .= " WHERE {$where}";
+
+        $this->execute($sql, $params);
     }
 
     /**
@@ -197,5 +203,32 @@ class Mysql implements DbInterface
     protected function escapeDDLName(string $name): string
     {
         return '`' . trim(str_replace('`', '', $name)) . '`';
+    }
+
+    /**
+     * Создает условие для поиска строк по первичному ключу.
+     *
+     * @param \marvin255\fias\mapper\SqlMapperInterface $mapper
+     * @param array                                     $item
+     *
+     * @throws \marvin255\fias\service\db\Exception
+     */
+    protected function createPrimaryCondition(SqlMapperInterface $mapper, array $item)
+    {
+        $sql = '';
+        $params = [];
+        $primaryCount = 0;
+        foreach ($mapper->getSqlPrimary() as $primaryName) {
+            if (!isset($item[$primaryName])) {
+                throw new Exception("There is no {$primaryName} key in item");
+            }
+            $escapedName = $this->escapeDDLName($primaryName);
+            $primaryParam = ":primary{$primaryCount}";
+            $sql .= ($sql ? ' AND ' : '') . "{$escapedName} = {$primaryParam}";
+            $params[$primaryParam] = $item[$primaryName];
+            ++$primaryCount;
+        }
+
+        return [$sql, $params];
     }
 }
