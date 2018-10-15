@@ -47,6 +47,24 @@ class Mysql implements DbInterface
      */
     public function update(SqlMapperInterface $mapper, array $item)
     {
+        list($where, $params) = $this->createPrimaryCondition($mapper, $item);
+
+        $set = '';
+        $setCount = 0;
+        foreach ($mapper->getMap() as $fieldName => $field) {
+            if (isset($item[$fieldName]) && !in_array($fieldName, $mapper->getSqlPrimary())) {
+                $paramName = ":set{$setCount}";
+                $fieldNameEscaped = $this->escapeDDLName($fieldName);
+                $set .= ($set ? ', ' : '') . "{$fieldNameEscaped} = {$paramName}";
+                $params[$paramName] = $field->convert((string) $item[$fieldName]);
+                ++$setCount;
+            }
+        }
+
+        $table = $this->escapeDDLName($mapper->getSqlName());
+        $sql = "UPDATE {$table} SET {$set} WHERE {$where}";
+
+        $this->execute($sql, $params);
     }
 
     /**

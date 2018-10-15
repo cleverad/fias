@@ -16,6 +16,48 @@ use PHPUnit\DbUnit\DataSet\CompositeDataSet;
 class MysqlTest extends DbTestCase
 {
     /**
+     * Проверяет, что объект обновляет записи из таблицы указанной в маппере.
+     */
+    public function testUpdate()
+    {
+        $tableName = 'testUpdate';
+        $columnsNames = [
+            'id',
+            'row1',
+            'row2',
+        ];
+        $columnsDefinitions = [
+            new field\IntNumber,
+            new field\Line,
+            new field\Line,
+        ];
+        $columns = array_combine($columnsNames, $columnsDefinitions);
+
+        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+            ->getMock();
+        $mapper->method('getMap')->will($this->returnValue($columns));
+        $mapper->method('getSqlName')->will($this->returnValue($tableName));
+        $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
+        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
+        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
+        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
+
+        $mysql = new Mysql($this->getPdo());
+        $mysql->update($mapper, ['id' => 2, 'row2' => 'updated 2']);
+        $mysql->update($mapper, ['id' => 3, 'row2' => 'updated 3']);
+        $mysql->complete();
+
+        $queryTable = $this->getConnection()->createQueryTable(
+            $tableName,
+            'SELECT * FROM ' . $tableName
+        );
+        $expectedTable = $this->createXmlDataSet(__DIR__ . '/_fixture/testUpdate_expected.xml')
+            ->getTable($tableName);
+
+        $this->assertTablesEqual($expectedTable, $queryTable);
+    }
+
+    /**
      * Проверяет, что объект удаляет записи из таблицы указанной в маппере.
      */
     public function testDelete()
@@ -141,6 +183,9 @@ class MysqlTest extends DbTestCase
         $compositeDs = new CompositeDataSet;
 
         $compositeDs->addDataSet(
+            $this->createXmlDataSet(__DIR__ . '/_fixture/testUpdate.xml')
+        );
+        $compositeDs->addDataSet(
             $this->createXmlDataSet(__DIR__ . '/_fixture/testDelete.xml')
         );
         $compositeDs->addDataSet(
@@ -157,6 +202,12 @@ class MysqlTest extends DbTestCase
     {
         $pdo = $this->getPdo();
 
+        $pdo->exec('CREATE TABLE testUpdate (
+            id int(11) not null,
+            row1 varchar(30),
+            row2 varchar(30),
+            PRIMARY KEY(id)
+        )');
         $pdo->exec('CREATE TABLE testDelete (
             id int(11) not null,
             row1 varchar(30),
@@ -182,6 +233,7 @@ class MysqlTest extends DbTestCase
      */
     public function tearDown()
     {
+        $this->getPdo()->exec('DROP TABLE IF EXISTS testUpdate');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testDelete');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testCreateTable');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testDropTable');
