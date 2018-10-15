@@ -56,8 +56,7 @@ class Mysql implements DbInterface
     {
         list($where, $params) = $this->createPrimaryCondition($mapper, $item);
 
-        $sql = 'DELETE FROM ' . $this->escapeDDLName($mapper->getSqlName());
-        $sql .= " WHERE {$where}";
+        $sql = 'DELETE FROM ' . $this->escapeDDLName($mapper->getSqlName()) . " WHERE {$where}";
 
         $this->execute($sql, $params);
     }
