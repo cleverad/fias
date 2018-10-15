@@ -191,6 +191,8 @@ class Reader implements ReaderInterface
      *
      * @param string $nodeName
      * @param int    $nodeDepth
+     *
+     * @return void
      */
     protected function skipUselessXml(string $nodeName, int $nodeDepth)
     {
