@@ -58,8 +58,8 @@ class ReaderTest extends BaseTestCase
     }
 
     /**
-     * Проверяет, что при попытке открыть файл в объект без указания маппера
-     * будет выброшено исключение.
+     * Проверяет, что при попытке открыть файл с невалидным xml, будет выброшено
+     * исключение.
      */
     public function testOpenWrongFileFormatException()
     {
@@ -100,7 +100,7 @@ class ReaderTest extends BaseTestCase
     }
 
     /**
-     * Проверяет что объект читает корректно данные, если они не заданы.
+     * Проверяет что объект читает корректно пустой массив данных.
      */
     public function testIteratorEmpty()
     {
