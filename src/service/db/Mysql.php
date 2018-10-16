@@ -254,14 +254,14 @@ class Mysql implements DbInterface
 
         if ($field instanceof field\Line) {
             $return = 'varchar(' . $field->getLength() . ') not null';
-        } elseif ($field instanceof field\IntNumber) {
+        }
+
+        if ($field instanceof field\IntNumber) {
             $return = 'int(' . $field->getLength() . ') not null';
-        } elseif ($field instanceof field\Date) {
+        }
+
+        if ($field instanceof field\Date) {
             $return = 'date not null';
-        } else {
-            throw new Exception(
-                "Can't resolve " . get_class($field) . ' to mysql type'
-            );
         }
 
         return $return;
