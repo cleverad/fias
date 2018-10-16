@@ -37,10 +37,12 @@ class Mysql implements DbInterface
      * Задает объект PDO для соединения с базой данных.
      *
      * @param \PDO $pdo
+     * @param int  $butchInsertLimit
      */
-    public function __construct(PDO $pdo)
+    public function __construct(PDO $pdo, int $butchInsertLimit = 50)
     {
         $this->pdoConnection = $pdo;
+        $this->butchInsertLimit = $butchInsertLimit;
     }
 
     /**

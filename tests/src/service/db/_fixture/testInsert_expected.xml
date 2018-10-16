@@ -24,5 +24,10 @@
             <value>row 4 1</value>
             <value>row 4 2</value>
         </row>
+        <row>
+            <value>5</value>
+            <value>row 5 1</value>
+            <value>row 5 2</value>
+        </row>
     </table>
 </dataset>

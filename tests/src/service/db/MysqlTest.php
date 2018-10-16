@@ -42,9 +42,10 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
 
-        $mysql = new Mysql($this->getPdo());
+        $mysql = new Mysql($this->getPdo(), 2);
         $mysql->insert($mapper, ['id' => 3, 'row1' => 'row 3 1', 'row2' => 'row 3 2']);
         $mysql->insert($mapper, ['id' => 4, 'row1' => 'row 4 1', 'row2' => 'row 4 2']);
+        $mysql->insert($mapper, ['id' => 5, 'row1' => 'row 5 1', 'row2' => 'row 5 2']);
         $mysql->complete();
 
         $queryTable = $this->getConnection()->createQueryTable(
