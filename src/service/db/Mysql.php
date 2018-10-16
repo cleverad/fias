@@ -24,6 +24,14 @@ class Mysql implements DbInterface
      * @var array
      */
     protected $prepared = [];
+    /**
+     * @var mixed[]
+     */
+    protected $insertQueue = [];
+    /**
+     * @var int
+     */
+    protected $butchInsertLimit = 50;
 
     /**
      * Задает объект PDO для соединения с базой данных.
@@ -40,6 +48,23 @@ class Mysql implements DbInterface
      */
     public function insert(SqlMapperInterface $mapper, array $item)
     {
+        $table = $mapper->getSqlName();
+        $fields = $mapper->getMap();
+
+        if (!isset($this->insertQueue[$table])) {
+            $this->insertQueue[$table] = [];
+        }
+
+        $arInsert = [];
+        foreach ($fields as $fieldName => $field) {
+            $value = isset($item[$fieldName]) ? $item[$fieldName] : null;
+            $arInsert[$fieldName] = $field->convertToString($value);
+        }
+        $this->insertQueue[$table][] = $arInsert;
+
+        if (count($this->insertQueue[$table]) === $this->butchInsertLimit) {
+            $this->flushInsert($table);
+        }
     }
 
     /**
@@ -127,6 +152,37 @@ class Mysql implements DbInterface
      */
     public function complete()
     {
+        foreach ($this->insertQueue as $table => $items) {
+            $this->flushInsert($table);
+        }
+    }
+
+    /**
+     * Отправляет очередь insert запросов.
+     *
+     * @param string $table
+     *
+     * @throws \marvin255\fias\service\db\Exception
+     */
+    protected function flushInsert(string $table)
+    {
+        if (empty($this->insertQueue[$table])) {
+            throw new Exception("There is no insert queue for {$table}");
+        }
+        $data = $this->insertQueue[$table];
+        $firstItem = reset($data);
+        $fields = array_keys($firstItem);
+        $escapedTable = $this->escapeDDLName($table);
+        unset($this->insertQueue[$table]);
+
+        $setOfFields = implode(', ', array_map([$this, 'escapeDDLName'], $fields));
+        $setOfValues = implode(', ', array_fill(0, count($fields), '?'));
+        $sqlForBulkInsert = "INSERT INTO {$escapedTable} ({$setOfFields}) VALUES ("
+            . implode('), (', array_fill(0, count($data), $setOfValues))
+            . ')';
+        $flatAray = call_user_func_array('array_merge', array_map('array_values', $data));
+
+        $this->execute($sqlForBulkInsert, $flatAray);
     }
 
     /**
@@ -137,7 +193,7 @@ class Mysql implements DbInterface
      *
      * @throws \marvin255\fias\service\db\Exception
      */
-    public function execute(string $sql, array $params = []): bool
+    protected function execute(string $sql, array $params = []): bool
     {
         try {
             $statement = $this->getStatement($sql);
