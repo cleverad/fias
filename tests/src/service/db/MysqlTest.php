@@ -8,6 +8,7 @@ use marvin255\fias\tests\DbTestCase;
 use marvin255\fias\mapper\SqlMapperInterface;
 use marvin255\fias\mapper\field;
 use marvin255\fias\service\db\Mysql;
+use marvin255\fias\service\db\Exception;
 use PHPUnit\DbUnit\DataSet\CompositeDataSet;
 
 /**
@@ -138,6 +139,38 @@ class MysqlTest extends DbTestCase
             ->getTable($tableName);
 
         $this->assertTablesEqual($expectedTable, $queryTable);
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение, если во входящем массиве
+     * не указано значение первичного ключа.
+     */
+    public function testDeleteNoPrimaryException()
+    {
+        $tableName = 'testDelete';
+        $columnsNames = [
+            'id',
+            'row1',
+        ];
+        $columnsDefinitions = [
+            new field\IntNumber,
+            new field\Line,
+        ];
+        $columns = array_combine($columnsNames, $columnsDefinitions);
+
+        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+            ->getMock();
+        $mapper->method('getMap')->will($this->returnValue($columns));
+        $mapper->method('getSqlName')->will($this->returnValue($tableName));
+        $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
+        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
+        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
+        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
+
+        $mysql = new Mysql($this->getPdo());
+
+        $this->expectException(Exception::class, 'id');
+        $mysql->delete($mapper, ['row1' => 'row']);
     }
 
     /**
