@@ -10,6 +10,9 @@ use marvin255\fias\mapper\field;
 use marvin255\fias\service\db\Mysql;
 use marvin255\fias\service\db\Exception;
 use PHPUnit\DbUnit\DataSet\CompositeDataSet;
+use PDO;
+use PDOException;
+use PDOStatement;
 
 /**
  * Тест для объекта, который взаймодействует с базой данных mysql.
@@ -249,6 +252,83 @@ class MysqlTest extends DbTestCase
             ->getTable($tableName);
 
         $this->assertTablesEqual($expectedTable, $queryTable);
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение, если не удастся подготовить
+     * выражение.
+     */
+    public function testGetStatementException()
+    {
+        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+            ->getMock();
+        $mapper->method('getSqlName')->will($this->returnValue('testTable'));
+
+        $pdo = $this->getMockBuilder(PDO::class)
+            ->setMethods(['prepare'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pdo->method('prepare')->will($this->returnValue(false));
+
+        $mysql = new Mysql($pdo);
+
+        $this->expectException(Exception::class, 'testTable');
+        $mysql->dropTable($mapper);
+    }
+
+    /**
+     * Проверяет, что объект перехватит исключение от PDO.
+     */
+    public function testPDOException()
+    {
+        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+            ->getMock();
+        $mapper->method('getSqlName')->will($this->returnValue('testTable'));
+
+        $pdo = $this->getMockBuilder(PDO::class)
+            ->setMethods(['prepare'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pdo->method('prepare')->will($this->throwException(new PDOException));
+
+        $mysql = new Mysql($pdo);
+
+        $this->expectException(Exception::class);
+        $mysql->dropTable($mapper);
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение, если запрос не прошел.
+     */
+    public function testErrorInExecPDOException()
+    {
+        $error = $this->faker()->unique()->word;
+
+        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+            ->getMock();
+        $mapper->method('getSqlName')->will($this->returnValue('testTable'));
+
+        $statement = $this->getMockBuilder(PDOStatement::class)
+            ->setMethods(['execute', 'errorInfo'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $statement->method('execute')->will($this->returnValue(false));
+        $statement->method('errorInfo')->will($this->returnValue([
+            'something',
+            'something',
+            $error,
+        ]));
+
+        $pdo = $this->getMockBuilder(PDO::class)
+            ->setMethods(['prepare'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pdo->method('prepare')->will($this->returnValue($statement));
+
+        $mysql = new Mysql($pdo);
+
+        $this->expectException(Exception::class, $error);
+        $mysql->dropTable($mapper);
     }
 
     /**
