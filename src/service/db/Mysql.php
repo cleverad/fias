@@ -163,12 +163,11 @@ class Mysql implements DbInterface
      * @param string $table
      *
      * @throws \marvin255\fias\service\db\Exception
+     *
+     * @return void
      */
     protected function flushInsert(string $table)
     {
-        if (empty($this->insertQueue[$table])) {
-            throw new Exception("There is no insert queue for {$table}");
-        }
         $data = $this->insertQueue[$table];
         $firstItem = reset($data);
         $fields = array_keys($firstItem);
@@ -285,8 +284,10 @@ class Mysql implements DbInterface
      * @param array                                     $item
      *
      * @throws \marvin255\fias\service\db\Exception
+     *
+     * @return mixed[]
      */
-    protected function createPrimaryCondition(SqlMapperInterface $mapper, array $item)
+    protected function createPrimaryCondition(SqlMapperInterface $mapper, array $item): array
     {
         $sql = '';
         $params = [];
