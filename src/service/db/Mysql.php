@@ -111,22 +111,12 @@ class Mysql implements DbInterface
      */
     public function createTable(SqlMapperInterface $mapper)
     {
-        $fields = '';
-        foreach ($mapper->getMap() as $fieldName => $field) {
-            $fieldName = $this->escapeDDLName($fieldName);
-            $paramType = $this->resolveParamType($field);
-            $fields .= "{$fieldName} {$paramType}, ";
-        }
+        $fields = $this->createFieldListForCreateTable($mapper->getMap());
+
+        $index = $this->createIndexListForCreateTable($mapper->getSqlIndexes());
 
         $arPrimary = array_map([$this, 'escapeDDLName'], $mapper->getSqlPrimary());
         $primary = 'PRIMARY KEY(' . implode(', ', $arPrimary) . ')';
-
-        $index = '';
-        foreach ($mapper->getSqlIndexes() as $indexKey => $arIndex) {
-            $arIndex = array_map([$this, 'escapeDDLName'], $arIndex);
-            $index .= 'INDEX ' . $this->escapeDDLName("index_{$indexKey}");
-            $index .= '(' . implode(', ', $arIndex) . '), ';
-        }
 
         $afterTable = ' ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci';
         if ($mapper->getSqlPartitionsCount() > 1 && $mapper->getSqlPartitionField()) {
@@ -249,6 +239,46 @@ class Mysql implements DbInterface
         $this->prepared[] = $newPrepared;
 
         return $newPrepared;
+    }
+
+    /**
+     * Создает строку с описаниями индексов для CREATE TABLE.
+     *
+     * @param string[][] $fields
+     *
+     * @return string
+     */
+    protected function createIndexListForCreateTable(array $indexes): string
+    {
+        $return = '';
+
+        foreach ($indexes as $indexKey => $arIndex) {
+            $arIndex = array_map([$this, 'escapeDDLName'], $arIndex);
+            $return .= 'INDEX ' . $this->escapeDDLName("index_{$indexKey}");
+            $return .= '(' . implode(', ', $arIndex) . '), ';
+        }
+
+        return $return;
+    }
+
+    /**
+     * Создает строку с описаниями столбцов для CREATE TABLE.
+     *
+     * @param FieldInterface[] $fields
+     *
+     * @return string
+     */
+    protected function createFieldListForCreateTable(array $fields): string
+    {
+        $return = '';
+
+        foreach ($fields as $fieldName => $field) {
+            $fieldName = $this->escapeDDLName($fieldName);
+            $paramType = $this->resolveParamType($field);
+            $return .= "{$fieldName} {$paramType}, ";
+        }
+
+        return $return;
     }
 
     /**
