@@ -118,15 +118,27 @@ class Mysql implements DbInterface
             $fields .= "{$fieldName} {$paramType}, ";
         }
 
-        $primary = '';
-        foreach ($mapper->getSqlPrimary() as $fieldName) {
-            $fieldName = $this->escapeDDLName($fieldName);
-            $primary .= $primary ? ", {$fieldName}" : $fieldName;
+        $arPrimary = array_map([$this, 'escapeDDLName'], $mapper->getSqlPrimary());
+        $primary = 'PRIMARY KEY(' . implode(', ', $arPrimary) . ')';
+
+        $index = '';
+        foreach ($mapper->getSqlIndexes() as $indexKey => $arIndex) {
+            $arIndex = array_map([$this, 'escapeDDLName'], $arIndex);
+            $index .= 'INDEX ' . $this->escapeDDLName("index_{$indexKey}");
+            $index .= '(' . implode(', ', $arIndex) . '), ';
         }
-        $primary = "PRIMARY KEY({$primary})";
+
+        $afterTable = ' ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+        if ($mapper->getSqlPartitionsCount() > 1 && $mapper->getSqlPartitionField()) {
+            $afterTable .= ' PARTITION BY HASH(' . $this->escapeDDLName($mapper->getSqlPartitionField()) . ')';
+            $afterTable .= ' PARTITIONS ' . $mapper->getSqlPartitionsCount();
+        }
 
         $tableName = $this->escapeDDLName($mapper->getSqlName());
-        $sql = "CREATE TABLE {$tableName} ({$fields}{$primary})";
+        $sql = "CREATE TABLE {$tableName} ({$fields}{$index}{$primary})";
+        if ($this->pdoConnection->getAttribute(PDO::ATTR_DRIVER_NAME) !== 'sqlite') {
+            $sql .= $afterTable;
+        }
 
         $this->execute($sql);
     }
