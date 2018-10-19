@@ -116,7 +116,7 @@ class Mysql implements DbInterface
         $index = $this->createIndexListForCreateTable($mapper->getSqlIndexes());
 
         $arPrimary = array_map([$this, 'escapeDDLName'], $mapper->getSqlPrimary());
-        $primary = 'PRIMARY KEY(' . implode(', ', $arPrimary) . ')';
+        $primary = 'PRIMARY KEY (' . implode(', ', $arPrimary) . ')';
 
         $afterTable = ' ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci';
         if ($mapper->getSqlPartitionsCount() > 1 && $mapper->getSqlPartitionField()) {
@@ -254,8 +254,8 @@ class Mysql implements DbInterface
 
         foreach ($indexes as $indexKey => $arIndex) {
             $arIndex = array_map([$this, 'escapeDDLName'], $arIndex);
-            $return .= 'INDEX ' . $this->escapeDDLName("index_{$indexKey}");
-            $return .= '(' . implode(', ', $arIndex) . '), ';
+            $return .= 'INDEX ' . $this->escapeDDLName("ndx_{$indexKey}");
+            $return .= ' (' . implode(', ', $arIndex) . '), ';
         }
 
         return $return;
