@@ -16,6 +16,10 @@ interface TaskInterface
      * Запускает операцию на исполнение.
      *
      * @param \marvin255\fias\state\StateInterface $state Объект, в котором хранится состояние импорта для передачи между операциями
+     *
+     * @return void
+     *
+     * @throws \Exception
      */
     public function run(StateInterface $state);
 }

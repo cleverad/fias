@@ -8,7 +8,7 @@ use marvin255\fias\tests\BaseTestCase;
 use marvin255\fias\state\ArrayState;
 
 /**
- * Тест для объекта, который передаетсостояние между операциями через внутренний
+ * Тест для объекта, который передает состояние между операциями через внутренний
  * массив.
  */
 class ArrayStateTest extends BaseTestCase
