@@ -43,6 +43,14 @@ class NormativeDocument extends AbstractMapper
     }
 
     /**
+     * @inhertitdoc
+     */
+    public function getDeleteFileMask(): string
+    {
+        return 'AS_DEL_NORMDOC_*.XML';
+    }
+
+    /**
      * @inheritdoc
      */
     public function getSqlPrimary(): array

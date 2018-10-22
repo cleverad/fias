@@ -68,4 +68,12 @@ class MockMapper extends AbstractMapper
     {
         return '';
     }
+
+    /**
+     * @inhertitdoc
+     */
+    public function getDeleteFileMask(): string
+    {
+        return '';
+    }
 }

@@ -33,4 +33,11 @@ interface XmlMapperInterface extends MapperInterface
      * @return string
      */
     public function getInsertFileMask(): string;
+
+    /**
+     * Возвращает маску имени файла, в котором хранятся данные для удаления.
+     *
+     * @return string
+     */
+    public function getDeleteFileMask(): string;
 }
