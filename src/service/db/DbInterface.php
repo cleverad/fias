@@ -81,6 +81,17 @@ interface DbInterface
     public function truncateTable(SqlMapperInterface $mapper);
 
     /**
+     * Проверяет существует ли таблица соответствущая указанному мапперу.
+     *
+     * @param \marvin255\fias\mapper\SqlMapperInterface $mapper
+     *
+     * @return bool
+     *
+     * @throws \marvin255\fias\service\db\Exception
+     */
+    public function isTableExists(SqlMapperInterface $mapper): bool;
+
+    /**
      * Указывает, что данный потребитель закончил работу с базой данных и нужно
      * дописать все оставшиеся запросы и сбросить все временные данные.
      *

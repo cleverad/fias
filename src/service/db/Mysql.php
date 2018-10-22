@@ -154,6 +154,17 @@ class Mysql implements DbInterface
     /**
      * @inheritdoc
      */
+    public function isTableExists(SqlMapperInterface $mapper): bool
+    {
+        $tableName = $this->escapeDDLName($mapper->getSqlName());
+        $res = $this->fetch("SHOW TABLES LIKE {$tableName}");
+
+        return !empty($res);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function complete()
     {
         foreach ($this->insertQueue as $table => $items) {
@@ -211,6 +222,33 @@ class Mysql implements DbInterface
         }
 
         return $res;
+    }
+
+    /**
+     * Ищет данные в базе и возвращает результат в виде ассоциативного массива.
+     *
+     * @param string $sql
+     * @param array  $data
+     *
+     * @return array
+     *
+     * @throws \marvin255\fias\service\database\Exception
+     */
+    protected function fetch(string $sql, array $data = []): array
+    {
+        try {
+            $statement = $this->getStatement($sql);
+            $res = $statement->execute($data);
+            if (!$res) {
+                $error = $statement->errorInfo();
+                throw new Exception($error[2]);
+            }
+            $list = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage(), 0, $e);
+        }
+
+        return $list;
     }
 
     /**
