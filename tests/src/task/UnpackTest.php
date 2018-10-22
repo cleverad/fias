@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace marvin255\fias\tests\state;
+namespace marvin255\fias\tests\task;
 
 use marvin255\fias\tests\BaseTestCase;
 use marvin255\fias\state\StateInterface;

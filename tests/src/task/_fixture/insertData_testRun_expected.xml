@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<dataset>
+    <table name="testRun">
+        <column>id</column>
+        <column>row1</column>
+        <row>
+            <value>1</value>
+            <value>test 1 1</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>test 3 1</value>
+        </row>
+        <row>
+            <value>4</value>
+            <value>test 4 1</value>
+        </row>
+    </table>
+</dataset>
