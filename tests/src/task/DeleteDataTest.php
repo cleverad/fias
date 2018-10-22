@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\tests\task;
 
 use PHPUnit\DbUnit\DataSet\CompositeDataSet;
-use marvin255\fias\task\InsertData;
+use marvin255\fias\task\DeleteData;
 use marvin255\fias\task\RuntimeException;
 use marvin255\fias\tests\DbTestCase;
 use marvin255\fias\state\ArrayState;
@@ -17,9 +17,9 @@ use marvin255\fias\service\db\Mysql;
 use InvalidArgumentException;
 
 /**
- * Тест для объекта, который записывает новые данные из ФИАС в БД.
+ * Тест для объекта, который удаляет данные из ФИАС в БД согласно файлу.
  */
-class InsertDataTest extends DbTestCase
+class DeleteDataTest extends DbTestCase
 {
     /**
      * Проверяет, что объект создает таблицу и записывает все данные.
@@ -42,7 +42,7 @@ class InsertDataTest extends DbTestCase
         $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
         $mapper->method('getXmlPath')->will($this->returnValue('/root/item'));
-        $mapper->method('getInsertFileMask')->will($this->returnValue('insertData_testRun_source.xml'));
+        $mapper->method('getDeleteFileMask')->will($this->returnValue('deleteData_testRun_source.xml'));
         $mapper->method('extractArrayFromXml')->will($this->returnCallback(function ($xml) {
             $attributes = simplexml_load_string($xml)->attributes();
             $return = [
@@ -56,14 +56,14 @@ class InsertDataTest extends DbTestCase
         $state = new ArrayState;
         $state->setParameter('extracted', new Directory(__DIR__ . '/_fixture'));
 
-        $task = new InsertData($reader, $mysql, $mapper);
+        $task = new DeleteData($reader, $mysql, $mapper);
         $task->run($state);
 
         $queryTable = $this->getConnection()->createQueryTable(
             $tableName,
             'SELECT * FROM ' . $tableName
         );
-        $expectedTable = $this->createXmlDataSet(__DIR__ . '/_fixture/insertData_testRun_expected.xml')
+        $expectedTable = $this->createXmlDataSet(__DIR__ . '/_fixture/deleteData_testRun_expected.xml')
             ->getTable($tableName);
 
         $this->assertTablesEqual($expectedTable, $queryTable);
@@ -80,7 +80,7 @@ class InsertDataTest extends DbTestCase
         $mapper = $this->getMockBuilder(AbstractMapper::class)->getMock();
         $state = new ArrayState;
 
-        $task = new InsertData($reader, $mysql, $mapper);
+        $task = new DeleteData($reader, $mysql, $mapper);
 
         $this->expectException(InvalidArgumentException::class);
         $task->run($state);
@@ -108,7 +108,7 @@ class InsertDataTest extends DbTestCase
         $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
         $mapper->method('getXmlPath')->will($this->returnValue('/root/item'));
-        $mapper->method('getInsertFileMask')->will($this->returnValue('insertData_testRun_nothing.xml'));
+        $mapper->method('getDeleteFileMask')->will($this->returnValue('deleteData_testRun_nothing.xml'));
         $mapper->method('extractArrayFromXml')->will($this->returnCallback(function ($xml) {
             $attributes = simplexml_load_string($xml)->attributes();
             $return = [
@@ -122,14 +122,14 @@ class InsertDataTest extends DbTestCase
         $state = new ArrayState;
         $state->setParameter('extracted', new Directory(__DIR__ . '/_fixture'));
 
-        $task = new InsertData($reader, $mysql, $mapper);
+        $task = new DeleteData($reader, $mysql, $mapper);
         $task->run($state);
 
         $queryTable = $this->getConnection()->createQueryTable(
             $tableName,
             'SELECT * FROM ' . $tableName
         );
-        $expectedTable = $this->createXmlDataSet(__DIR__ . '/_fixture/insertData_testRun.xml')
+        $expectedTable = $this->createXmlDataSet(__DIR__ . '/_fixture/deleteData_testRun.xml')
             ->getTable($tableName);
 
         $this->assertTablesEqual($expectedTable, $queryTable);
@@ -157,7 +157,7 @@ class InsertDataTest extends DbTestCase
         $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
         $mapper->method('getXmlPath')->will($this->returnValue('/badRoot/item'));
-        $mapper->method('getInsertFileMask')->will($this->returnValue('insertData_testRun.xml'));
+        $mapper->method('getDeleteFileMask')->will($this->returnValue('deleteData_testRun.xml'));
         $mapper->method('extractArrayFromXml')->will($this->returnCallback(function ($xml) {
             $attributes = simplexml_load_string($xml)->attributes();
             $return = [
@@ -171,7 +171,7 @@ class InsertDataTest extends DbTestCase
         $state = new ArrayState;
         $state->setParameter('extracted', new Directory(__DIR__ . '/_fixture'));
 
-        $task = new InsertData($reader, $mysql, $mapper);
+        $task = new DeleteData($reader, $mysql, $mapper);
 
         $this->expectException(RuntimeException::class);
         $task->run($state);
@@ -185,7 +185,7 @@ class InsertDataTest extends DbTestCase
         $compositeDs = new CompositeDataSet;
 
         $compositeDs->addDataSet(
-            $this->createXmlDataSet(__DIR__ . '/_fixture/insertData_testRun.xml')
+            $this->createXmlDataSet(__DIR__ . '/_fixture/deleteData_testRun.xml')
         );
 
         return $compositeDs;
