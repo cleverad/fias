@@ -10,7 +10,7 @@ use marvin255\fias\mapper\field;
 /**
  * Нормативные документы.
  */
-class NormativeDocument extends AbstractMapper
+class NormativeDocumentes extends AbstractMapper
 {
     /**
      * @inheritdoc

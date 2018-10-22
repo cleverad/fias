@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace marvin255\fias\tests\mapper\fias;
 
-use marvin255\fias\mapper\fias\NormativeDocument;
+use marvin255\fias\mapper\fias\NormativeDocumentes;
 use marvin255\fias\mapper\MapperInterface;
 use DateTime;
 
 /**
  * Тест маппера NormativeDocument.
  */
-class NormativeDocumentTest extends MapperCase
+class NormativeDocumentesTest extends MapperCase
 {
     /**
      * Возвращает данные для проверки извлечения из xml.
@@ -43,6 +43,6 @@ class NormativeDocumentTest extends MapperCase
      */
     protected function getMapper(): MapperInterface
     {
-        return new NormativeDocument;
+        return new NormativeDocumentes;
     }
 }
