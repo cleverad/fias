@@ -78,4 +78,13 @@ interface DirectoryInterface extends Iterator
      * @return \marvin255\fias\service\filesystem\FileInterface
      */
     public function createChildFile(string $name): FileInterface;
+
+    /**
+     * Ищет файл в текущей папке по указанному паттерну.
+     *
+     * @param string $pattern
+     *
+     * @return \marvin255\fias\service\filesystem\FileInterface[]
+     */
+    public function findFilesByPattern(string $pattern): array;
 }

@@ -168,6 +168,22 @@ class Directory implements DirectoryInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function findFilesByPattern(string $pattern): array
+    {
+        $return = [];
+        $regexp = '/^' . implode('[^\/\.]+', array_map('preg_quote', explode('*', $pattern))) . '$/';
+        foreach ($this->getIterator() as $file) {
+            if ($file->isFile() && preg_match($regexp, $file->getFilename())) {
+                $return[] = $this->createChildFile($file->getFilename());
+            }
+        }
+
+        return $return;
+    }
+
+    /**
      * Реализация итератора.
      *
      * @return DirectoryInterface|FileInterface

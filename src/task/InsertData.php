@@ -24,6 +24,10 @@ class InsertData extends AbstractDataTask
      */
     protected function searchFileInDir(DirectoryInterface $dir)
     {
+        $files = $dir->findFilesByPattern($this->mapper->getInsertFileMask());
+        $file = reset($files);
+
+        return $file;
     }
 
     /**
@@ -40,11 +44,11 @@ class InsertData extends AbstractDataTask
     protected function beforeRead()
     {
         if ($this->db->isTableExists($this->mapper)) {
-            $this->info('Dropping ' . $this->mapper->getSqlName() . ' before inserting');
-            $this->db->dropTable($this->mapper);
+            $this->info('Truncating ' . $this->mapper->getSqlName() . ' before inserting');
+            $this->db->truncateTable($this->mapper);
+        } else {
+            $this->info('Creating ' . $this->mapper->getSqlName() . ' before inserting');
+            $this->db->createTable($this->mapper);
         }
-
-        $this->info('Creating ' . $this->mapper->getSqlName() . ' before inserting');
-        $this->db->createTable($this->mapper);
     }
 }

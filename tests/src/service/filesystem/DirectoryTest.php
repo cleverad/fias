@@ -179,6 +179,31 @@ class DirectoryTest extends BaseTestCase
     }
 
     /**
+     * Проверяет, что объект ищет вложенные файлы по указанному паттерну.
+     */
+    public function testFindFilesByPattern()
+    {
+        $file1 = $this->pathToDir . '/1_find_me_' . $this->faker()->unique()->word . '.txt';
+        $file2 = $this->pathToDir . '/2_find_me_' . $this->faker()->unique()->word . '.txt';
+        $file3 = $this->pathToDir . '/cantfindme_' . $this->faker()->unique()->word . '.txt';
+        $etalonFiles = [$file1, $file2];
+
+        file_put_contents($file1, 'test');
+        file_put_contents($file2, 'test');
+        file_put_contents($file3, 'test');
+
+        $dir = new Directory($this->pathToDir);
+        $testFiles = array_map(function ($file) {
+            return $file->getPath();
+        }, $dir->findFilesByPattern('*_find_me_*.txt'));
+
+        sort($etalonFiles);
+        sort($testFiles);
+
+        $this->assertSame($etalonFiles, $testFiles);
+    }
+
+    /**
      * Проверяет, что объект работает как итератор.
      */
     public function testIterator()
