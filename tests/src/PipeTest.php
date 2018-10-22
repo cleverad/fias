@@ -23,6 +23,9 @@ class PipeTest extends BaseTestCase
     {
         $state = $this->getMockBuilder(StateInterface::class)->getMock();
 
+        $cleanUp = $this->getMockBuilder(TaskInterface::class)->getMock();
+        $cleanUp->expects($this->once())->method('run')->with($this->equalTo($state));
+
         $task1 = $this->getMockBuilder(TaskInterface::class)->getMock();
         $task1->expects($this->once())->method('run')->with($this->equalTo($state));
 
@@ -32,6 +35,7 @@ class PipeTest extends BaseTestCase
         $pipe = new Pipe;
         $pipe->pipe($task1);
         $pipe->pipe($task2);
+        $pipe->setCleanup($cleanUp);
         $pipe->run($state);
     }
 
@@ -44,6 +48,9 @@ class PipeTest extends BaseTestCase
         $state = $this->getMockBuilder(StateInterface::class)->getMock();
         $state->expects($this->at(0))->method('isCompleted')->will($this->returnValue(false));
         $state->expects($this->at(1))->method('isCompleted')->will($this->returnValue(true));
+
+        $cleanUp = $this->getMockBuilder(TaskInterface::class)->getMock();
+        $cleanUp->expects($this->once())->method('run')->with($this->equalTo($state));
 
         $task1 = $this->getMockBuilder(TaskInterface::class)->getMock();
         $task1->expects($this->once())->method('run')->with($this->equalTo($state));
@@ -58,6 +65,7 @@ class PipeTest extends BaseTestCase
         $pipe->pipe($task1);
         $pipe->pipe($task2);
         $pipe->pipe($task3);
+        $pipe->setCleanup($cleanUp);
         $pipe->run($state);
     }
 
@@ -69,6 +77,9 @@ class PipeTest extends BaseTestCase
     {
         $state = $this->getMockBuilder(StateInterface::class)->getMock();
 
+        $cleanUp = $this->getMockBuilder(TaskInterface::class)->getMock();
+        $cleanUp->expects($this->once())->method('run')->with($this->equalTo($state));
+
         $task1 = $this->getMockBuilder(TaskInterface::class)->getMock();
 
         $task2 = $this->getMockBuilder(TaskInterface::class)->getMock();
@@ -77,6 +88,7 @@ class PipeTest extends BaseTestCase
         $pipe = new Pipe;
         $pipe->pipe($task1);
         $pipe->pipe($task2);
+        $pipe->setCleanup($cleanUp);
 
         $this->expectException(RuntimeException::class);
         $pipe->run($state);

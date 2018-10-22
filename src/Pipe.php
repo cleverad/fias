@@ -19,6 +19,10 @@ class Pipe
      * @var \marvin255\fias\task\TaskInterface[]
      */
     private $tasks = [];
+    /**
+     * @var \marvin255\fias\task\TaskInterface|null
+     */
+    private $cleanup;
 
     /**
      * Регистрирует операцию в приложении.
@@ -30,6 +34,21 @@ class Pipe
     public function pipe(TaskInterface $task): self
     {
         $this->tasks[] = $task;
+
+        return $this;
+    }
+
+    /**
+     * Задает задачу, которая будет запущена по штатному или нештатному
+     * завершению цепочки задач.
+     *
+     * @param \marvin255\fias\task\TaskInterface $task
+     *
+     * @return $this
+     */
+    public function setCleanup(TaskInterface $cleanup): self
+    {
+        $this->cleanup = $cleanup;
 
         return $this;
     }
@@ -49,6 +68,7 @@ class Pipe
             try {
                 $task->run($state);
             } catch (Exception $e) {
+                $this->cleanup($state);
                 throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
             }
             if ($state->isCompleted()) {
@@ -56,6 +76,22 @@ class Pipe
             }
         }
 
+        $this->cleanup($state);
+
         return $this;
+    }
+
+    /**
+     * Обработка завершения задачи.
+     *
+     * @param \marvin255\fias\state\StateInterface $state
+     *
+     * @return void
+     */
+    protected function cleanup(StateInterface $state)
+    {
+        if ($this->cleanup) {
+            $this->cleanup->run($state);
+        }
     }
 }
