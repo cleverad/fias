@@ -26,4 +26,11 @@ interface XmlMapperInterface extends MapperInterface
      * @return array
      */
     public function extractArrayFromXml(string $xml): array;
+
+    /**
+     * Возвращает маску имени файла, в котором хранятся данные для вставки.
+     *
+     * @return string
+     */
+    public function getInsertFileMask(): string;
 }

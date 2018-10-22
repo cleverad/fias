@@ -35,6 +35,14 @@ class NormativeDocument extends AbstractMapper
     }
 
     /**
+     * @inhertitdoc
+     */
+    public function getInsertFileMask(): string
+    {
+        return 'AS_NORMDOC_*.XML';
+    }
+
+    /**
      * @inheritdoc
      */
     public function getSqlPrimary(): array

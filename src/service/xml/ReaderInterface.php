@@ -18,7 +18,7 @@ interface ReaderInterface extends Iterator
      *
      * @param \marvin255\fias\mapper\XmlMapperInterface $mapper
      *
-     * @return \marvin255\fias\mapper\XmlMapperInterface
+     * @return \marvin255\fias\service\xml\ReaderInterface
      */
     public function setMapper(XmlMapperInterface $mapper): ReaderInterface;
 

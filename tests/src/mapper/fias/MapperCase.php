@@ -71,6 +71,18 @@ abstract class MapperCase extends BaseTestCase
     }
 
     /**
+     * Проверяет, что объект возвращает не пустую валидную маску для поиска
+     * файла для вставки.
+     */
+    public function testGetInsertFileMask()
+    {
+        $this->assertRegExp(
+            '#[a-zA-Z0-9_\*\.]+#',
+            $this->getMapper()->getInsertFileMask()
+        );
+    }
+
+    /**
      * Проверяет, что маппер возвращает первичный ключ.
      */
     public function testGetSqlPrimary()

@@ -60,4 +60,12 @@ class MockMapper extends AbstractMapper
 
         return [reset($fieldsNames)];
     }
+
+    /**
+     * @inhertitdoc
+     */
+    public function getInsertFileMask(): string
+    {
+        return '';
+    }
 }
