@@ -16,7 +16,7 @@ class DeleteData extends AbstractDataTask
      */
     protected function getTaskDescription(): string
     {
-        return 'Deleteing data from ' . $this->mapper->getSqlName();
+        return 'Deleting data from ' . $this->mapper->getSqlName();
     }
 
     /**
