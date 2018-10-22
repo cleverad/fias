@@ -9,7 +9,7 @@ use marvin255\fias\service\filesystem\DirectoryInterface;
 /**
  * Задача для удаляения данных, указанных в файле, из БД.
  */
-class DeletetData extends AbstractDataTask
+class DeleteData extends AbstractDataTask
 {
     /**
      * @inheritdoc
