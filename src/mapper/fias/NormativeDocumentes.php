@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper\fias;
 
 use marvin255\fias\mapper\AbstractMapper;
-use marvin255\fias\mapper\field;
+use marvin255\fias\mapper\field\Line;
+use marvin255\fias\mapper\field\Date;
 
 /**
  * Нормативные документы.
@@ -18,11 +19,11 @@ class NormativeDocumentes extends AbstractMapper
     protected function createFields(): array
     {
         return [
-            'NORMDOCID' => new field\Line(36),
-            'DOCNAME' => new field\Line,
-            'DOCDATE' => new field\Date,
-            'DOCNUM' => new field\Line,
-            'DOCTYPE' => new field\Line,
+            'NORMDOCID' => new Line(36),
+            'DOCNAME' => new Line,
+            'DOCDATE' => new Date,
+            'DOCNUM' => new Line,
+            'DOCTYPE' => new Line,
         ];
     }
 
