@@ -19,11 +19,11 @@ class NormativeDocumentesTest extends MapperCase
     protected function getXmlTestData(): array
     {
         $data = [
-            'NORMDOCID' => $this->faker()->unique()->uuid,
-            'DOCNAME' => $this->faker()->unique()->text,
-            'DOCDATE' => new DateTime($this->faker()->unique()->date),
-            'DOCNUM' => $this->faker()->unique()->text,
-            'DOCTYPE' => $this->faker()->unique()->uuid,
+            'NORMDOCID' => $this->faker()->uuid,
+            'DOCNAME' => $this->faker()->text,
+            'DOCDATE' => new DateTime($this->faker()->date),
+            'DOCNUM' => $this->faker()->text,
+            'DOCTYPE' => $this->faker()->uuid,
         ];
 
         $xml = '<NormativeDocument';
