@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace marvin255\fias\tests\mapper\fias;
 
 use marvin255\fias\mapper\MapperInterface;
-use marvin255\fias\mapper\fias\CurrentStatus;
+use marvin255\fias\mapper\fias\CurrentStatuses;
 
 /**
- * Тест маппера CurrentStatus.
+ * Тест маппера CurrentStatuses.
  */
-class CurrentStatusTest extends MapperCase
+class CurrentStatusesTest extends MapperCase
 {
     /**
      * Возвращает данные для проверки извлечения из xml.
@@ -36,6 +36,6 @@ class CurrentStatusTest extends MapperCase
      */
     protected function getMapper(): MapperInterface
     {
-        return new CurrentStatus;
+        return new CurrentStatuses;
     }
 }

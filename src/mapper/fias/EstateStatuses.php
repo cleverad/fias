@@ -10,7 +10,7 @@ use marvin255\fias\mapper\field\Line;
 /**
  * Статусы.
  */
-class CurrentStatus extends AbstractMapper
+class EstateStatuses extends AbstractMapper
 {
     /**
      * @inheritdoc
@@ -18,7 +18,7 @@ class CurrentStatus extends AbstractMapper
     protected function createFields(): array
     {
         return [
-            'CURENTSTID' => new Line(36),
+            'ESTSTATID' => new Line(36),
             'NAME' => new Line,
         ];
     }
@@ -28,7 +28,7 @@ class CurrentStatus extends AbstractMapper
      */
     public function getXmlPath(): string
     {
-        return '/CenterStatuses/CenterStatus';
+        return '/EstateStatuses/EstateStatus';
     }
 
     /**
@@ -36,7 +36,7 @@ class CurrentStatus extends AbstractMapper
      */
     public function getInsertFileMask(): string
     {
-        return 'AS_CURENTST_*.XML';
+        return 'AS_ESTSTAT_*.XML';
     }
 
     /**
@@ -44,7 +44,7 @@ class CurrentStatus extends AbstractMapper
      */
     public function getDeleteFileMask(): string
     {
-        return 'AS_DEL_CURENTST_*.XML';
+        return 'AS_DEL_ESTSTAT_*.XML';
     }
 
     /**
@@ -52,6 +52,6 @@ class CurrentStatus extends AbstractMapper
      */
     public function getSqlPrimary(): array
     {
-        return ['CURENTSTID'];
+        return ['ESTSTATID'];
     }
 }
