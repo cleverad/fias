@@ -39,7 +39,7 @@ abstract class AbstractDataTask extends AbstractTask
     abstract protected function getTaskDescription(): string;
 
     /**
-     * Возвращает описание задачи для логов.
+     * Ищет файл, который следует импортировать, в указанной папке.
      *
      * @param \marvin255\fias\service\filesystem\DirectoryInterface $dir
      *
