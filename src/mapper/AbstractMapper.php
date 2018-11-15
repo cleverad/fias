@@ -85,12 +85,11 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     public function extractArrayFromXml(string $xml): array
     {
         $return = [];
-        $fields = $this->getMap();
 
         try {
             $simpleXml = $this->convertStringToSimpleXml($xml);
             $attributes = $simpleXml->attributes();
-            foreach ($fields as $fieldName => $field) {
+            foreach ($this->getMap() as $fieldName => $field) {
                 $value = (string) $attributes[$fieldName] ?? '';
                 $return[$fieldName] = $field->convertToData($value);
             }
