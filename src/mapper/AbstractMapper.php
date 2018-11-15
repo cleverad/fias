@@ -91,9 +91,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
             $simpleXml = $this->convertStringToSimpleXml($xml);
             $attributes = $simpleXml->attributes();
             foreach ($fields as $fieldName => $field) {
-                $value = isset($attributes[$fieldName])
-                    ? (string) $attributes[$fieldName]
-                    : '';
+                $value = (string) $attributes[$fieldName] ?? '';
                 $return[$fieldName] = $field->convertToData($value);
             }
         } catch (Throwable $e) {
