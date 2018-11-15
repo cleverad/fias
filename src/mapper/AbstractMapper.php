@@ -65,16 +65,51 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     /**
      * @inhertitdoc
      */
-    public function mapArrayAndConvertToStrings(array $messyArray): array
+    public function convertToStrings(array $messyArray): array
     {
         $map = $this->getMap();
-
         $convertedArray = [];
-        foreach ($this->mapArray($messyArray) as $key => $value) {
-            $convertedArray[$key] = $map[$key]->convertToString($value);
+
+        foreach ($messyArray as $fieldName => $value) {
+            $convertedArray[$fieldName] = isset($map[$fieldName])
+                ? $map[$fieldName]->convertToString($value)
+                : $value;
         }
 
         return $convertedArray;
+    }
+
+    /**
+     * @inhertitdoc
+     */
+    public function mapPrimaries(array $messyArray): array
+    {
+        $primaries = $this->getSqlPrimary();
+        $primariesArray = [];
+
+        foreach ($primaries as $primary) {
+            $primariesArray[$primary] = $messyArray[$primary] ?? null;
+        }
+
+        return $primariesArray;
+    }
+
+    /**
+     * @inhertitdoc
+     */
+    public function mapNotPrimaries(array $messyArray): array
+    {
+        $map = $this->getMap();
+        $primaries = $this->getSqlPrimary();
+        $notPrimariesArray = [];
+
+        foreach ($map as $fieldName => $field) {
+            if (!in_array($fieldName, $primaries)) {
+                $notPrimariesArray[$fieldName] = $messyArray[$fieldName] ?? null;
+            }
+        }
+
+        return $notPrimariesArray;
     }
 
     /**

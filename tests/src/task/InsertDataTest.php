@@ -43,7 +43,8 @@ class InsertDataTest extends DbTestCase
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
         $mapper->method('getXmlPath')->will($this->returnValue('/root/item'));
         $mapper->method('getInsertFileMask')->will($this->returnValue('insertData_testRun_source.xml'));
-        $mapper->method('mapArrayAndConvertToStrings')->will($this->returnArgument(0));
+        $mapper->method('mapArray')->will($this->returnArgument(0));
+        $mapper->method('convertToStrings')->will($this->returnArgument(0));
         $mapper->method('extractArrayFromXml')->will($this->returnCallback(function ($xml) {
             $attributes = simplexml_load_string($xml)->attributes();
             $return = [
@@ -110,7 +111,8 @@ class InsertDataTest extends DbTestCase
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
         $mapper->method('getXmlPath')->will($this->returnValue('/root/item'));
         $mapper->method('getInsertFileMask')->will($this->returnValue('insertData_testRun_nothing.xml'));
-        $mapper->method('mapArrayAndConvertToStrings')->will($this->returnArgument(0));
+        $mapper->method('mapArray')->will($this->returnArgument(0));
+        $mapper->method('convertToStrings')->will($this->returnArgument(0));
         $mapper->method('extractArrayFromXml')->will($this->returnCallback(function ($xml) {
             $attributes = simplexml_load_string($xml)->attributes();
             $return = [
@@ -160,7 +162,8 @@ class InsertDataTest extends DbTestCase
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
         $mapper->method('getXmlPath')->will($this->returnValue('/badRoot/item'));
         $mapper->method('getInsertFileMask')->will($this->returnValue('insertData_testRun.xml'));
-        $mapper->method('mapArrayAndConvertToStrings')->will($this->returnArgument(0));
+        $mapper->method('mapArray')->will($this->returnArgument(0));
+        $mapper->method('convertToStrings')->will($this->returnArgument(0));
         $mapper->method('extractArrayFromXml')->will($this->returnCallback(function ($xml) {
             $attributes = simplexml_load_string($xml)->attributes();
             $return = [

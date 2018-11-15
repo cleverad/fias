@@ -26,6 +26,26 @@ interface SqlMapperInterface extends MapperInterface
     public function getSqlPrimary(): array;
 
     /**
+     * Убирает из входящего массива все поля, ключей для которых нет в списке
+     * полей первичного ключа.
+     *
+     * @param array $messyArray
+     *
+     * @return array
+     */
+    public function mapPrimaries(array $messyArray): array;
+
+    /**
+     * Убирает из входящего массива все поля, ключи для которых есть в списке
+     * полей первичного ключа.
+     *
+     * @param array $messyArray
+     *
+     * @return array
+     */
+    public function mapNotPrimaries(array $messyArray): array;
+
+    /**
      * Возвращает массив с массивами, в которых содержатся имена полей сущности
      * для формирования дополнитедльных индексов в базе данных.
      *

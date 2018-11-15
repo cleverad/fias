@@ -54,7 +54,7 @@ abstract class MapperCase extends BaseTestCase
     }
 
     /**
-     * Проверяет, что маппер выделяет их входящего массива только те элементы,
+     * Проверяет, что маппер выделяет из входящего массива только те элементы,
      * ключи для которых описаны в списке полей маппера.
      */
     public function testMapArray()
@@ -75,25 +75,68 @@ abstract class MapperCase extends BaseTestCase
     }
 
     /**
-     * Проверяет, что маппер выделяет их входящего массива только те элементы,
+     * Проверяет, что маппер выделяет из входящего массива только те элементы,
      * ключи для которых описаны в списке полей маппера, и конвертирует их
      * в строковое представление.
      */
-    public function testMapArrayAndConvertToStrings()
+    public function testConvertToStrings()
     {
         $mapper = $this->getMapper();
         $fields = $mapper->getMap();
         $data = $this->getTestData();
 
-        $messyData = array_merge($data, [
-            $this->faker()->word => $this->faker()->word,
-            $this->faker()->word => $this->faker()->word,
-            $this->faker()->word => $this->faker()->word,
-        ]);
-        $mappedData = $mapper->mapArrayAndConvertToStrings($messyData);
+        $mappedData = $mapper->convertToStrings($data);
 
         foreach ($data as $key => $value) {
             $data[$key] = $fields[$key]->convertToString($value);
+        }
+
+        ksort($data);
+        ksort($mappedData);
+
+        $this->assertSame($data, $mappedData);
+    }
+
+    /**
+     * Проверяет, что маппер выделяет их входящего массива только те элементы,
+     * ключи для которых описаны в списке первичных ключей.
+     */
+    public function testMapPrimaries()
+    {
+        $mapper = $this->getMapper();
+        $primaries = $mapper->getSqlPrimary();
+        $data = $this->getTestData();
+
+        $mappedData = $mapper->mapPrimaries($data);
+
+        foreach ($data as $key => $value) {
+            if (!in_array($key, $primaries)) {
+                unset($data[$key]);
+            }
+        }
+
+        ksort($data);
+        ksort($mappedData);
+
+        $this->assertSame($data, $mappedData);
+    }
+
+    /**
+     * Проверяет, что маппер выделяет их входящего массива только те элементы,
+     * ключи для которых не описаны в списке первичных ключей.
+     */
+    public function testMapNotPrimaries()
+    {
+        $mapper = $this->getMapper();
+        $primaries = $mapper->getSqlPrimary();
+        $data = $this->getTestData();
+
+        $mappedData = $mapper->mapNotPrimaries($data);
+
+        foreach ($data as $key => $value) {
+            if (in_array($key, $primaries)) {
+                unset($data[$key]);
+            }
         }
 
         ksort($data);

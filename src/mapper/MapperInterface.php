@@ -28,12 +28,11 @@ interface MapperInterface
     public function mapArray(array $messyArray): array;
 
     /**
-     * Убирает из входящего массива все поля, ключей для которых нет в списке
-     * полей для данного маппера, и приводит значения к строковым представлениям.
+     * Приводит значения к строковым представлениям.
      *
      * @param array $messyArray
      *
      * @return array
      */
-    public function mapArrayAndConvertToStrings(array $messyArray): array;
+    public function convertToStrings(array $messyArray): array;
 }

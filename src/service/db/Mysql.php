@@ -56,7 +56,7 @@ class Mysql implements DbInterface
             $this->insertQueue[$table] = [];
         }
 
-        $this->insertQueue[$table][] = $mapper->mapArrayAndConvertToStrings($item);
+        $this->insertQueue[$table][] = $mapper->mapArray($item);
 
         if (count($this->insertQueue[$table]) === $this->butchInsertLimit) {
             $this->flushInsert($table);
