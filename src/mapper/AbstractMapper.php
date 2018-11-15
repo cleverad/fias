@@ -68,10 +68,9 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     public function mapArrayAndConvertToStrings(array $messyArray): array
     {
         $map = $this->getMap();
-        $mappedArray = $this->mapArray($messyArray);
 
         $convertedArray = [];
-        foreach ($mappedArray as $key => $value) {
+        foreach ($this->mapArray($messyArray) as $key => $value) {
             $convertedArray[$key] = $map[$key]->convertToString($value);
         }
 
