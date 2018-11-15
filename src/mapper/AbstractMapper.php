@@ -103,9 +103,9 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
         $primaries = $this->getSqlPrimary();
         $notPrimariesArray = [];
 
-        foreach ($map as $fieldName => $field) {
-            if (!in_array($fieldName, $primaries)) {
-                $notPrimariesArray[$fieldName] = $messyArray[$fieldName] ?? null;
+        foreach ($messyArray as $fieldName => $value) {
+            if (isset($map[$fieldName]) && !in_array($fieldName, $primaries)) {
+                $notPrimariesArray[$fieldName] = $value;
             }
         }
 

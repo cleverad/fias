@@ -56,7 +56,7 @@ class Mysql implements DbInterface
             $this->insertQueue[$table] = [];
         }
 
-        $this->insertQueue[$table][] = $mapper->mapArray($item);
+        $this->insertQueue[$table][] = $mapper->convertToStrings($mapper->mapArray($item));
 
         if (count($this->insertQueue[$table]) === $this->butchInsertLimit) {
             $this->flushInsert($table);
@@ -72,20 +72,18 @@ class Mysql implements DbInterface
 
         $set = '';
         $setCount = 0;
-        foreach ($mapper->getMap() as $fieldName => $field) {
-            if (isset($item[$fieldName]) && !in_array($fieldName, $mapper->getSqlPrimary())) {
-                $paramName = ":set{$setCount}";
-                $fieldNameEscaped = $this->escapeDDLName($fieldName);
-                $set .= ($set ? ', ' : '') . "{$fieldNameEscaped} = {$paramName}";
-                $params[$paramName] = $field->convertToString($item[$fieldName]);
-                ++$setCount;
-            }
+        $mapped = $mapper->convertToStrings($mapper->mapNotPrimaries($item));
+        foreach ($mapped as $fieldName => $value) {
+            $fieldNameEscaped = $this->escapeDDLName($fieldName);
+            $paramName = ":set{$setCount}";
+            $set .= ($set ? ', ' : '') . "{$fieldNameEscaped} = {$paramName}";
+            $params[$paramName] = $value;
+            ++$setCount;
         }
 
         $table = $this->escapeDDLName($mapper->getSqlName());
-        $sql = "UPDATE {$table} SET {$set} WHERE {$where}";
 
-        $this->execute($sql, $params);
+        $this->execute("UPDATE {$table} SET {$set} WHERE {$where}", $params);
     }
 
     /**
@@ -94,10 +92,9 @@ class Mysql implements DbInterface
     public function delete(SqlMapperInterface $mapper, array $item)
     {
         list($where, $params) = $this->createPrimaryCondition($mapper, $item);
+        $table = $this->escapeDDLName($mapper->getSqlName());
 
-        $sql = 'DELETE FROM ' . $this->escapeDDLName($mapper->getSqlName()) . " WHERE {$where}";
-
-        $this->execute($sql, $params);
+        $this->execute("DELETE FROM {$table} WHERE {$where}", $params);
     }
 
     /**
