@@ -16,16 +16,22 @@ class NormativeDocumentesTest extends MapperCase
     /**
      * Возвращает данные для проверки извлечения из xml.
      */
-    protected function getXmlTestData(): array
+    protected function getTestData(): array
     {
-        $data = [
+        return [
             'NORMDOCID' => $this->faker()->uuid,
             'DOCNAME' => $this->faker()->text,
             'DOCDATE' => new DateTime($this->faker()->date),
             'DOCNUM' => $this->faker()->text,
             'DOCTYPE' => $this->faker()->uuid,
         ];
+    }
 
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    protected function getTestXml(array $data): string
+    {
         $xml = '<NormativeDocument';
         $xml .= " NORMDOCID=\"{$data['NORMDOCID']}\"";
         $xml .= " DOCNAME=\"{$data['DOCNAME']}\"";
@@ -35,7 +41,7 @@ class NormativeDocumentesTest extends MapperCase
         $xml .= ' NEVER_GET_ME="NEVER_GET_ME"';
         $xml .= ' />';
 
-        return [$data, $xml];
+        return $xml;
     }
 
     /**

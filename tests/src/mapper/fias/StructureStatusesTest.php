@@ -15,14 +15,20 @@ class StructureStatusesTest extends MapperCase
     /**
      * Возвращает данные для проверки извлечения из xml.
      */
-    protected function getXmlTestData(): array
+    protected function getTestData(): array
     {
-        $data = [
+        return [
             'STRSTATID' => $this->faker()->uuid,
             'NAME' => $this->faker()->word,
             'SHORTNAME' => $this->faker()->word,
         ];
+    }
 
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    protected function getTestXml(array $data): string
+    {
         $xml = '<StructureStatus';
         $xml .= " STRSTATID=\"{$data['STRSTATID']}\"";
         $xml .= " NAME=\"{$data['NAME']}\"";
@@ -30,7 +36,7 @@ class StructureStatusesTest extends MapperCase
         $xml .= ' NEVER_GET_ME="NEVER_GET_ME"';
         $xml .= ' />';
 
-        return [$data, $xml];
+        return $xml;
     }
 
     /**

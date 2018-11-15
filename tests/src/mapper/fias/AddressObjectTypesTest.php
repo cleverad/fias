@@ -15,15 +15,21 @@ class AddressObjectTypesTest extends MapperCase
     /**
      * Возвращает данные для проверки извлечения из xml.
      */
-    protected function getXmlTestData(): array
+    protected function getTestData(): array
     {
-        $data = [
+        return [
             'KOD_T_ST' => $this->faker()->randomDigit,
             'LEVEL' => $this->faker()->randomDigit,
             'SOCRNAME' => $this->faker()->word,
             'SCNAME' => $this->faker()->word,
         ];
+    }
 
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    protected function getTestXml(array $data): string
+    {
         $xml = '<AddressObjectType';
         $xml .= " KOD_T_ST=\"{$data['KOD_T_ST']}\"";
         $xml .= " LEVEL=\"{$data['LEVEL']}\"";
@@ -32,7 +38,7 @@ class AddressObjectTypesTest extends MapperCase
         $xml .= ' NEVER_GET_ME="NEVER_GET_ME"';
         $xml .= ' />';
 
-        return [$data, $xml];
+        return $xml;
     }
 
     /**

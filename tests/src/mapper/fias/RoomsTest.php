@@ -16,9 +16,9 @@ class RoomsTest extends MapperCase
     /**
      * Возвращает данные для проверки извлечения из xml.
      */
-    protected function getXmlTestData(): array
+    protected function getTestData(): array
     {
-        $data = [
+        return [
             'ROOMID' => $this->faker()->uuid,
             'ROOMGUID' => $this->faker()->uuid,
             'HOUSEGUID' => $this->faker()->uuid,
@@ -33,7 +33,13 @@ class RoomsTest extends MapperCase
             'LIVESTATUS' => $this->faker()->word,
             'NORMDOC' => $this->faker()->word,
         ];
+    }
 
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    protected function getTestXml(array $data): string
+    {
         $xml = '<Room';
         $xml .= " ROOMID=\"{$data['ROOMID']}\"";
         $xml .= " ROOMGUID=\"{$data['ROOMGUID']}\"";
@@ -51,7 +57,7 @@ class RoomsTest extends MapperCase
         $xml .= ' NEVER_GET_ME="NEVER_GET_ME"';
         $xml .= ' />';
 
-        return [$data, $xml];
+        return $xml;
     }
 
     /**

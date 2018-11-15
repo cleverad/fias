@@ -16,9 +16,9 @@ class HousesTest extends MapperCase
     /**
      * Возвращает данные для проверки извлечения из xml.
      */
-    protected function getXmlTestData(): array
+    protected function getTestData(): array
     {
-        $data = [
+        return [
             'HOUSEID' => $this->faker()->uuid,
             'HOUSEGUID' => $this->faker()->uuid,
             'AOGUID' => $this->faker()->uuid,
@@ -41,7 +41,13 @@ class HousesTest extends MapperCase
             'COUNTER' => $this->faker()->randomDigitNotNull,
             'DIVTYPE' => $this->faker()->randomDigitNotNull,
         ];
+    }
 
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    protected function getTestXml(array $data): string
+    {
         $xml = '<House';
         $xml .= " HOUSEID=\"{$data['HOUSEID']}\"";
         $xml .= " HOUSEGUID=\"{$data['HOUSEGUID']}\"";
@@ -63,7 +69,7 @@ class HousesTest extends MapperCase
         $xml .= ' NEVER_GET_ME="NEVER_GET_ME"';
         $xml .= ' />';
 
-        return [$data, $xml];
+        return $xml;
     }
 
     /**

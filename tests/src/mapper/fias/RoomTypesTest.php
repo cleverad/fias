@@ -15,14 +15,20 @@ class RoomTypesTest extends MapperCase
     /**
      * Возвращает данные для проверки извлечения из xml.
      */
-    protected function getXmlTestData(): array
+    protected function getTestData(): array
     {
-        $data = [
+        return [
             'RMTYPEID' => $this->faker()->uuid,
             'NAME' => $this->faker()->word,
             'SHORTNAME' => $this->faker()->word,
         ];
+    }
 
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    protected function getTestXml(array $data): string
+    {
         $xml = '<RoomType';
         $xml .= " RMTYPEID=\"{$data['RMTYPEID']}\"";
         $xml .= " NAME=\"{$data['NAME']}\"";
@@ -30,7 +36,7 @@ class RoomTypesTest extends MapperCase
         $xml .= ' NEVER_GET_ME="NEVER_GET_ME"';
         $xml .= ' />';
 
-        return [$data, $xml];
+        return $xml;
     }
 
     /**

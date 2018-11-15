@@ -48,6 +48,39 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
+     * @inhertitdoc
+     */
+    public function mapArray(array $messyArray): array
+    {
+        $map = $this->getMap();
+        $mappedArray = [];
+
+        foreach ($map as $fieldName => $field) {
+            $mappedArray[$fieldName] = $messyArray[$fieldName] ?? null;
+        }
+
+        return $mappedArray;
+    }
+
+    /**
+     * @inhertitdoc
+     */
+    public function mapArrayAndConvertToStrings(array $messyArray): array
+    {
+        $map = $this->getMap();
+        $mappedArray = $this->mapArray($messyArray);
+
+        $convertedArray = [];
+        foreach ($mappedArray as $key => $value) {
+            if (isset($map[$key])) {
+                $mappedArray[$key] = $map[$key]->convertToString($value);
+            }
+        }
+
+        return $mappedArray;
+    }
+
+    /**
      * {@inhertitdoc}.
      *
      * @throws \RuntimeException

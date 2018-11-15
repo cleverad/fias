@@ -15,20 +15,26 @@ class ActualStatusesTest extends MapperCase
     /**
      * Возвращает данные для проверки извлечения из xml.
      */
-    protected function getXmlTestData(): array
+    protected function getTestData(): array
     {
-        $data = [
+        return [
             'ACTSTATID' => $this->faker()->uuid,
             'NAME' => $this->faker()->word,
         ];
+    }
 
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    protected function getTestXml(array $data): string
+    {
         $xml = '<ActualStatus';
         $xml .= " ACTSTATID=\"{$data['ACTSTATID']}\"";
         $xml .= " NAME=\"{$data['NAME']}\"";
         $xml .= ' NEVER_GET_ME="NEVER_GET_ME"';
         $xml .= ' />';
 
-        return [$data, $xml];
+        return $xml;
     }
 
     /**

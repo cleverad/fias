@@ -16,9 +16,9 @@ class SteadsTest extends MapperCase
     /**
      * Возвращает данные для проверки извлечения из xml.
      */
-    protected function getXmlTestData(): array
+    protected function getTestData(): array
     {
-        $data = [
+        return [
             'STEADGUID' => $this->faker()->uuid,
             'NUMBER' => $this->faker()->word,
             'REGIONCODE' => $this->faker()->word,
@@ -37,7 +37,13 @@ class SteadsTest extends MapperCase
             'DIVTYPE' => $this->faker()->word,
             'NORMDOC' => $this->faker()->uuid,
         ];
+    }
 
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    protected function getTestXml(array $data): string
+    {
         $xml = '<Stead';
         $xml .= " STEADGUID=\"{$data['STEADGUID']}\"";
         $xml .= " NUMBER=\"{$data['NUMBER']}\"";
@@ -59,7 +65,7 @@ class SteadsTest extends MapperCase
         $xml .= ' NEVER_GET_ME="NEVER_GET_ME"';
         $xml .= ' />';
 
-        return [$data, $xml];
+        return $xml;
     }
 
     /**

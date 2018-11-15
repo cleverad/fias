@@ -51,18 +51,12 @@ class Mysql implements DbInterface
     public function insert(SqlMapperInterface $mapper, array $item)
     {
         $table = $mapper->getSqlName();
-        $fields = $mapper->getMap();
 
         if (!isset($this->insertQueue[$table])) {
             $this->insertQueue[$table] = [];
         }
 
-        $arInsert = [];
-        foreach ($fields as $fieldName => $field) {
-            $value = isset($item[$fieldName]) ? $item[$fieldName] : null;
-            $arInsert[$fieldName] = $field->convertToString($value);
-        }
-        $this->insertQueue[$table][] = $arInsert;
+        $this->insertQueue[$table][] = $mapper->mapArrayAndConvertToStrings($item);
 
         if (count($this->insertQueue[$table]) === $this->butchInsertLimit) {
             $this->flushInsert($table);

@@ -14,21 +14,27 @@ use RuntimeException;
 abstract class MapperCase extends BaseTestCase
 {
     /**
+     * Возвращает данные для проверки извлечения из xml.
+     */
+    abstract protected function getTestData(): array;
+
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    abstract protected function getTestXml(array $data): string;
+
+    /**
      * Возвращает объект маппера.
      */
     abstract protected function getMapper(): MapperInterface;
-
-    /**
-     * Возвращает данные для проверки извлечения из xml.
-     */
-    abstract protected function getXmlTestData(): array;
 
     /**
      * Проверяет, что маппер правильно извлекает результат из xml.
      */
     public function testExtractArrayFromXml()
     {
-        list($data, $xml) = $this->getXmlTestData();
+        $data = $this->getTestData();
+        $xml = $this->getTestXml($data);
 
         $xmlData = $this->getMapper()->extractArrayFromXml($xml);
 
@@ -45,6 +51,55 @@ abstract class MapperCase extends BaseTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->getMapper()->extractArrayFromXml('<= 123>');
+    }
+
+    /**
+     * Проверяет, что маппер выделяет их входящего массива только те элементы,
+     * ключи для которых описаны в списке полей маппера.
+     */
+    public function testMapArray()
+    {
+        $data = $this->getTestData();
+
+        $messyData = array_merge($data, [
+            $this->faker()->word => $this->faker()->word,
+            $this->faker()->word => $this->faker()->word,
+            $this->faker()->word => $this->faker()->word,
+        ]);
+        $mappedData = $this->getMapper()->mapArray($messyData);
+
+        ksort($data);
+        ksort($mappedData);
+
+        $this->assertSame($data, $mappedData);
+    }
+
+    /**
+     * Проверяет, что маппер выделяет их входящего массива только те элементы,
+     * ключи для которых описаны в списке полей маппера, и конвертирует их
+     * в строковое представление.
+     */
+    public function testMapArrayAndConvertToStrings()
+    {
+        $mapper = $this->getMapper();
+        $fields = $mapper->getMap();
+        $data = $this->getTestData();
+
+        $messyData = array_merge($data, [
+            $this->faker()->word => $this->faker()->word,
+            $this->faker()->word => $this->faker()->word,
+            $this->faker()->word => $this->faker()->word,
+        ]);
+        $mappedData = $mapper->mapArrayAndConvertToStrings($messyData);
+
+        foreach ($data as $key => $value) {
+            $data[$key] = $fields[$key]->convertToString($value);
+        }
+
+        ksort($data);
+        ksort($mappedData);
+
+        $this->assertSame($data, $mappedData);
     }
 
     /**

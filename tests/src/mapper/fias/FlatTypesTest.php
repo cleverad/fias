@@ -15,22 +15,28 @@ class FlatTypesTest extends MapperCase
     /**
      * Возвращает данные для проверки извлечения из xml.
      */
-    protected function getXmlTestData(): array
+    protected function getTestData(): array
     {
-        $data = [
+        return [
             'FLTYPEID' => $this->faker()->uuid,
             'NAME' => $this->faker()->word,
             'SHORTNAME' => $this->faker()->word,
         ];
+    }
 
-        $xml = '<CurrentStatus';
+    /**
+     * Возвращает строку с xml на основании входного параметра.
+     */
+    protected function getTestXml(array $data): string
+    {
+        $xml = '<FlatType';
         $xml .= " FLTYPEID=\"{$data['FLTYPEID']}\"";
         $xml .= " NAME=\"{$data['NAME']}\"";
         $xml .= " SHORTNAME=\"{$data['SHORTNAME']}\"";
         $xml .= ' NEVER_GET_ME="NEVER_GET_ME"';
         $xml .= ' />';
 
-        return [$data, $xml];
+        return $xml;
     }
 
     /**

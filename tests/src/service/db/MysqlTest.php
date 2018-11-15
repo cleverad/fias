@@ -44,7 +44,7 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
         $mapper->method('getSqlIndexes')->will($this->returnValue([]));
         $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
-        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
+        $mapper->method('mapArrayAndConvertToStrings')->will($this->returnArgument(0));
 
         $mysql = new Mysql($this->getPdo(), 2);
         $mysql->insert($mapper, ['id' => 3, 'row1' => 'row 3 1', 'row2' => 'row 3 2']);
@@ -88,6 +88,7 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlIndexes')->will($this->returnValue([]));
         $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
+        $mapper->method('mapArrayAndConvertToStrings')->will($this->returnArgument(0));
 
         $mysql = new Mysql($this->getPdo());
         $mysql->update($mapper, ['id' => 2, 'row2' => 'updated 2']);
@@ -128,6 +129,7 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlIndexes')->will($this->returnValue([]));
         $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
+        $mapper->method('mapArrayAndConvertToStrings')->will($this->returnArgument(0));
 
         $mysql = new Mysql($this->getPdo());
         $mysql->delete($mapper, ['id' => 1]);
@@ -169,6 +171,7 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlIndexes')->will($this->returnValue([]));
         $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
         $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
+        $mapper->method('mapArrayAndConvertToStrings')->will($this->returnArgument(0));
 
         $mysql = new Mysql($this->getPdo());
 
