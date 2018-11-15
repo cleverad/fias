@@ -72,12 +72,10 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
 
         $convertedArray = [];
         foreach ($mappedArray as $key => $value) {
-            if (isset($map[$key])) {
-                $mappedArray[$key] = $map[$key]->convertToString($value);
-            }
+            $convertedArray[$key] = $map[$key]->convertToString($value);
         }
 
-        return $mappedArray;
+        return $convertedArray;
     }
 
     /**
