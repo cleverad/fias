@@ -6,6 +6,7 @@ namespace marvin255\fias\tests\service\db;
 
 use marvin255\fias\tests\DbTestCase;
 use marvin255\fias\mapper\SqlMapperInterface;
+use marvin255\fias\mapper\AbstractMapper;
 use marvin255\fias\mapper\field;
 use marvin255\fias\service\db\Mysql;
 use marvin255\fias\service\db\Exception;
@@ -37,15 +38,12 @@ class MysqlTest extends DbTestCase
         ];
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
-        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+        $mapper = $this->getMockBuilder(AbstractMapper::class)
+            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('getMap')->will($this->returnValue($columns));
+        $mapper->method('createFields')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
-        $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
-        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
-        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
-        $mapper->method('mapArray')->will($this->returnArgument(0));
-        $mapper->method('convertToStrings')->will($this->returnArgument(0));
+        $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
         $mysql = new Mysql($this->getPdo(), 2);
         $mysql->insert($mapper, ['id' => 3, 'row1' => 'row 3 1', 'row2' => 'row 3 2']);
@@ -81,16 +79,12 @@ class MysqlTest extends DbTestCase
         ];
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
-        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+        $mapper = $this->getMockBuilder(AbstractMapper::class)
+            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('getMap')->will($this->returnValue($columns));
+        $mapper->method('createFields')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
-        $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
-        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
-        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
-        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
-        $mapper->method('mapArray')->will($this->returnArgument(0));
-        $mapper->method('convertToStrings')->will($this->returnArgument(0));
+        $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
         $mysql = new Mysql($this->getPdo());
         $mysql->update($mapper, ['id' => 2, 'row2' => 'updated 2']);
@@ -123,16 +117,12 @@ class MysqlTest extends DbTestCase
         ];
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
-        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+        $mapper = $this->getMockBuilder(AbstractMapper::class)
+            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('getMap')->will($this->returnValue($columns));
+        $mapper->method('createFields')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
-        $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
-        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
-        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
-        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
-        $mapper->method('mapArray')->will($this->returnArgument(0));
-        $mapper->method('convertToStrings')->will($this->returnArgument(0));
+        $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
         $mysql = new Mysql($this->getPdo());
         $mysql->delete($mapper, ['id' => 1]);
@@ -166,16 +156,12 @@ class MysqlTest extends DbTestCase
         ];
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
-        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+        $mapper = $this->getMockBuilder(AbstractMapper::class)
+            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('getMap')->will($this->returnValue($columns));
+        $mapper->method('createFields')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
-        $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
-        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
-        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
-        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
-        $mapper->method('mapArray')->will($this->returnArgument(0));
-        $mapper->method('convertToStrings')->will($this->returnArgument(0));
+        $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
         $mysql = new Mysql($this->getPdo());
 
@@ -201,14 +187,12 @@ class MysqlTest extends DbTestCase
         ];
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
-        $mapper = $this->getMockBuilder(SqlMapperInterface::class)
+        $mapper = $this->getMockBuilder(AbstractMapper::class)
+            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('getMap')->will($this->returnValue($columns));
+        $mapper->method('createFields')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
-        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
-        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
-        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
 
         $mysql = new Mysql($this->getPdo());
         $mysql->createTable($mapper);

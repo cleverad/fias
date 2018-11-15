@@ -135,6 +135,30 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getXmlPath(): string
+    {
+        return '';
+    }
+
+    /**
+     * @inhertitdoc
+     */
+    public function getInsertFileMask(): string
+    {
+        return '';
+    }
+
+    /**
+     * @inhertitdoc
+     */
+    public function getDeleteFileMask(): string
+    {
+        return '';
+    }
+
+    /**
      * @inhertitdoc
      */
     public function getSqlName(): string

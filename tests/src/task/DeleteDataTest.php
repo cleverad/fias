@@ -31,16 +31,22 @@ class DeleteDataTest extends DbTestCase
 
         $tableName = 'testRun';
 
-        $mapper = $this->getMockBuilder(AbstractMapper::class)->getMock();
-        $mapper->method('getMap')->will($this->returnValue([
+        $mapper = $this->getMockBuilder(AbstractMapper::class)
+            ->setMethods([
+                'createFields',
+                'getSqlName',
+                'getSqlPrimary',
+                'getDeleteFileMask',
+                'getXmlPath',
+                'extractArrayFromXml',
+            ])
+            ->getMock();
+        $mapper->method('createFields')->will($this->returnValue([
             'id' => new field\IntNumber,
             'row1' => new field\Line,
         ]));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
-        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
-        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
-        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
         $mapper->method('getXmlPath')->will($this->returnValue('/root/item'));
         $mapper->method('getDeleteFileMask')->will($this->returnValue('deleteData_testRun_source.xml'));
         $mapper->method('extractArrayFromXml')->will($this->returnCallback(function ($xml) {
@@ -97,27 +103,23 @@ class DeleteDataTest extends DbTestCase
 
         $tableName = 'testRun';
 
-        $mapper = $this->getMockBuilder(AbstractMapper::class)->getMock();
-        $mapper->method('getMap')->will($this->returnValue([
+        $mapper = $this->getMockBuilder(AbstractMapper::class)
+            ->setMethods([
+                'createFields',
+                'getSqlName',
+                'getSqlPrimary',
+                'getDeleteFileMask',
+                'getXmlPath',
+            ])
+            ->getMock();
+        $mapper->method('createFields')->will($this->returnValue([
             'id' => new field\IntNumber,
             'row1' => new field\Line,
         ]));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
-        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
-        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
-        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
         $mapper->method('getXmlPath')->will($this->returnValue('/root/item'));
         $mapper->method('getDeleteFileMask')->will($this->returnValue('deleteData_testRun_nothing.xml'));
-        $mapper->method('extractArrayFromXml')->will($this->returnCallback(function ($xml) {
-            $attributes = simplexml_load_string($xml)->attributes();
-            $return = [
-                'id' => isset($attributes['id']) ? (int) $attributes['id'] : 0,
-                'row1' => isset($attributes['row1']) ? (string) $attributes['row1'] : '',
-            ];
-
-            return $return;
-        }));
 
         $state = new ArrayState;
         $state->setParameter('extracted', new Directory(__DIR__ . '/_fixture'));
@@ -146,27 +148,23 @@ class DeleteDataTest extends DbTestCase
 
         $tableName = 'testRun';
 
-        $mapper = $this->getMockBuilder(AbstractMapper::class)->getMock();
-        $mapper->method('getMap')->will($this->returnValue([
+        $mapper = $this->getMockBuilder(AbstractMapper::class)
+            ->setMethods([
+                'createFields',
+                'getSqlName',
+                'getSqlPrimary',
+                'getDeleteFileMask',
+                'getXmlPath',
+            ])
+            ->getMock();
+        $mapper->method('createFields')->will($this->returnValue([
             'id' => new field\IntNumber,
             'row1' => new field\Line,
         ]));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue(['id']));
-        $mapper->method('getSqlIndexes')->will($this->returnValue([]));
-        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(1));
-        $mapper->method('getSqlPartitionField')->will($this->returnValue(''));
         $mapper->method('getXmlPath')->will($this->returnValue('/badRoot/item'));
         $mapper->method('getDeleteFileMask')->will($this->returnValue('deleteData_testRun.xml'));
-        $mapper->method('extractArrayFromXml')->will($this->returnCallback(function ($xml) {
-            $attributes = simplexml_load_string($xml)->attributes();
-            $return = [
-                'id' => isset($attributes['id']) ? (int) $attributes['id'] : 0,
-                'row1' => isset($attributes['row1']) ? (string) $attributes['row1'] : '',
-            ];
-
-            return $return;
-        }));
 
         $state = new ArrayState;
         $state->setParameter('extracted', new Directory(__DIR__ . '/_fixture'));
