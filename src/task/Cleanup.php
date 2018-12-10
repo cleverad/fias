@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 class Cleanup extends AbstractTask
 {
     /**
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger = null)
     {

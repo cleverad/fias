@@ -17,14 +17,14 @@ class Informer implements InformerInterface
      */
     const DEFAULT_FIAS_WSDL = 'http://fias.nalog.ru/WebServices/Public/DownloadService.asmx?WSDL';
     /**
-     * @var \SoapClient
+     * @var SoapClient
      */
     protected $soapClient;
 
     /**
      * Задает SoapClient, если объект не задан, то создает самостоятельно.
      *
-     * @param \SoapClient $soapClient
+     * @param SoapClient $soapClient
      */
     public function __construct(SoapClient $soapClient = null)
     {

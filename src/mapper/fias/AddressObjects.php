@@ -67,7 +67,7 @@ class AddressObjects extends AbstractMapper
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getInsertFileMask(): string
     {
@@ -75,7 +75,7 @@ class AddressObjects extends AbstractMapper
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getDeleteFileMask(): string
     {

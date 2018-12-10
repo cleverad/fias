@@ -13,7 +13,7 @@ interface MapperInterface
     /**
      * Возвращает список полей данной сущности.
      *
-     * @return \marvin255\fias\mapper\FieldInterface[]
+     * @return FieldInterface[]
      */
     public function getMap(): array;
 

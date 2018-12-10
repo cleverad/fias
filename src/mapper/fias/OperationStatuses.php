@@ -32,7 +32,7 @@ class OperationStatuses extends AbstractMapper
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getInsertFileMask(): string
     {
@@ -40,7 +40,7 @@ class OperationStatuses extends AbstractMapper
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getDeleteFileMask(): string
     {

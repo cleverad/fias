@@ -36,7 +36,7 @@ class NormativeDocumentes extends AbstractMapper
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getInsertFileMask(): string
     {
@@ -44,7 +44,7 @@ class NormativeDocumentes extends AbstractMapper
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getDeleteFileMask(): string
     {

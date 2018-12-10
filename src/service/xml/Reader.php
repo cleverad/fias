@@ -15,7 +15,7 @@ use XmlReader;
 class Reader implements ReaderInterface
 {
     /**
-     * @var \marvin255\fias\mapper\XmlMapperInterface|null
+     * @var XmlMapperInterface|null
      */
     protected $mapper;
     /**
@@ -62,8 +62,8 @@ class Reader implements ReaderInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function openFile(string $path): bool
     {
@@ -158,7 +158,7 @@ class Reader implements ReaderInterface
      *
      * @return array|null
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function getLine()
     {
@@ -217,7 +217,7 @@ class Reader implements ReaderInterface
      *
      * @return bool
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function seekXmlPath(): bool
     {
@@ -254,7 +254,7 @@ class Reader implements ReaderInterface
      *
      * @return void
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function resetReader()
     {

@@ -16,9 +16,9 @@ interface ReaderInterface extends Iterator
      * Задает объект-маппер, который описывает как извлечь целевой объект из
      * xml.
      *
-     * @param \marvin255\fias\mapper\XmlMapperInterface $mapper
+     * @param XmlMapperInterface $mapper
      *
-     * @return \marvin255\fias\service\xml\ReaderInterface
+     * @return ReaderInterface
      */
     public function setMapper(XmlMapperInterface $mapper): ReaderInterface;
 

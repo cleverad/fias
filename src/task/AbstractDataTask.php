@@ -19,15 +19,15 @@ use InvalidArgumentException;
 abstract class AbstractDataTask extends AbstractTask
 {
     /**
-     * @var \marvin255\fias\service\xml\ReaderInterface
+     * @var ReaderInterface
      */
     protected $reader;
     /**
-     * @var \marvin255\fias\service\db\DbInterface
+     * @var DbInterface
      */
     protected $db;
     /**
-     * @var \marvin255\fias\mapper\AbstractMapper
+     * @var AbstractMapper
      */
     protected $mapper;
 
@@ -41,9 +41,9 @@ abstract class AbstractDataTask extends AbstractTask
     /**
      * Ищет файл, который следует импортировать, в указанной папке.
      *
-     * @param \marvin255\fias\service\filesystem\DirectoryInterface $dir
+     * @param DirectoryInterface $dir
      *
-     * @return \marvin255\fias\service\filesystem\FileInterface|null
+     * @return FileInterface|null
      */
     abstract protected function searchFileInDir(DirectoryInterface $dir);
 
@@ -57,10 +57,10 @@ abstract class AbstractDataTask extends AbstractTask
     abstract protected function processItem(array $item);
 
     /**
-     * @param \marvin255\fias\service\xml\ReaderInterface $reader
-     * @param \marvin255\fias\service\db\DbInterface      $db
-     * @param \marvin255\fias\mapper\AbstractMapper       $mapper
-     * @param \Psr\Log\LoggerInterface                    $logger
+     * @param ReaderInterface $reader
+     * @param DbInterface     $db
+     * @param AbstractMapper  $mapper
+     * @param LoggerInterface $logger
      */
     public function __construct(ReaderInterface $reader, DbInterface $db, AbstractMapper $mapper, LoggerInterface $logger = null)
     {
@@ -97,11 +97,11 @@ abstract class AbstractDataTask extends AbstractTask
     /**
      * Обрабатывает xml файл.
      *
-     * @param \marvin255\fias\service\filesystem\FileInterface $file
+     * @param FileInterface $file
      *
      * @return void
      *
-     * @throws \marvin255\fias\task\RuntimeException
+     * @throws RuntimeException
      */
     protected function processFile(FileInterface $file)
     {

@@ -66,7 +66,7 @@ interface DirectoryInterface extends Iterator
      *
      * @param string $name
      *
-     * @return \marvin255\fias\service\filesystem\DirectoryInterface
+     * @return DirectoryInterface
      */
     public function createChildDirectory(string $name): DirectoryInterface;
 
@@ -75,7 +75,7 @@ interface DirectoryInterface extends Iterator
      *
      * @param string $name
      *
-     * @return \marvin255\fias\service\filesystem\FileInterface
+     * @return FileInterface
      */
     public function createChildFile(string $name): FileInterface;
 
@@ -84,7 +84,7 @@ interface DirectoryInterface extends Iterator
      *
      * @param string $pattern
      *
-     * @return \marvin255\fias\service\filesystem\FileInterface[]
+     * @return FileInterface[]
      */
     public function findFilesByPattern(string $pattern): array;
 }

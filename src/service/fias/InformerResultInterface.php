@@ -15,7 +15,7 @@ interface InformerResultInterface
      *
      * @param int $version
      *
-     * @return \marvin255\fias\service\fias\InformerResultInterface
+     * @return InformerResultInterface
      */
     public function setVersion(int $version): InformerResultInterface;
 
@@ -31,9 +31,9 @@ interface InformerResultInterface
      *
      * @param string $url
      *
-     * @return \marvin255\fias\service\fias\InformerResultInterface
+     * @return InformerResultInterface
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function setUrl(string $url): InformerResultInterface;
 

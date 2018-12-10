@@ -15,12 +15,12 @@ interface DownloaderInterface
      * Скачивает файл по ссылке из первого параметра в локальный файл,
      * указанный во втором параметре.
      *
-     * @param string                                           $urlToDownload
-     * @param \marvin255\fias\service\filesystem\FileInterface $localFile
+     * @param string        $urlToDownload
+     * @param FileInterface $localFile
      *
      * @return void
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function download(string $urlToDownload, FileInterface $localFile);
 }

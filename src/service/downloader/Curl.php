@@ -59,11 +59,11 @@ class Curl implements DownloaderInterface
      * Открывает локальный файл, в который будет вестись запись и возвращает его
      * ресурс.
      *
-     * @param \marvin255\fias\service\filesystem\FileInterface $localFile
+     * @param FileInterface $localFile
      *
      * @return resource
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function openLocalFile(FileInterface $localFile)
     {

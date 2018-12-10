@@ -13,12 +13,12 @@ use UnexpectedValueException;
 class ArrayConfig implements ConfigInterface
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $options = [];
 
     /**
-     * @param array $options
+     * @param mixed[] $options
      */
     public function __construct(array $options)
     {
@@ -26,7 +26,7 @@ class ArrayConfig implements ConfigInterface
     }
 
     /**
-     * @inherit
+     * @inheritdoc
      */
     public function getString(string $optionName, string $defaultValue = ''): string
     {
@@ -38,7 +38,9 @@ class ArrayConfig implements ConfigInterface
     }
 
     /**
-     * @inherit
+     * {@inheritdoc}
+     *
+     * @throws UnexpectedValueException
      */
     public function getInt(string $optionName, int $defaultValue = 0): int
     {
@@ -55,7 +57,7 @@ class ArrayConfig implements ConfigInterface
     }
 
     /**
-     * @inherit
+     * @inheritdoc
      */
     public function getBool(string $optionName, bool $defaultValue = false): bool
     {

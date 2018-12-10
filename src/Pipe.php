@@ -16,18 +16,18 @@ use Exception;
 class Pipe
 {
     /**
-     * @var \marvin255\fias\task\TaskInterface[]
+     * @var TaskInterface[]
      */
     private $tasks = [];
     /**
-     * @var \marvin255\fias\task\TaskInterface|null
+     * @var TaskInterface|null
      */
     private $cleanup;
 
     /**
      * Регистрирует операцию в приложении.
      *
-     * @param \marvin255\fias\task\TaskInterface $task
+     * @param TaskInterface $task
      *
      * @return $this
      */
@@ -42,7 +42,7 @@ class Pipe
      * Задает задачу, которая будет запущена по штатному или нештатному
      * завершению цепочки задач.
      *
-     * @param \marvin255\fias\task\TaskInterface $task
+     * @param TaskInterface $task
      *
      * @return $this
      */
@@ -56,11 +56,11 @@ class Pipe
     /**
      * Запускает все операции на выполнение.
      *
-     * @param \marvin255\fias\state\StateInterface $state
+     * @param StateInterface $state
      *
      * @return $this
      *
-     * @throws \marvin255\fias\task\RuntimeException
+     * @throws RuntimeException
      */
     public function run(StateInterface $state): self
     {
@@ -84,7 +84,7 @@ class Pipe
     /**
      * Обработка завершения задачи.
      *
-     * @param \marvin255\fias\state\StateInterface $state
+     * @param StateInterface $state
      *
      * @return void
      */

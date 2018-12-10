@@ -16,12 +16,12 @@ interface UnpackerInterface
      * Извлекает данные из указанного в первом параметре архива по
      * указанному во втором параметре пути.
      *
-     * @param \marvin255\fias\service\filesystem\FileInterface      $source
-     * @param \marvin255\fias\service\filesystem\DirectoryInterface $destination
+     * @param FileInterface      $source
+     * @param DirectoryInterface $destination
      *
      * @return void
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function unpack(FileInterface $source, DirectoryInterface $destination);
 }

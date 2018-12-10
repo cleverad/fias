@@ -17,18 +17,18 @@ use InvalidArgumentException;
 class Unpack extends AbstractTask
 {
     /**
-     * @var \marvin255\fias\service\unpacker\UnpackerInterface
+     * @var UnpackerInterface
      */
     protected $unpacker;
     /**
-     * @var \marvin255\fias\service\filesystem\DirectoryInterface
+     * @var DirectoryInterface
      */
     protected $workDir;
 
     /**
-     * @param \marvin255\fias\service\unpacker\UnpackerInterface    $unpacker
-     * @param \marvin255\fias\service\filesystem\DirectoryInterface $workDir
-     * @param \Psr\Log\LoggerInterface                              $logger
+     * @param UnpackerInterface  $unpacker
+     * @param DirectoryInterface $workDir
+     * @param LoggerInterface    $logger
      */
     public function __construct(UnpackerInterface $unpacker, DirectoryInterface $workDir, LoggerInterface $logger = null)
     {

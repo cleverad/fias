@@ -14,8 +14,8 @@ interface DbInterface
     /**
      * Добавляет новую строку в базу данных.
      *
-     * @param \marvin255\fias\mapper\SqlMapperInterface $mapper
-     * @param array                                     $item
+     * @param SqlMapperInterface $mapper
+     * @param array              $item
      *
      * @return void
      *
@@ -26,8 +26,8 @@ interface DbInterface
     /**
      * Обновляет строку в базе данных.
      *
-     * @param \marvin255\fias\mapper\SqlMapperInterface $mapper
-     * @param array                                     $item
+     * @param SqlMapperInterface $mapper
+     * @param array              $item
      *
      * @return void
      *
@@ -38,8 +38,8 @@ interface DbInterface
     /**
      * Удаляет строку из базы данных.
      *
-     * @param \marvin255\fias\mapper\SqlMapperInterface $mapper
-     * @param array                                     $item
+     * @param SqlMapperInterface $mapper
+     * @param array              $item
      *
      * @return void
      *
@@ -50,7 +50,7 @@ interface DbInterface
     /**
      * Создает таблицу в базе данных, согласно описанию из маппера.
      *
-     * @param \marvin255\fias\mapper\SqlMapperInterface $mapper
+     * @param SqlMapperInterface $mapper
      *
      * @return void
      *
@@ -61,7 +61,7 @@ interface DbInterface
     /**
      * Удалает таблицу в базе данных, согласно описанию из маппера.
      *
-     * @param \marvin255\fias\mapper\SqlMapperInterface $mapper
+     * @param SqlMapperInterface $mapper
      *
      * @return void
      *
@@ -72,7 +72,7 @@ interface DbInterface
     /**
      * Очищает от содержимого таблицу в базе данных, согласно описанию из маппера.
      *
-     * @param \marvin255\fias\mapper\SqlMapperInterface $mapper
+     * @param SqlMapperInterface $mapper
      *
      * @return void
      *

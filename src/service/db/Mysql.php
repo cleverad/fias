@@ -17,7 +17,7 @@ use PDOException;
 class Mysql implements DbInterface
 {
     /**
-     * @var \PDO
+     * @var PDO
      */
     protected $pdoConnection;
     /**
@@ -36,8 +36,8 @@ class Mysql implements DbInterface
     /**
      * Задает объект PDO для соединения с базой данных.
      *
-     * @param \PDO $pdo
-     * @param int  $butchInsertLimit
+     * @param PDO $pdo
+     * @param int $butchInsertLimit
      */
     public function __construct(PDO $pdo, int $butchInsertLimit = 50)
     {
@@ -157,7 +157,7 @@ class Mysql implements DbInterface
      *
      * @param string $table
      *
-     * @throws \marvin255\fias\service\db\Exception
+     * @throws Exception
      *
      * @return void
      */
@@ -185,7 +185,7 @@ class Mysql implements DbInterface
      * @param string $sql
      * @param array  $params
      *
-     * @throws \marvin255\fias\service\db\Exception
+     * @throws Exception
      */
     protected function execute(string $sql, array $params = []): bool
     {
@@ -210,9 +210,9 @@ class Mysql implements DbInterface
      *
      * @param string $sql
      *
-     * @return \PDOStatement
+     * @return PDOStatement
      *
-     * @throws \marvin255\fias\service\db\Exception
+     * @throws Exception
      */
     protected function getStatement(string $sql): PDOStatement
     {
@@ -275,11 +275,11 @@ class Mysql implements DbInterface
     /**
      * Возвращает строку для создания колонки из типа поля.
      *
-     * @param \marvin255\fias\mapper\FieldInterface $field
+     * @param FieldInterface $field
      *
      * @return string
      *
-     * @throws \marvin255\fias\service\db\Exception
+     * @throws Exception
      */
     protected function resolveParamType(FieldInterface $field): string
     {
@@ -315,10 +315,10 @@ class Mysql implements DbInterface
     /**
      * Создает условие для поиска строк по первичному ключу.
      *
-     * @param \marvin255\fias\mapper\SqlMapperInterface $mapper
-     * @param array                                     $item
+     * @param SqlMapperInterface $mapper
+     * @param array              $item
      *
-     * @throws \marvin255\fias\service\db\Exception
+     * @throws Exception
      *
      * @return mixed[]
      */

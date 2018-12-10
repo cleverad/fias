@@ -45,8 +45,8 @@ class Rar implements UnpackerInterface
     /**
      * Распаковывает архи в указанный каталог.
      *
-     * @param \RarArchive                                           $archive
-     * @param \marvin255\fias\service\filesystem\DirectoryInterface $destination
+     * @param RarArchive         $archive
+     * @param DirectoryInterface $destination
      *
      * @return void
      *
@@ -71,11 +71,11 @@ class Rar implements UnpackerInterface
     /**
      * Возвращает объект с открытым архивом.
      *
-     * @param \marvin255\fias\service\filesystem\FileInterface $source
+     * @param FileInterface $source
      *
-     * @return \RarArchive
+     * @return RarArchive
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function getRarInstance(FileInterface $source): RarArchive
     {

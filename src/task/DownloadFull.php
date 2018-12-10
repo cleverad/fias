@@ -16,23 +16,23 @@ use Psr\Log\LoggerInterface;
 class DownloadFull extends AbstractTask
 {
     /**
-     * @var \marvin255\fias\service\fias\InformerInterface
+     * @var InformerInterface
      */
     protected $informer;
     /**
-     * @var \marvin255\fias\service\downloader\DownloaderInterface
+     * @var DownloaderInterface
      */
     protected $downloader;
     /**
-     * @var \marvin255\fias\service\filesystem\DirectoryInterface
+     * @var DirectoryInterface
      */
     protected $workDir;
 
     /**
-     * @param \marvin255\fias\service\fias\InformerInterface         $informer
-     * @param \marvin255\fias\service\downloader\DownloaderInterface $downloader
-     * @param \marvin255\fias\service\filesystem\DirectoryInterface  $workDir
-     * @param \Psr\Log\LoggerInterface                               $logger
+     * @param InformerInterface   $informer
+     * @param DownloaderInterface $downloader
+     * @param DirectoryInterface  $workDir
+     * @param LoggerInterface     $logger
      */
     public function __construct(InformerInterface $informer, DownloaderInterface $downloader, DirectoryInterface $workDir, LoggerInterface $logger = null)
     {

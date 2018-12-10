@@ -33,7 +33,7 @@ class File implements FileInterface
      *
      * @param string $path
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $path)
     {
@@ -104,7 +104,7 @@ class File implements FileInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function delete()
     {

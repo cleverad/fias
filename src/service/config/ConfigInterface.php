@@ -26,8 +26,6 @@ interface ConfigInterface
      * @param int    $defaultValue
      *
      * @return int
-     *
-     * @throws \UnexpectedValueException
      */
     public function getInt(string $optionName, int $defaultValue): int;
 

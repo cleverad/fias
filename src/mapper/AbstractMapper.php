@@ -22,7 +22,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     /**
      * Закешированный массив сущностей.
      *
-     * @var \marvin255\fias\mapper\FieldInterface[]
+     * @var FieldInterface[]
      */
     protected $cachedMap = [];
 
@@ -30,12 +30,12 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
      * Создает список полей и возвращает ассоциативный массив, в котором ключами
      * служат названия полей, а значениями - объекты FieldInterface.
      *
-     * @return \marvin255\fias\mapper\FieldInterface[]
+     * @return FieldInterface[]
      */
     abstract protected function createFields(): array;
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getMap(): array
     {
@@ -48,7 +48,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function mapArray(array $messyArray): array
     {
@@ -63,7 +63,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function convertToStrings(array $messyArray): array
     {
@@ -80,7 +80,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function mapPrimaries(array $messyArray): array
     {
@@ -95,7 +95,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function mapNotPrimaries(array $messyArray): array
     {
@@ -113,9 +113,9 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * {@inhertitdoc}.
+     * {@inheritdoc}
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function extractArrayFromXml(string $xml): array
     {
@@ -143,7 +143,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getInsertFileMask(): string
     {
@@ -151,7 +151,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getDeleteFileMask(): string
     {
@@ -159,7 +159,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getSqlName(): string
     {
@@ -167,7 +167,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getSqlIndexes(): array
     {
@@ -175,7 +175,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getSqlPartitionsCount(): int
     {
@@ -183,7 +183,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * @inhertitdoc
+     * @inheritdoc
      */
     public function getSqlPartitionField(): string
     {

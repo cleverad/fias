@@ -37,7 +37,7 @@ class Directory implements DirectoryInterface
     /**
      * @param string $path
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $path)
     {
@@ -93,7 +93,7 @@ class Directory implements DirectoryInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function create(): DirectoryInterface
     {
@@ -109,7 +109,7 @@ class Directory implements DirectoryInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function delete(): DirectoryInterface
     {
@@ -128,7 +128,7 @@ class Directory implements DirectoryInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function empty(): DirectoryInterface
     {
@@ -142,7 +142,7 @@ class Directory implements DirectoryInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function createChildDirectory(string $name): DirectoryInterface
     {
@@ -156,7 +156,7 @@ class Directory implements DirectoryInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function createChildFile(string $name): FileInterface
     {
@@ -240,9 +240,9 @@ class Directory implements DirectoryInterface
     /**
      * Возвращает внутренний объект итератора для перебора содержимого данной папки.
      *
-     * @return \Iterator
+     * @return Iterator
      *
-     * @throws \UnexpectedValueException
+     * @throws UnexpectedValueException
      */
     protected function getIterator(): Iterator
     {

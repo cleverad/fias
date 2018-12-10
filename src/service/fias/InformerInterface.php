@@ -13,7 +13,7 @@ interface InformerInterface
     /**
      * Получает ссылку на файл с полными данными ФИАС.
      *
-     * @return \marvin255\fias\service\fias\InformerResultInterface
+     * @return InformerResultInterface
      */
     public function getCompleteInfo(): InformerResultInterface;
 
@@ -27,7 +27,7 @@ interface InformerInterface
      *
      * @param int $version Текущая версия, относительно которой нужно ополучить файл с изменениями на следующую версию
      *
-     * @return \marvin255\fias\service\fias\InformerResultInterface
+     * @return InformerResultInterface
      */
     public function getDeltaInfo(int $version): InformerResultInterface;
 }
