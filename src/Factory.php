@@ -17,11 +17,12 @@ use marvin255\fias\service\xml\ReaderInterface;
 use marvin255\fias\service\xml\Reader;
 use marvin255\fias\service\db\DbInterface;
 use marvin255\fias\service\db\Mysql;
+use marvin255\fias\mapper\AbstractMapper;
 use marvin255\fias\task\Cleanup;
 use marvin255\fias\task\DownloadFull;
 use marvin255\fias\task\Unpack;
+use marvin255\fias\task\CreateStructure;
 use marvin255\fias\task\InsertData;
-use marvin255\fias\mapper\AbstractMapper;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use PDO;
@@ -64,13 +65,18 @@ class Factory
         $mappers = $this->getMappers();
 
         $pipe = new Pipe;
-        $pipe->setCleanup(new Cleanup);
+
         $pipe->pipe(new DownloadFull($informer, $downloader, $workDir, $log));
         $pipe->pipe(new Unpack($unpacker, $workDir, $log));
 
         foreach ($mappers as $mapper) {
+            if ($this->config->getBool('createStructure', true)) {
+                $pipe->pipe(new CreateStructure($db, $mapper, $log));
+            }
             $pipe->pipe(new InsertData($reader, $db, $mapper, $log));
         }
+
+        $pipe->setCleanup(new Cleanup);
 
         return $pipe;
     }
@@ -82,7 +88,7 @@ class Factory
      *
      * @throws InvalidArgumentException
      */
-    protected function getMappers()
+    protected function getMappers(): array
     {
         $return = [];
 
