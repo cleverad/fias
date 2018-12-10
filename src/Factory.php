@@ -79,6 +79,8 @@ class Factory
      * Возвращает список сущностей, которые будут использованы для задачи.
      *
      * @return AbstractMapper[]
+     *
+     * @throws InvalidArgumentException
      */
     protected function getMappers()
     {
