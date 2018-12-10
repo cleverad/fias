@@ -67,4 +67,29 @@ class ArrayConfig implements ConfigInterface
 
         return $defaultValue;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRaw(string $optionName)
+    {
+        return isset($this->options[$optionName]) ? $this->options[$optionName] : null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getArray(string $optionName): array
+    {
+        $value = [];
+        if (isset($this->options[$optionName]) && is_array($this->options[$optionName])) {
+            $value = $this->options[$optionName];
+        } elseif (isset($this->options[$optionName])) {
+            throw new UnexpectedValueException(
+                "Can't convert {$optionName} value to array"
+            );
+        }
+
+        return $value;
+    }
 }

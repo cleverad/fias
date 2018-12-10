@@ -87,4 +87,46 @@ class ArrayConfigTest extends BaseTestCase
         $this->expectException(UnexpectedValueException::class);
         $config->getInt('string');
     }
+
+    /**
+     * Проверяет получение объекта без приведения к типу.
+     */
+    public function testGetRaw()
+    {
+        $raw = new \stdClass;
+
+        $config = new ArrayConfig(['raw' => $raw]);
+
+        $this->assertSame($raw, $config->getRaw('raw'));
+    }
+
+    /**
+     * Проверяет получение массива.
+     */
+    public function testGetArray()
+    {
+        $array = [
+            $this->faker()->word,
+            $this->faker()->word,
+            $this->faker()->word,
+        ];
+
+        $config = new ArrayConfig(['array' => $array]);
+
+        $this->assertSame($array, $config->getArray('array'));
+    }
+
+    /**
+     * Проверяет, что объект выьросит исключение при попытке получить опцию
+     * как массив, если она массивом не являяется.
+     */
+    public function testGetArrayException()
+    {
+        $array = $this->faker()->word;
+
+        $config = new ArrayConfig(['array' => $array]);
+
+        $this->expectException(UnexpectedValueException::class);
+        $config->getArray('array');
+    }
 }

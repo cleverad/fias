@@ -38,4 +38,22 @@ interface ConfigInterface
      * @return bool
      */
     public function getBool(string $optionName, bool $defaultValue): bool;
+
+    /**
+     * Возвращает значание опции по имени  без приведения к типу.
+     *
+     * @param string $optionName
+     *
+     * @return mixed
+     */
+    public function getRaw(string $optionName);
+
+    /**
+     * Возвращает значание опции по имни в виде массива.
+     *
+     * @param string $optionName
+     *
+     * @return array
+     */
+    public function getArray(string $optionName): array;
 }
