@@ -140,7 +140,7 @@ class Factory
      */
     protected function createWorkDir(): DirectoryInterface
     {
-        return new Directory($this->config->getString('workDir', ''));
+        return new Directory($this->config->getString('work_dir', ''));
     }
 
     /**
@@ -176,15 +176,15 @@ class Factory
      */
     protected function createDb(): DbInterface
     {
-        $dsn = $this->config->getString('pdo.dsn', '');
-        $user = $this->config->getString('pdo.user', '');
-        $password = $this->config->getString('pdo.password', '');
+        $dsn = $this->config->getString('pdo_dsn', '');
+        $user = $this->config->getString('pdo_user', '');
+        $password = $this->config->getString('pdo_password', '');
 
         if (!$dsn) {
-            throw new InvalidArgumentException('Empty pdo.dsn config parameter');
+            throw new InvalidArgumentException('Empty pdo_dsn config parameter');
         }
         if (!$user) {
-            throw new InvalidArgumentException('Empty pdo.user config parameter');
+            throw new InvalidArgumentException('Empty pdo_user config parameter');
         }
 
         return new Mysql(new PDO($dsn, $user, $password));

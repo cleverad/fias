@@ -6,6 +6,7 @@ composer.lock
 tests/coverage
 
 staging/.vagrant
+staging/workdir
 staging/*.log
 
 .~lock.*
