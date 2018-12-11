@@ -9,6 +9,7 @@ use marvin255\fias\service\fias\InformerInterface;
 use marvin255\fias\service\downloader\DownloaderInterface;
 use marvin255\fias\service\filesystem\DirectoryInterface;
 use Psr\Log\LoggerInterface;
+use Exception;
 
 /**
  * Задача для загрузки архива с полной версией ФИАС.
@@ -52,10 +53,19 @@ class DownloadFull extends AbstractTask
 
         if ($informerResult->hasResult()) {
             $this->info('Url fetched: ' . $informerResult->getUrl());
+
             $file = $this->workDir->createChildFile('archive.rar');
-            $this->info('Downloading file from ' . $informerResult->getUrl() . ' to ' . $file->getPath());
-            $this->downloader->download($informerResult->getUrl(), $file);
-            $this->info('Downloading complete ' . $file->getPath());
+
+            try {
+                $this->info('Downloading file from ' . $informerResult->getUrl() . ' to ' . $file->getPath());
+                $this->downloader->download($informerResult->getUrl(), $file);
+                $this->info('Downloading complete ' . $file->getPath());
+            } catch (Exception $e) {
+                $this->info('Downloading break, removing ' . $file->getPath());
+                $file->delete();
+                throw $e;
+            }
+
             $state->setParameter('informerResult', $informerResult);
             $state->setParameter('archive', $file);
         } else {

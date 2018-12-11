@@ -13,6 +13,7 @@ use marvin255\fias\service\filesystem\FileInterface;
 use marvin255\fias\service\filesystem\DirectoryInterface;
 use marvin255\fias\task\DownloadFull;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 /**
  * Тест для объекта, который загружает архив с полной версией ФИАС.
@@ -86,6 +87,42 @@ class DownloadFullTest extends BaseTestCase
         $state->expects($this->once())->method('complete');
 
         $task = new DownloadFull($informer, $downloader, $workDir);
+        $task->run($state);
+    }
+
+    /**
+     * Проверяет, что в случае, если при загрузке произойдет ошибка,
+     * недозагруженный файл будет удален.
+     */
+    public function testRunDownloadingException()
+    {
+        $url = $this->faker()->unique()->url;
+        $version = $this->faker()->unique()->randomDigit + 1;
+        $path = '/' . $this->faker()->unique()->word . '/' . $this->faker()->unique()->word;
+
+        $informerResult = $this->getMockBuilder(InformerResultInterface::class)->getMock();
+        $informerResult->method('getUrl')->will($this->returnValue($url));
+        $informerResult->method('getVersion')->will($this->returnValue($version));
+        $informerResult->method('hasResult')->will($this->returnValue(true));
+
+        $informer = $this->getMockBuilder(InformerInterface::class)->getMock();
+        $informer->method('getCompleteInfo')->will($this->returnValue($informerResult));
+
+        $file = $this->getMockBuilder(FileInterface::class)->getMock();
+        $file->method('getPath')->will($this->returnValue($path));
+        $file->expects($this->once())->method('delete');
+
+        $workDir = $this->getMockBuilder(DirectoryInterface::class)->getMock();
+        $workDir->method('createChildFile')->will($this->returnValue($file));
+
+        $downloader = $this->getMockBuilder(DownloaderInterface::class)->getMock();
+        $downloader->method('download')->will($this->throwException(new RuntimeException));
+
+        $state = $this->getMockBuilder(StateInterface::class)->getMock();
+
+        $task = new DownloadFull($informer, $downloader, $workDir);
+
+        $this->expectException(RuntimeException::class);
         $task->run($state);
     }
 }
