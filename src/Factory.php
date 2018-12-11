@@ -53,7 +53,7 @@ class Factory
      *
      * @throws Exception
      */
-    public function createInsertPipe(): Pipe
+    public function createInstallPipe(): Pipe
     {
         $informer = $this->createInformer();
         $downloader = $this->createDownloader();
