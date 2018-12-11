@@ -27,7 +27,7 @@ class Cleanup extends AbstractTask
      */
     public function run(StateInterface $state)
     {
-        $this->info('Cleaning up');
+        $this->info('Start cleaning up');
 
         $archive = $state->getParameter('archive');
         if ($archive instanceof FileInterface && $archive->isExists()) {
@@ -41,6 +41,6 @@ class Cleanup extends AbstractTask
             $extractedDir->delete();
         }
 
-        $this->info('Cleaning up complete');
+        $this->info('Complete cleaning up');
     }
 }
