@@ -31,7 +31,9 @@ class UnpackTest extends BaseTestCase
         $archive->method('getPath')->will($this->returnValue($path));
 
         $extractDir = $this->getMockBuilder(DirectoryInterface::class)->getMock();
+        $extractDir->method('isExists')->will($this->returnValue(false));
         $extractDir->method('getPath')->will($this->returnValue($dir));
+        $extractDir->expects($this->once())->method('create');
 
         $workDir = $this->getMockBuilder(DirectoryInterface::class)->getMock();
         $workDir->method('createChildDirectory')->will($this->returnValue($extractDir));

@@ -50,6 +50,9 @@ class Unpack extends AbstractTask
         }
 
         $extractDir = $this->workDir->createChildDirectory('extract');
+        if (!$extractDir->isExists()) {
+            $extractDir->create();
+        }
 
         $this->info(
             'Unpacking archive ' . $archive->getPath()
