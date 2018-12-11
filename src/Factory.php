@@ -76,7 +76,7 @@ class Factory
             $pipe->pipe(new InsertData($reader, $db, $mapper, $log));
         }
 
-        $pipe->setCleanup(new Cleanup);
+        $pipe->setCleanup(new Cleanup($log));
 
         return $pipe;
     }

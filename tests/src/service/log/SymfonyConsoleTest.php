@@ -24,7 +24,10 @@ class SymfonyConsoleTest extends BaseTestCase
         $output = $this->getMockBuilder(OutputInterface::class)->getMock();
         $output->expects($this->once())
             ->method('writeln')
-            ->with($this->equalTo("<info>{$message}</info>"));
+            ->with($this->logicalAnd(
+                $this->stringContains($message),
+                $this->stringContains('info')
+            ));
 
         $log = new SymfonyConsole($output);
 
@@ -41,7 +44,10 @@ class SymfonyConsoleTest extends BaseTestCase
         $output = $this->getMockBuilder(OutputInterface::class)->getMock();
         $output->expects($this->once())
             ->method('writeln')
-            ->with($this->equalTo("<error>{$message}</error>"));
+            ->with($this->logicalAnd(
+                $this->stringContains($message),
+                $this->stringContains('error')
+            ));
 
         $log = new SymfonyConsole($output);
 

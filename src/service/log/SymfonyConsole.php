@@ -44,7 +44,8 @@ class SymfonyConsole extends AbstractLogger
     public function log($level, $message, array $context = [])
     {
         $type = in_array($level, $this->errorLevels) ? 'error' : 'info';
+        $date = date('d.m.Y H:i:s');
 
-        $this->output->writeln("<{$type}>{$message}</{$type}>");
+        $this->output->writeln("<{$type}>{$date} -> {$message}</{$type}>");
     }
 }
