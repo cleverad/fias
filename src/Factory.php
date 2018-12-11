@@ -70,7 +70,7 @@ class Factory
         $pipe->pipe(new Unpack($unpacker, $workDir, $log));
 
         foreach ($mappers as $mapper) {
-            if ($this->config->getBool('createStructure', true)) {
+            if ($this->config->getBool('createStructure', false)) {
                 $pipe->pipe(new CreateStructure($db, $mapper, $log));
             }
             $pipe->pipe(new InsertData($reader, $db, $mapper, $log));
