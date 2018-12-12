@@ -1,1 +1,0 @@
-{"virtualbox":{"/var/app":{"guestpath":"/var/app","hostpath":"/var/www/fias70","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/var/www/fias70/staging/mysql","disabled":false,"__vagrantfile":true}}}

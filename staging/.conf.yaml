@@ -1,4 +1,4 @@
-createStructure: true
+create_structure: true
 work_dir: '@currDir/workdir'
 pdo_dsn: 'mysql:host=localhost;dbname=fias;charset=UTF8'
 pdo_user: 'root'

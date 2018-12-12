@@ -69,8 +69,9 @@ class Factory
         $pipe->pipe(new DownloadFull($informer, $downloader, $workDir, $log));
         $pipe->pipe(new Unpack($unpacker, $workDir, $log));
 
+        $isStructureNeeded = $this->config->getBool('create_structure', false);
         foreach ($mappers as $mapper) {
-            if ($this->config->getBool('createStructure', false)) {
+            if ($isStructureNeeded) {
                 $pipe->pipe(new CreateStructure($db, $mapper, $log));
             }
             $pipe->pipe(new InsertData($reader, $db, $mapper, $log));
