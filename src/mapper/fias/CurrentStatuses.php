@@ -28,7 +28,7 @@ class CurrentStatuses extends AbstractMapper
      */
     public function getXmlPath(): string
     {
-        return '/CenterStatuses/CenterStatus';
+        return '/CurrentStatuses/CurrentStatus';
     }
 
     /**
