@@ -3,7 +3,7 @@ work_dir: '@currDir/workdir'
 pdo_dsn: 'mysql:host=localhost;dbname=fias;charset=UTF8'
 pdo_user: 'root'
 pdo_password: 'password'
-pdo_butch_insert_limit: 200
+pdo_butch_insert_limit: 100
 mappers:
     - \marvin255\fias\mapper\fias\ActualStatuses
     - \marvin255\fias\mapper\fias\AddressObjectTypes
