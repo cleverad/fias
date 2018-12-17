@@ -188,7 +188,10 @@ class Factory
             throw new InvalidArgumentException('Empty pdo_user config parameter');
         }
 
-        return new Mysql(new PDO($dsn, $user, $password));
+        $pdo = new PDO($dsn, $user, $password);
+        $butchInsertLimit = $this->config->getInt('pdo_butch_insert_limit', 50);
+
+        return new Mysql($pdo, $butchInsertLimit);
     }
 
     /**

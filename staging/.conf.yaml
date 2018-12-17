@@ -3,21 +3,22 @@ work_dir: '@currDir/workdir'
 pdo_dsn: 'mysql:host=localhost;dbname=fias;charset=UTF8'
 pdo_user: 'root'
 pdo_password: 'password'
+pdo_butch_insert_limit: 200
 mappers:
     - \marvin255\fias\mapper\fias\ActualStatuses
-    - \marvin255\fias\mapper\fias\AddressObjects
     - \marvin255\fias\mapper\fias\AddressObjectTypes
     - \marvin255\fias\mapper\fias\CenterStatuses
     - \marvin255\fias\mapper\fias\CurrentStatuses
     - \marvin255\fias\mapper\fias\EstateStatuses
     - \marvin255\fias\mapper\fias\FlatTypes
-    - \marvin255\fias\mapper\fias\Houses
     - \marvin255\fias\mapper\fias\HouseStateStatuses
     - \marvin255\fias\mapper\fias\IntervalStatuses
-    - \marvin255\fias\mapper\fias\NormativeDocumentes
     - \marvin255\fias\mapper\fias\NormativeDocumentTypes
     - \marvin255\fias\mapper\fias\OperationStatuses
-    - \marvin255\fias\mapper\fias\Rooms
     - \marvin255\fias\mapper\fias\RoomTypes
-    - \marvin255\fias\mapper\fias\Steads
     - \marvin255\fias\mapper\fias\StructureStatuses
+    - \marvin255\fias\mapper\fias\AddressObjects
+    - \marvin255\fias\mapper\fias\NormativeDocumentes
+    - \marvin255\fias\mapper\fias\Steads
+    - \marvin255\fias\mapper\fias\Houses
+    - \marvin255\fias\mapper\fias\Rooms
