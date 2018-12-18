@@ -189,7 +189,7 @@ class Factory
         }
 
         $pdo = new PDO($dsn, $user, $password);
-        $butchInsertLimit = $this->config->getInt('pdo_butch_insert_limit', 50);
+        $butchInsertLimit = $this->config->getInt('pdo_batch_insert_limit', 50);
 
         return new Mysql($pdo, $butchInsertLimit);
     }

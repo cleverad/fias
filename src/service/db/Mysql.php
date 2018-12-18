@@ -31,18 +31,18 @@ class Mysql implements DbInterface
     /**
      * @var int
      */
-    protected $butchInsertLimit = 50;
+    protected $batchInsertLimit = 50;
 
     /**
      * Задает объект PDO для соединения с базой данных.
      *
      * @param PDO $pdo
-     * @param int $butchInsertLimit
+     * @param int $batchInsertLimit
      */
-    public function __construct(PDO $pdo, int $butchInsertLimit = 50)
+    public function __construct(PDO $pdo, int $batchInsertLimit = 50)
     {
         $this->pdoConnection = $pdo;
-        $this->butchInsertLimit = $butchInsertLimit;
+        $this->batchInsertLimit = $batchInsertLimit;
     }
 
     /**
@@ -58,7 +58,7 @@ class Mysql implements DbInterface
 
         $this->insertQueue[$table][] = $mapper->convertToStrings($mapper->mapArray($item));
 
-        if (count($this->insertQueue[$table]) === $this->butchInsertLimit) {
+        if (count($this->insertQueue[$table]) === $this->batchInsertLimit) {
             $this->flushInsert($table);
         }
     }
