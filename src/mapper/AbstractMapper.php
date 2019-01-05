@@ -128,7 +128,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
                 $return[$fieldName] = $field->convertToData($value);
             }
         } catch (Throwable $e) {
-            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
+            throw new RuntimeException($e->getMessage(), (int) $e->getCode(), $e);
         }
 
         return $return;

@@ -69,7 +69,7 @@ class Pipe
                 $task->run($state);
             } catch (Exception $e) {
                 $this->cleanup($state);
-                throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
+                throw new RuntimeException($e->getMessage(), (int) $e->getCode(), $e);
             }
             if ($state->isCompleted()) {
                 break;

@@ -68,7 +68,7 @@ class YamlConfig extends ArrayConfig
         } catch (Exception $e) {
             throw new InvalidArgumentException(
                 $e->getMessage(),
-                $e->getCode(),
+                (int) $e->getCode(),
                 $e
             );
         }
