@@ -107,7 +107,8 @@ trait XmlMapperTrait
 
         if (!($return instanceof SimpleXMLElement) || libxml_get_errors()) {
             $exceptionMessages = [];
-            foreach (libxml_get_errors() as $error) {
+            $libXmlErrors = libxml_get_errors();
+            foreach ($libXmlErrors as $error) {
                 $exceptionMessages[] = $error->message;
             }
             libxml_clear_errors();
