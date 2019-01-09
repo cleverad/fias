@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace marvin255\fias\mapper;
 
+use InvalidArgumentException;
+
 /**
  * Трэйт для объекта, который поясняет как правильно записать данные в
  * базу данных.
@@ -79,9 +81,7 @@ trait SqlMapperTrait
      * Убирает из входящего массива все поля, ключей для которых нет в списке
      * полей первичного ключа.
      *
-     * @param array $messyArray
-     *
-     * @return array
+     * @throws InvalidArgumentException
      */
     public function mapPrimaries(array $messyArray): array
     {
@@ -89,7 +89,10 @@ trait SqlMapperTrait
         $primariesArray = [];
 
         foreach ($primaries as $primary) {
-            $primariesArray[$primary] = $messyArray[$primary] ?? null;
+            if (!isset($messyArray[$primary])) {
+                throw new InvalidArgumentException("There is no {$primary} key in item");
+            }
+            $primariesArray[$primary] = $messyArray[$primary];
         }
 
         return $primariesArray;
@@ -98,10 +101,6 @@ trait SqlMapperTrait
     /**
      * Убирает из входящего массива все поля, ключи для которых есть в списке
      * полей первичного ключа.
-     *
-     * @param array $messyArray
-     *
-     * @return array
      */
     public function mapNotPrimaries(array $messyArray): array
     {
@@ -143,8 +142,6 @@ trait SqlMapperTrait
     /**
      * Возвращает название поля, которое следует использовать для разделения
      * таблицы на части.
-     *
-     * @return string
      */
     public function getSqlPartitionField(): string
     {

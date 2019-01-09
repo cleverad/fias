@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\service\db;
 
 use marvin255\fias\mapper\SqlMapperInterface;
-use marvin255\fias\mapper\field\FieldInterface;
-use marvin255\fias\mapper\field;
 use PDO;
-use PDOStatement;
-use PDOException;
 
 /**
  * Объект для взаймодействия с базой данных mysql.
@@ -17,21 +13,17 @@ use PDOException;
 class PdoConnection implements ConnectionInterface
 {
     /**
-     * @var PDO
+     * @var MysqlQueryRunner
      */
-    protected $pdoConnection;
-    /**
-     * @var array
-     */
-    protected $prepared = [];
-    /**
-     * @var mixed[]
-     */
-    protected $insertQueue = [];
+    protected $queryRunner;
     /**
      * @var int
      */
     protected $batchInsertLimit = 50;
+    /**
+     * @var mixed[]
+     */
+    protected $insertQueue = [];
 
     /**
      * Задает объект PDO для соединения с базой данных.
@@ -41,7 +33,7 @@ class PdoConnection implements ConnectionInterface
      */
     public function __construct(PDO $pdo, int $batchInsertLimit = 50)
     {
-        $this->pdoConnection = $pdo;
+        $this->queryRunner = new MysqlQueryRunner($pdo);
         $this->batchInsertLimit = $batchInsertLimit;
     }
 
@@ -64,37 +56,32 @@ class PdoConnection implements ConnectionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function update(SqlMapperInterface $mapper, array $item)
     {
-        list($where, $params) = $this->createPrimaryCondition($mapper, $item);
+        $table = $mapper->getSqlName();
+        $update = $mapper->convertToStrings($mapper->mapNotPrimaries($item));
+        $where = $mapper->convertToStrings($mapper->mapPrimaries($item));
 
-        $set = '';
-        $setCount = 0;
-        $mapped = $mapper->convertToStrings($mapper->mapNotPrimaries($item));
-        foreach ($mapped as $fieldName => $value) {
-            $fieldNameEscaped = $this->escapeDDLName($fieldName);
-            $paramName = ":set{$setCount}";
-            $set .= ($set ? ', ' : '') . "{$fieldNameEscaped} = {$paramName}";
-            $params[$paramName] = $value;
-            ++$setCount;
-        }
-
-        $table = $this->escapeDDLName($mapper->getSqlName());
-
-        $this->execute("UPDATE {$table} SET {$set} WHERE {$where}", $params);
+        $this->queryRunner->update($table, $update, $where);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function delete(SqlMapperInterface $mapper, array $item)
     {
-        list($where, $params) = $this->createPrimaryCondition($mapper, $item);
-        $table = $this->escapeDDLName($mapper->getSqlName());
+        $table = $mapper->getSqlName();
+        $where = $mapper->convertToStrings($mapper->mapPrimaries($item));
 
-        $this->execute("DELETE FROM {$table} WHERE {$where}", $params);
+        $this->queryRunner->delete($table, $where);
     }
 
     /**
@@ -102,26 +89,14 @@ class PdoConnection implements ConnectionInterface
      */
     public function createTable(SqlMapperInterface $mapper)
     {
-        $fields = $this->createFieldListForCreateTable($mapper->getMap());
+        $table = $mapper->getSqlName();
+        $fields = $mapper->getMap();
+        $primaries = $mapper->getSqlPrimary();
+        $indexes = $mapper->getSqlIndexes();
+        $partitionField = $mapper->getSqlPartitionField();
+        $partitionCount = $mapper->getSqlPartitionsCount();
 
-        $index = $this->createIndexListForCreateTable($mapper->getSqlIndexes());
-
-        $arPrimary = array_map([$this, 'escapeDDLName'], $mapper->getSqlPrimary());
-        $primary = 'PRIMARY KEY (' . implode(', ', $arPrimary) . ')';
-
-        $afterTable = ' ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci';
-        if ($mapper->getSqlPartitionsCount() > 1 && $mapper->getSqlPartitionField()) {
-            $afterTable .= ' PARTITION BY HASH(' . $this->escapeDDLName($mapper->getSqlPartitionField()) . ')';
-            $afterTable .= ' PARTITIONS ' . $mapper->getSqlPartitionsCount();
-        }
-
-        $tableName = $this->escapeDDLName($mapper->getSqlName());
-        $sql = "CREATE TABLE {$tableName} ({$fields}{$index}{$primary})";
-        if ($this->pdoConnection->getAttribute(PDO::ATTR_DRIVER_NAME) !== 'sqlite') {
-            $sql .= $afterTable;
-        }
-
-        $this->execute($sql);
+        $this->queryRunner->createTable($table, $fields, $primaries, $indexes, $partitionField, $partitionCount);
     }
 
     /**
@@ -129,17 +104,17 @@ class PdoConnection implements ConnectionInterface
      */
     public function dropTable(SqlMapperInterface $mapper)
     {
-        $tableName = $this->escapeDDLName($mapper->getSqlName());
-        $this->execute("DROP TABLE IF EXISTS {$tableName}");
+        $this->queryRunner->dropTable($mapper->getSqlName());
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws Exception
      */
     public function truncateTable(SqlMapperInterface $mapper)
     {
-        $tableName = $this->escapeDDLName($mapper->getSqlName());
-        $this->execute("DELETE FROM {$tableName}");
+        $this->queryRunner->delete($mapper->getSqlName());
     }
 
     /**
@@ -164,180 +139,7 @@ class PdoConnection implements ConnectionInterface
     protected function flushInsert(string $table)
     {
         $data = $this->insertQueue[$table];
-        $firstItem = reset($data);
-        $fields = array_keys($firstItem);
-        $escapedTable = $this->escapeDDLName($table);
+        $this->queryRunner->batchInsert($table, $data);
         unset($this->insertQueue[$table]);
-
-        $setOfFields = implode(', ', array_map([$this, 'escapeDDLName'], $fields));
-        $setOfValues = implode(', ', array_fill(0, count($fields), '?'));
-        $sqlForBulkInsert = "INSERT INTO {$escapedTable} ({$setOfFields}) VALUES ("
-            . implode('), (', array_fill(0, count($data), $setOfValues))
-            . ')';
-        $flatAray = call_user_func_array('array_merge', array_map('array_values', $data));
-
-        $this->execute($sqlForBulkInsert, $flatAray);
-    }
-
-    /**
-     * Выполняет запрос с указанными параметрами.
-     *
-     * @param string $sql
-     * @param array  $params
-     *
-     * @throws Exception
-     */
-    protected function execute(string $sql, array $params = []): bool
-    {
-        try {
-            $statement = $this->getStatement($sql);
-            $res = $statement->execute($params);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 0, $e);
-        }
-
-        if (!$res) {
-            $error = $statement->errorInfo();
-            throw new Exception($error[2]);
-        }
-
-        return $res;
-    }
-
-    /**
-     * Возвращает подговтовленное выражение, если оно уже есть,
-     * либо создает новое и добавляет в список.
-     *
-     * @param string $sql
-     *
-     * @return PDOStatement
-     *
-     * @throws Exception
-     */
-    protected function getStatement(string $sql): PDOStatement
-    {
-        foreach ($this->prepared as $prepared) {
-            if ($prepared->queryString === $sql) {
-                return $prepared;
-            }
-        }
-
-        $newPrepared = $this->pdoConnection->prepare($sql);
-        if (!($newPrepared instanceof PDOStatement)) {
-            throw new Exception("Can't prepare statement for {$sql}");
-        }
-
-        $this->prepared[] = $newPrepared;
-
-        return $newPrepared;
-    }
-
-    /**
-     * Создает строку с описаниями индексов для CREATE TABLE.
-     *
-     * @param string[][] $fields
-     *
-     * @return string
-     */
-    protected function createIndexListForCreateTable(array $indexes): string
-    {
-        $return = '';
-
-        foreach ($indexes as $indexKey => $arIndex) {
-            $arIndex = array_map([$this, 'escapeDDLName'], $arIndex);
-            $return .= 'INDEX ' . $this->escapeDDLName("ndx_{$indexKey}");
-            $return .= ' (' . implode(', ', $arIndex) . '), ';
-        }
-
-        return $return;
-    }
-
-    /**
-     * Создает строку с описаниями столбцов для CREATE TABLE.
-     *
-     * @param FieldInterface[] $fields
-     *
-     * @return string
-     */
-    protected function createFieldListForCreateTable(array $fields): string
-    {
-        $return = '';
-
-        foreach ($fields as $fieldName => $field) {
-            $fieldName = $this->escapeDDLName($fieldName);
-            $paramType = $this->resolveParamType($field);
-            $return .= "{$fieldName} {$paramType}, ";
-        }
-
-        return $return;
-    }
-
-    /**
-     * Возвращает строку для создания колонки из типа поля.
-     *
-     * @param FieldInterface $field
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    protected function resolveParamType(FieldInterface $field): string
-    {
-        $return = '';
-
-        if ($field instanceof field\Line) {
-            $return = 'varchar(' . $field->getLength() . ') not null';
-        }
-
-        if ($field instanceof field\IntNumber) {
-            $return = 'int(' . $field->getLength() . ') not null';
-        }
-
-        if ($field instanceof field\Date) {
-            $return = 'date not null';
-        }
-
-        return $return;
-    }
-
-    /**
-     * Эскейпит названия колонок и таблиц.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function escapeDDLName(string $name): string
-    {
-        return '`' . trim(str_replace('`', '', $name)) . '`';
-    }
-
-    /**
-     * Создает условие для поиска строк по первичному ключу.
-     *
-     * @param SqlMapperInterface $mapper
-     * @param array              $item
-     *
-     * @throws Exception
-     *
-     * @return mixed[]
-     */
-    protected function createPrimaryCondition(SqlMapperInterface $mapper, array $item): array
-    {
-        $sql = '';
-        $params = [];
-        $primaryCount = 0;
-        foreach ($mapper->getSqlPrimary() as $primaryName) {
-            if (!isset($item[$primaryName])) {
-                throw new Exception("There is no {$primaryName} key in item");
-            }
-            $escapedName = $this->escapeDDLName($primaryName);
-            $primaryParam = ":primary{$primaryCount}";
-            $sql .= ($sql ? ' AND ' : '') . "{$escapedName} = {$primaryParam}";
-            $params[$primaryParam] = $item[$primaryName];
-            ++$primaryCount;
-        }
-
-        return [$sql, $params];
     }
 }

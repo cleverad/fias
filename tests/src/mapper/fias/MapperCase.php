@@ -7,6 +7,7 @@ namespace marvin255\fias\tests\mapper\fias;
 use marvin255\fias\tests\BaseTestCase;
 use marvin255\fias\mapper\MapperInterface;
 use RuntimeException;
+use InvalidArgumentException;
 
 /**
  * Базовый тест кейс для мапперов.
@@ -119,6 +120,20 @@ abstract class MapperCase extends BaseTestCase
         ksort($mappedData);
 
         $this->assertSame($data, $mappedData);
+    }
+
+    /**
+     * Проверяет, что маппер при попытке получить первичные ключи
+     * выбросит исключение, если во входящем массиве
+     * не будет указан одиз из первичных ключей.
+     */
+    public function testMapPrimariesNoPrimaryException()
+    {
+        $mapper = $this->getMapper();
+        $primaries = $mapper->getSqlPrimary();
+
+        $this->expectException(InvalidArgumentException::class, reset($primaries));
+        $mapper->mapPrimaries([]);
     }
 
     /**

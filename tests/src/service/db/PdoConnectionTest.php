@@ -14,6 +14,7 @@ use PHPUnit\DbUnit\DataSet\CompositeDataSet;
 use PDO;
 use PDOException;
 use PDOStatement;
+use InvalidArgumentException;
 
 /**
  * Тест для объекта, который взаймодействует с базой данных mysql.
@@ -165,7 +166,7 @@ class PdoConnectionTest extends DbTestCase
 
         $mysql = new PdoConnection($this->getPdo());
 
-        $this->expectException(Exception::class, 'id');
+        $this->expectException(InvalidArgumentException::class, 'id');
         $mysql->delete($mapper, ['row1' => 'row']);
     }
 
