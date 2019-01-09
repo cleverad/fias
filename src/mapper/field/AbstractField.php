@@ -9,11 +9,4 @@ namespace marvin255\fias\mapper\field;
  */
 abstract class AbstractField implements FieldInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function convertToString($input): string
-    {
-        return (string) $input;
-    }
 }

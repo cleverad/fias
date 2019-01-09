@@ -6,6 +6,7 @@ namespace marvin255\fias\tests\mapper\field;
 
 use marvin255\fias\tests\BaseTestCase;
 use marvin255\fias\mapper\field\IntNumber;
+use InvalidArgumentException;
 
 /**
  * Тест для целочисленного поля сущности.
@@ -17,7 +18,7 @@ class IntNumberTest extends BaseTestCase
      */
     public function testGetLength()
     {
-        $length = $this->faker()->unique()->randomNumber + 1;
+        $length = $this->faker()->randomNumber + 1;
 
         $field = new IntNumber($length);
 
@@ -29,13 +30,37 @@ class IntNumberTest extends BaseTestCase
      */
     public function testConvertToData()
     {
-        $value = (string) $this->faker()->unique()->randomNumber;
-        $valueString = $this->faker()->unique()->randomNumber . 'word';
+        $value = (string) $this->faker()->randomNumber;
 
         $field = new IntNumber;
 
         $this->assertSame((int) $value, $field->convertToData($value));
-        $this->assertSame((int) $valueString, $field->convertToData($valueString));
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение при попытке конвертации
+     * строки, которая превышает заданне количество символов.
+     */
+    public function testConvertToDataLengthException()
+    {
+        $value = (string) $this->faker()->numberBetween(100, 999);
+        $field = new IntNumber(2);
+
+        $this->expectException(InvalidArgumentException::class);
+        $field->convertToData($value);
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение при попытке конвертации
+     * строки, которая состоит не только из цифр.
+     */
+    public function testConvertToDataNotNumericException()
+    {
+        $value = $this->faker()->lexify('???????');
+        $field = new IntNumber(10);
+
+        $this->expectException(InvalidArgumentException::class);
+        $field->convertToData($value);
     }
 
     /**
@@ -43,12 +68,23 @@ class IntNumberTest extends BaseTestCase
      */
     public function testConvertToString()
     {
-        $value = (string) $this->faker()->unique()->randomNumber;
-        $valueString = $this->faker()->unique()->randomNumber . 'word';
+        $value = (string) $this->faker()->randomNumber;
 
         $field = new IntNumber;
 
         $this->assertSame((string) $value, $field->convertToString($value));
-        $this->assertSame((string) $valueString, $field->convertToString($valueString));
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение при попытке конвертации
+     * числа, которое превышает заданное количество символов.
+     */
+    public function testConvertToStringLengthException()
+    {
+        $value = $this->faker()->numberBetween(100, 999);
+        $field = new IntNumber(2);
+
+        $this->expectException(InvalidArgumentException::class);
+        $field->convertToString($value);
     }
 }
