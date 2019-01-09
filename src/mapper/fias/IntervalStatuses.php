@@ -19,6 +19,10 @@ class IntervalStatuses extends AbstractMapper
         'NAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'INTVSTATID';
+    /**
      * @var string
      */
     protected $xmlPath = '/IntervalStatuses/IntervalStatus';
@@ -30,12 +34,4 @@ class IntervalStatuses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_INTVSTAT_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['INTVSTATID'];
-    }
 }

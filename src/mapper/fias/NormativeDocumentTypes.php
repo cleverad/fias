@@ -19,6 +19,10 @@ class NormativeDocumentTypes extends AbstractMapper
         'NAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'NDTYPEID';
+    /**
      * @var string
      */
     protected $xmlPath = '/NormativeDocumentTypes/NormativeDocumentType';
@@ -30,12 +34,4 @@ class NormativeDocumentTypes extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_NDOCTYPE_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['NDTYPEID'];
-    }
 }

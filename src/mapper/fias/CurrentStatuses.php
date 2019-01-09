@@ -19,6 +19,10 @@ class CurrentStatuses extends AbstractMapper
         'NAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'CURENTSTID';
+    /**
      * @var string
      */
     protected $xmlPath = '/CurrentStatuses/CurrentStatus';
@@ -30,12 +34,4 @@ class CurrentStatuses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_CURENTST_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['CURENTSTID'];
-    }
 }

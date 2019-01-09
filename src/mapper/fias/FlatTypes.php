@@ -20,6 +20,10 @@ class FlatTypes extends AbstractMapper
         'SHORTNAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'FLTYPEID';
+    /**
      * @var string
      */
     protected $xmlPath = '/FlatTypes/FlatType';
@@ -31,12 +35,4 @@ class FlatTypes extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_FLATTYPE_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['FLTYPEID'];
-    }
 }

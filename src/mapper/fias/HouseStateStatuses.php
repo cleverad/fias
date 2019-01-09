@@ -19,6 +19,10 @@ class HouseStateStatuses extends AbstractMapper
         'NAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'HOUSESTID';
+    /**
      * @var string
      */
     protected $xmlPath = '/HouseStateStatuses/HouseStateStatus';
@@ -30,12 +34,4 @@ class HouseStateStatuses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_HSTSTAT_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['HOUSESTID'];
-    }
 }

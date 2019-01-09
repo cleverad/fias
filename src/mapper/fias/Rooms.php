@@ -30,6 +30,18 @@ class Rooms extends AbstractMapper
         'NORMDOC' => 'uuid',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'ROOMID';
+    /**
+     * @var int
+     */
+    protected $sqlPartitionsCount = 4;
+    /**
+     * @var string
+     */
+    protected $sqlPartitionField = 'ROOMID';
+    /**
      * @var string
      */
     protected $xmlPath = '/Rooms/Room';
@@ -41,12 +53,4 @@ class Rooms extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_ROOM_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['ROOMID'];
-    }
 }

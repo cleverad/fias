@@ -34,6 +34,18 @@ class Houses extends AbstractMapper
         'DIVTYPE' => 'int',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'HOUSEID';
+    /**
+     * @var int
+     */
+    protected $sqlPartitionsCount = 4;
+    /**
+     * @var string
+     */
+    protected $sqlPartitionField = 'HOUSEID';
+    /**
      * @var string
      */
     protected $xmlPath = '/Houses/House';
@@ -45,12 +57,4 @@ class Houses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_HOUSE_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['HOUSEID'];
-    }
 }

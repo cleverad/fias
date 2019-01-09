@@ -20,6 +20,10 @@ class StructureStatuses extends AbstractMapper
         'SHORTNAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'STRSTATID';
+    /**
      * @var string
      */
     protected $xmlPath = '/StructureStatuses/StructureStatus';
@@ -31,12 +35,4 @@ class StructureStatuses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_STRSTAT_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['STRSTATID'];
-    }
 }

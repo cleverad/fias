@@ -22,6 +22,10 @@ class NormativeDocumentes extends AbstractMapper
         'DOCTYPE' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'NORMDOCID';
+    /**
      * @var string
      */
     protected $xmlPath = '/NormativeDocumentes/NormativeDocument';
@@ -33,12 +37,4 @@ class NormativeDocumentes extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_NORMDOC_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['NORMDOCID'];
-    }
 }

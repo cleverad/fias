@@ -19,6 +19,10 @@ class EstateStatuses extends AbstractMapper
         'NAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'ESTSTATID';
+    /**
      * @var string
      */
     protected $xmlPath = '/EstateStatuses/EstateStatus';
@@ -30,12 +34,4 @@ class EstateStatuses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_ESTSTAT_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['ESTSTATID'];
-    }
 }

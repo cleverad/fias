@@ -52,6 +52,10 @@ class AddressObjects extends AbstractMapper
         'DIVTYPE' => 'int',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'AOID';
+    /**
      * @var string
      */
     protected $xmlPath = '/AddressObjects/Object';
@@ -63,12 +67,4 @@ class AddressObjects extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_ADDROBJ_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['AOID'];
-    }
 }

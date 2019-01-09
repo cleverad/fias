@@ -19,6 +19,10 @@ class OperationStatuses extends AbstractMapper
         'NAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'OPERSTATID';
+    /**
      * @var string
      */
     protected $xmlPath = '/OperationStatuses/OperationStatus';
@@ -30,12 +34,4 @@ class OperationStatuses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_OPERSTAT_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['OPERSTATID'];
-    }
 }

@@ -19,6 +19,10 @@ class CenterStatuses extends AbstractMapper
         'NAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'CENTERSTID';
+    /**
      * @var string
      */
     protected $xmlPath = '/CenterStatuses/CenterStatus';
@@ -30,12 +34,4 @@ class CenterStatuses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_CENTERST_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['CENTERSTID'];
-    }
 }

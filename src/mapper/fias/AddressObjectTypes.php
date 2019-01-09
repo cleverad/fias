@@ -21,6 +21,10 @@ class AddressObjectTypes extends AbstractMapper
         'SCNAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'KOD_T_ST';
+    /**
      * @var string
      */
     protected $xmlPath = '/AddressObjectTypes/AddressObjectType';
@@ -32,12 +36,4 @@ class AddressObjectTypes extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_SOCRBASE_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['KOD_T_ST'];
-    }
 }

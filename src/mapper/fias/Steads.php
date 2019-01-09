@@ -34,6 +34,10 @@ class Steads extends AbstractMapper
         'NORMDOC' => 'uuid',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'STEADGUID';
+    /**
      * @var string
      */
     protected $xmlPath = '/Steads/Stead';
@@ -45,12 +49,4 @@ class Steads extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_STEAD_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['STEADGUID'];
-    }
 }

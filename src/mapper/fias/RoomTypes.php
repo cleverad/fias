@@ -20,6 +20,10 @@ class RoomTypes extends AbstractMapper
         'SHORTNAME' => 'string',
     ];
     /**
+     * @var string[]|string
+     */
+    protected $sqlPrimary = 'RMTYPEID';
+    /**
      * @var string
      */
     protected $xmlPath = '/RoomTypes/RoomType';
@@ -31,12 +35,4 @@ class RoomTypes extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_ROOMTYPE_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    public function getSqlPrimary(): array
-    {
-        return ['RMTYPEID'];
-    }
 }
