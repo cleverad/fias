@@ -56,11 +56,9 @@ trait SqlMapperTrait
      */
     public function getSqlName(): string
     {
-        $name = '';
-        if ($this->sqlName === null) {
+        $name = $this->sqlName;
+        if ($name === null) {
             $name = trim(str_replace('\\', '_', strtolower(get_class($this))), '_');
-        } else {
-            $name = $this->sqlName;
         }
 
         return $name;
@@ -74,9 +72,7 @@ trait SqlMapperTrait
      */
     public function getSqlPrimary(): array
     {
-        return is_array($this->sqlPrimary)
-            ? $this->sqlPrimary
-            : [$this->sqlPrimary];
+        return is_array($this->sqlPrimary) ? $this->sqlPrimary : [$this->sqlPrimary];
     }
 
     /**
