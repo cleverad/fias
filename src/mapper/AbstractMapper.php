@@ -13,6 +13,7 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
         SqlMapperTrait::getMap insteadof XmlMapperTrait;
         SqlMapperTrait::mapArray insteadof XmlMapperTrait;
         SqlMapperTrait::convertToStrings insteadof XmlMapperTrait;
+        SqlMapperTrait::convertToData insteadof XmlMapperTrait;
         SqlMapperTrait::initializeField insteadof XmlMapperTrait;
     }
 }

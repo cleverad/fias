@@ -38,7 +38,27 @@ class PdoConnection implements ConnectionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
+    public function selectRow(SqlMapperInterface $mapper, array $item)
+    {
+        $table = $mapper->getSqlName();
+        $select = array_keys($mapper->getMap());
+        $where = $mapper->convertToStrings($item);
+
+        $res = $this->queryRunner->selectRow($table, $select, $where);
+
+        return $res ? $mapper->convertToData($res) : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function insert(SqlMapperInterface $mapper, array $item)
     {

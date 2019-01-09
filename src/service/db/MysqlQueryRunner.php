@@ -35,6 +35,35 @@ class MysqlQueryRunner
     }
 
     /**
+     * Ищет строку в указанной таблице по условию.
+     *
+     * @param string   $table
+     * @param array    $select
+     * @param string[] $where
+     *
+     * @return array|null
+     *
+     * @throws Exception
+     */
+    public function selectRow(string $table, array $select, array $where = [])
+    {
+        $table = $this->escapeDDLName($table);
+        $select = implode(', ', array_map([$this, 'escapeDDLName'], $select));
+
+        $params = [];
+        $sql = "SELECT {$select} FROM {$table}";
+        if (!empty($where)) {
+            list($where, $whereParams) = $this->makeWhereStatement($where);
+            $sql .= " WHERE {$where}";
+            $params = array_merge($params, $whereParams);
+        }
+
+        $res = $this->fetch($sql, $params);
+
+        return !empty($res) ? reset($res) : null;
+    }
+
+    /**
      * Добавляет несколько строк в таблицу.
      *
      * @param string     $table
@@ -157,11 +186,9 @@ class MysqlQueryRunner
     /**
      * Выполняет запрос с указанными параметрами.
      *
-     * @return void
-     *
      * @throws Exception
      */
-    protected function execute(string $sql, array $params = [])
+    protected function execute(string $sql, array $params = []): PDOStatement
     {
         try {
             $statement = $this->getStatement($sql);
@@ -174,6 +201,19 @@ class MysqlQueryRunner
             $error = $statement->errorInfo();
             throw new Exception($error[2]);
         }
+
+        return $statement;
+    }
+
+    /**
+     * Выполняет запрос с указанными параметрами и возвращает значения в виде
+     * ассоциативного массива.
+     *
+     * @throws Exception
+     */
+    protected function fetch(string $sql, array $params = []): array
+    {
+        return $this->execute($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**

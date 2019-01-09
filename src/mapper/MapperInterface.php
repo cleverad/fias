@@ -37,4 +37,13 @@ interface MapperInterface
      * @return array
      */
     public function convertToStrings(array $messyArray): array;
+
+    /**
+     * Приводит значения к php представлениям.
+     *
+     * @param array $messyArray
+     *
+     * @return array
+     */
+    public function convertToData(array $messyArray): array;
 }

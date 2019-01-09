@@ -99,6 +99,30 @@ abstract class MapperCase extends BaseTestCase
     }
 
     /**
+     * Проверяет, что маппер выделяет из входящего массива только те элементы,
+     * ключи для которых описаны в списке полей маппера, и конвертирует их
+     * в php представление.
+     */
+    public function testConvertToData()
+    {
+        $mapper = $this->getMapper();
+        $fields = $mapper->getMap();
+        $data = $this->getTestData();
+
+        $stringedData = [];
+        foreach ($data as $key => $value) {
+            $stringedData[$key] = $fields[$key]->convertToString($value);
+        }
+
+        $mappedData = $mapper->convertToData($stringedData);
+
+        ksort($data);
+        ksort($mappedData);
+
+        $this->assertEquals($data, $mappedData);
+    }
+
+    /**
      * Проверяет, что маппер выделяет их входящего массива только те элементы,
      * ключи для которых описаны в списке первичных ключей.
      */

@@ -22,6 +22,43 @@ use InvalidArgumentException;
 class PdoConnectionTest extends DbTestCase
 {
     /**
+     * Проверяет, что объект получает данные из таблицы указанной в маппере.
+     */
+    public function testSelectRow()
+    {
+        $tableName = 'testSelectRow';
+        $columnsNames = [
+            'id',
+            'row1',
+            'row2',
+        ];
+        $columnsDefinitions = [
+            new field\IntNumber,
+            new field\Line,
+            new field\Line,
+        ];
+        $columns = array_combine($columnsNames, $columnsDefinitions);
+        $id = 3;
+
+        $mapper = $this->getMockBuilder(AbstractMapper::class)
+            ->setMethods(['getMap', 'getSqlName', 'getSqlPrimary'])
+            ->getMock();
+        $mapper->method('getMap')->will($this->returnValue($columns));
+        $mapper->method('getSqlName')->will($this->returnValue($tableName));
+        $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
+
+        $mysql = new PdoConnection($this->getPdo(), 2);
+        $selectedData = $mysql->selectRow($mapper, ['id' => $id]);
+        $mysql->complete();
+
+        $this->assertSame([
+            'id' => $id,
+            'row1' => 'row 3 1',
+            'row2' => 'row 3 2',
+        ], $selectedData);
+    }
+
+    /**
      * Проверяет, что объект добавляет новые записи в таблицу, указанную в маппере.
      */
     public function testInsert()
@@ -331,6 +368,9 @@ class PdoConnectionTest extends DbTestCase
         $compositeDs = new CompositeDataSet;
 
         $compositeDs->addDataSet(
+            $this->createXmlDataSet(__DIR__ . '/_fixture/testSelectRow.xml')
+        );
+        $compositeDs->addDataSet(
             $this->createXmlDataSet(__DIR__ . '/_fixture/testInsert.xml')
         );
         $compositeDs->addDataSet(
@@ -353,6 +393,12 @@ class PdoConnectionTest extends DbTestCase
     {
         $pdo = $this->getPdo();
 
+        $pdo->exec('CREATE TABLE testSelectRow (
+            id int(11) not null,
+            row1 varchar(30),
+            row2 varchar(30),
+            PRIMARY KEY(id)
+        )');
         $pdo->exec('CREATE TABLE testInsert (
             id int(11) not null,
             row1 varchar(30),
@@ -390,6 +436,7 @@ class PdoConnectionTest extends DbTestCase
      */
     public function tearDown()
     {
+        $this->getPdo()->exec('DROP TABLE IF EXISTS testSelectRow');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testInsert');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testUpdate');
         $this->getPdo()->exec('DROP TABLE IF EXISTS testDelete');

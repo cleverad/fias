@@ -117,6 +117,29 @@ trait MapperTrait
     }
 
     /**
+     * Приводит значения к php представлениям.
+     *
+     * @param array $messyArray
+     *
+     * @return array
+     *
+     * @throws UnexpectedValueException
+     */
+    public function convertToData(array $messyArray): array
+    {
+        $map = $this->getMap();
+        $convertedArray = [];
+
+        foreach ($messyArray as $fieldName => $value) {
+            $convertedArray[$fieldName] = isset($map[$fieldName])
+                ? $map[$fieldName]->convertToData($value)
+                : $value;
+        }
+
+        return $convertedArray;
+    }
+
+    /**
      * Инициирует объект поля по его описанию.
      *
      * @param array $init

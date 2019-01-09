@@ -12,6 +12,15 @@ use marvin255\fias\mapper\SqlMapperInterface;
 interface ConnectionInterface
 {
     /**
+     * Ищет строку в базе данных.
+     *
+     * @return array|null
+     *
+     * @throws \marvin255\fias\service\db\Exception
+     */
+    public function selectRow(SqlMapperInterface $mapper, array $item);
+
+    /**
      * Добавляет новую строку в базу данных.
      *
      * @param SqlMapperInterface $mapper
