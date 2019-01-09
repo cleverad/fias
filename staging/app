@@ -3,6 +3,7 @@
 
 use Symfony\Component\Console\Application;
 use marvin255\fias\cli\InstallCommand;
+use marvin255\fias\cli\UpdateCommand;
 
 require __DIR__ . '/../vendor/autoload.php';
 
