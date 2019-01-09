@@ -26,7 +26,7 @@ class Houses extends AbstractMapper
         'IFNSUL' => ['string', 4],
         'OKATO' => ['string', 11],
         'OKTMO' => ['string', 11],
-        'POSTALCODE' => ['string', 11],
+        'POSTALCODE' => ['string', 6],
         'STARTDATE' => 'date',
         'ENDDATE' => 'date',
         'UPDATEDATE' => 'date',

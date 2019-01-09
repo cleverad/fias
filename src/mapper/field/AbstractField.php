@@ -12,14 +12,6 @@ abstract class AbstractField implements FieldInterface
     /**
      * @inheritdoc
      */
-    public function convertToData(string $input)
-    {
-        return $input;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function convertToString($input): string
     {
         return (string) $input;
