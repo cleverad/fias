@@ -47,7 +47,7 @@ class PdoConnection implements ConnectionInterface
     {
         $table = $mapper->getSqlName();
         $select = array_keys($mapper->getMap());
-        $where = $mapper->convertToStrings($item);
+        $where = $mapper->convertToStrings($mapper->mapPrimaries($item));
 
         $res = $this->queryRunner->selectRow($table, $select, $where);
 
