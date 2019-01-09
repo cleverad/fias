@@ -9,5 +9,6 @@ require __DIR__ . '/../vendor/autoload.php';
 $application = new Application;
 
 $application->add(new InstallCommand);
+$application->add(new UpdateCommand);
 
 $application->run();
