@@ -14,7 +14,7 @@ use PDOException;
 /**
  * Объект для взаймодействия с базой данных mysql.
  */
-class Mysql implements DbInterface
+class PdoConnection implements ConnectionInterface
 {
     /**
      * @var PDO

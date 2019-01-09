@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace marvin255\fias\task;
 
-use marvin255\fias\service\db\DbInterface;
+use marvin255\fias\service\db\ConnectionInterface;
 use marvin255\fias\mapper\AbstractMapper;
 use marvin255\fias\state\StateInterface;
 use Psr\Log\LoggerInterface;
@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 class CreateStructure extends AbstractTask
 {
     /**
-     * @var DbInterface
+     * @var ConnectionInterface
      */
     protected $db;
     /**
@@ -24,11 +24,11 @@ class CreateStructure extends AbstractTask
     protected $mapper;
 
     /**
-     * @param DbInterface     $db
-     * @param AbstractMapper  $mapper
-     * @param LoggerInterface $logger
+     * @param ConnectionInterface $db
+     * @param AbstractMapper      $mapper
+     * @param LoggerInterface     $logger
      */
-    public function __construct(DbInterface $db, AbstractMapper $mapper, LoggerInterface $logger = null)
+    public function __construct(ConnectionInterface $db, AbstractMapper $mapper, LoggerInterface $logger = null)
     {
         $this->db = $db;
         $this->mapper = $mapper;

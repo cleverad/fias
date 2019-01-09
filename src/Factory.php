@@ -15,8 +15,8 @@ use marvin255\fias\service\unpacker\UnpackerInterface;
 use marvin255\fias\service\unpacker\Rar;
 use marvin255\fias\service\xml\ReaderInterface;
 use marvin255\fias\service\xml\Reader;
-use marvin255\fias\service\db\DbInterface;
-use marvin255\fias\service\db\Mysql;
+use marvin255\fias\service\db\ConnectionInterface;
+use marvin255\fias\service\db\PdoConnection;
 use marvin255\fias\mapper\AbstractMapper;
 use marvin255\fias\task\Cleanup;
 use marvin255\fias\task\DownloadFull;
@@ -171,11 +171,11 @@ class Factory
     /**
      * Создает объект для обращения к базе данных.
      *
-     * @return DbInterface
+     * @return ConnectionInterface
      *
      * @throws Exception
      */
-    protected function createDb(): DbInterface
+    protected function createDb(): ConnectionInterface
     {
         $dsn = $this->config->getString('pdo_dsn', '');
         $user = $this->config->getString('pdo_user', '');
@@ -191,7 +191,7 @@ class Factory
         $pdo = new PDO($dsn, $user, $password);
         $butchInsertLimit = $this->config->getInt('pdo_batch_insert_limit', 50);
 
-        return new Mysql($pdo, $butchInsertLimit);
+        return new PdoConnection($pdo, $butchInsertLimit);
     }
 
     /**

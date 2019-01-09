@@ -6,7 +6,7 @@ namespace marvin255\fias\tests\task;
 
 use marvin255\fias\tests\BaseTestCase;
 use marvin255\fias\state\StateInterface;
-use marvin255\fias\service\db\DbInterface;
+use marvin255\fias\service\db\ConnectionInterface;
 use marvin255\fias\mapper\AbstractMapper;
 use marvin255\fias\task\CreateStructure;
 use Psr\Log\LoggerInterface;
@@ -25,7 +25,7 @@ class CreateStructureTest extends BaseTestCase
         $mapper = $this->getMockBuilder(AbstractMapper::class)->getMock();
         $mapper->method('getSqlName')->will($this->returnValue('test'));
 
-        $db = $this->getMockBuilder(DbInterface::class)->getMock();
+        $db = $this->getMockBuilder(ConnectionInterface::class)->getMock();
         $db->expects($this->once($mapper))->method('dropTable')->with($this->equalTo($mapper));
         $db->expects($this->once($mapper))->method('createTable')->with($this->equalTo($mapper));
 

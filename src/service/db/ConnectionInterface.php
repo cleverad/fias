@@ -9,7 +9,7 @@ use marvin255\fias\mapper\SqlMapperInterface;
 /**
  * Интерфейс для объекта, который реализует взаимодействие с базой данных.
  */
-interface DbInterface
+interface ConnectionInterface
 {
     /**
      * Добавляет новую строку в базу данных.

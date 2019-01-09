@@ -13,7 +13,7 @@ use marvin255\fias\service\filesystem\Directory;
 use marvin255\fias\service\xml\Reader;
 use marvin255\fias\mapper\AbstractMapper;
 use marvin255\fias\mapper\field;
-use marvin255\fias\service\db\Mysql;
+use marvin255\fias\service\db\PdoConnection;
 use InvalidArgumentException;
 
 /**
@@ -27,7 +27,7 @@ class InsertDataTest extends DbTestCase
     public function testRun()
     {
         $reader = new Reader;
-        $mysql = new Mysql($this->getPdo(), 2);
+        $mysql = new PdoConnection($this->getPdo(), 2);
 
         $tableName = 'testRun';
 
@@ -82,7 +82,7 @@ class InsertDataTest extends DbTestCase
     public function testRunEmptyExtractedInStateException()
     {
         $reader = new Reader;
-        $mysql = new Mysql($this->getPdo());
+        $mysql = new PdoConnection($this->getPdo());
         $mapper = $this->getMockBuilder(AbstractMapper::class)->getMock();
         $state = new ArrayState;
 
@@ -99,7 +99,7 @@ class InsertDataTest extends DbTestCase
     public function testRunNoFileFound()
     {
         $reader = new Reader;
-        $mysql = new Mysql($this->getPdo(), 2);
+        $mysql = new PdoConnection($this->getPdo(), 2);
 
         $tableName = 'testRun';
 
@@ -144,7 +144,7 @@ class InsertDataTest extends DbTestCase
     public function testRunCantOpenFileException()
     {
         $reader = new Reader;
-        $mysql = new Mysql($this->getPdo(), 2);
+        $mysql = new PdoConnection($this->getPdo(), 2);
 
         $tableName = 'testRun';
 

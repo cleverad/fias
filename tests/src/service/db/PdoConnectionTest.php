@@ -8,7 +8,7 @@ use marvin255\fias\tests\DbTestCase;
 use marvin255\fias\mapper\SqlMapperInterface;
 use marvin255\fias\mapper\AbstractMapper;
 use marvin255\fias\mapper\field;
-use marvin255\fias\service\db\Mysql;
+use marvin255\fias\service\db\PdoConnection;
 use marvin255\fias\service\db\Exception;
 use PHPUnit\DbUnit\DataSet\CompositeDataSet;
 use PDO;
@@ -18,7 +18,7 @@ use PDOStatement;
 /**
  * Тест для объекта, который взаймодействует с базой данных mysql.
  */
-class MysqlTest extends DbTestCase
+class PdoConnectionTest extends DbTestCase
 {
     /**
      * Проверяет, что объект добавляет новые записи в таблицу, указанную в маппере.
@@ -45,7 +45,7 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
-        $mysql = new Mysql($this->getPdo(), 2);
+        $mysql = new PdoConnection($this->getPdo(), 2);
         $mysql->insert($mapper, ['id' => 3, 'row1' => 'row 3 1', 'row2' => 'row 3 2']);
         $mysql->insert($mapper, ['id' => 4, 'row1' => 'row 4 1', 'row2' => 'row 4 2']);
         $mysql->insert($mapper, ['id' => 5, 'row1' => 'row 5 1', 'row2' => 'row 5 2']);
@@ -86,7 +86,7 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
-        $mysql = new Mysql($this->getPdo());
+        $mysql = new PdoConnection($this->getPdo());
         $mysql->update($mapper, ['id' => 2, 'row2' => 'updated 2']);
         $mysql->update($mapper, ['id' => 3, 'row2' => 'updated 3']);
         $mysql->complete();
@@ -124,7 +124,7 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
-        $mysql = new Mysql($this->getPdo());
+        $mysql = new PdoConnection($this->getPdo());
         $mysql->delete($mapper, ['id' => 1]);
         $mysql->delete($mapper, ['id' => 3]);
         $mysql->complete();
@@ -163,7 +163,7 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
-        $mysql = new Mysql($this->getPdo());
+        $mysql = new PdoConnection($this->getPdo());
 
         $this->expectException(Exception::class, 'id');
         $mysql->delete($mapper, ['row1' => 'row']);
@@ -194,7 +194,7 @@ class MysqlTest extends DbTestCase
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
-        $mysql = new Mysql($this->getPdo());
+        $mysql = new PdoConnection($this->getPdo());
         $mysql->createTable($mapper);
 
         $this->assertTableExists($tableName);
@@ -214,7 +214,7 @@ class MysqlTest extends DbTestCase
             ->getMock();
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
 
-        $mysql = new Mysql($this->getPdo());
+        $mysql = new PdoConnection($this->getPdo());
 
         $this->assertTableExists($tableName);
         $mysql->dropTable($mapper);
@@ -232,7 +232,7 @@ class MysqlTest extends DbTestCase
             ->getMock();
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
 
-        $mysql = new Mysql($this->getPdo());
+        $mysql = new PdoConnection($this->getPdo());
         $mysql->truncateTable($mapper);
 
         $queryTable = $this->getConnection()->createQueryTable(
@@ -261,7 +261,7 @@ class MysqlTest extends DbTestCase
             ->getMock();
         $pdo->method('prepare')->will($this->returnValue(false));
 
-        $mysql = new Mysql($pdo);
+        $mysql = new PdoConnection($pdo);
 
         $this->expectException(Exception::class, 'testTable');
         $mysql->dropTable($mapper);
@@ -282,7 +282,7 @@ class MysqlTest extends DbTestCase
             ->getMock();
         $pdo->method('prepare')->will($this->throwException(new PDOException));
 
-        $mysql = new Mysql($pdo);
+        $mysql = new PdoConnection($pdo);
 
         $this->expectException(Exception::class);
         $mysql->dropTable($mapper);
@@ -316,7 +316,7 @@ class MysqlTest extends DbTestCase
             ->getMock();
         $pdo->method('prepare')->will($this->returnValue($statement));
 
-        $mysql = new Mysql($pdo);
+        $mysql = new PdoConnection($pdo);
 
         $this->expectException(Exception::class, $error);
         $mysql->dropTable($mapper);

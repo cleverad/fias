@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\task;
 
 use marvin255\fias\service\xml\ReaderInterface;
-use marvin255\fias\service\db\DbInterface;
+use marvin255\fias\service\db\ConnectionInterface;
 use marvin255\fias\mapper\AbstractMapper;
 use marvin255\fias\service\filesystem\DirectoryInterface;
 use marvin255\fias\service\filesystem\FileInterface;
@@ -23,7 +23,7 @@ abstract class AbstractDataTask extends AbstractTask
      */
     protected $reader;
     /**
-     * @var DbInterface
+     * @var ConnectionInterface
      */
     protected $db;
     /**
@@ -57,12 +57,12 @@ abstract class AbstractDataTask extends AbstractTask
     abstract protected function processItem(array $item);
 
     /**
-     * @param ReaderInterface $reader
-     * @param DbInterface     $db
-     * @param AbstractMapper  $mapper
-     * @param LoggerInterface $logger
+     * @param ReaderInterface     $reader
+     * @param ConnectionInterface $db
+     * @param AbstractMapper      $mapper
+     * @param LoggerInterface     $logger
      */
-    public function __construct(ReaderInterface $reader, DbInterface $db, AbstractMapper $mapper, LoggerInterface $logger = null)
+    public function __construct(ReaderInterface $reader, ConnectionInterface $db, AbstractMapper $mapper, LoggerInterface $logger = null)
     {
         $this->reader = $reader;
         $this->db = $db;
