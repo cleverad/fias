@@ -377,7 +377,7 @@ class MysqlQueryRunner
         if ($this->pdoConnection->getAttribute(PDO::ATTR_DRIVER_NAME) !== 'sqlite') {
             $meta = 'ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci';
             if ($partitionCount > 1 && !empty($partitionField)) {
-                $meta .= ' PARTITION BY HASH(' . $this->escapeDDLName($partitionField) . ')';
+                $meta .= ' PARTITION BY KEY(' . $this->escapeDDLName($partitionField) . ')';
                 $meta .= " PARTITIONS {$partitionCount}";
             }
         }
