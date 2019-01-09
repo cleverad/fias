@@ -33,7 +33,7 @@ class DeleteDataTest extends DbTestCase
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
             ->setMethods([
-                'createFields',
+                'getMap',
                 'getSqlName',
                 'getSqlPrimary',
                 'getDeleteFileMask',
@@ -41,7 +41,7 @@ class DeleteDataTest extends DbTestCase
                 'extractArrayFromXml',
             ])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue([
+        $mapper->method('getMap')->will($this->returnValue([
             'id' => new field\IntNumber,
             'row1' => new field\Line,
         ]));
@@ -105,14 +105,14 @@ class DeleteDataTest extends DbTestCase
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
             ->setMethods([
-                'createFields',
+                'getMap',
                 'getSqlName',
                 'getSqlPrimary',
                 'getDeleteFileMask',
                 'getXmlPath',
             ])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue([
+        $mapper->method('getMap')->will($this->returnValue([
             'id' => new field\IntNumber,
             'row1' => new field\Line,
         ]));
@@ -150,14 +150,14 @@ class DeleteDataTest extends DbTestCase
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
             ->setMethods([
-                'createFields',
+                'getMap',
                 'getSqlName',
                 'getSqlPrimary',
                 'getDeleteFileMask',
                 'getXmlPath',
             ])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue([
+        $mapper->method('getMap')->will($this->returnValue([
             'id' => new field\IntNumber,
             'row1' => new field\Line,
         ]));

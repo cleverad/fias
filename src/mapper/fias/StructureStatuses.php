@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper\fias;
 
 use marvin255\fias\mapper\AbstractMapper;
-use marvin255\fias\mapper\field\Line;
 
 /**
  * Статусы.
  */
 class StructureStatuses extends AbstractMapper
 {
+    /**
+     * @var mixed[]
+     */
+    protected $fields = [
+        'STRSTATID' => 'uuid',
+        'NAME' => 'string',
+        'SHORTNAME' => 'string',
+    ];
     /**
      * @var string
      */
@@ -24,18 +31,6 @@ class StructureStatuses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_STRSTAT_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    protected function createFields(): array
-    {
-        return [
-            'STRSTATID' => new Line(36),
-            'NAME' => new Line,
-            'SHORTNAME' => new Line,
-        ];
-    }
 
     /**
      * @inheritdoc

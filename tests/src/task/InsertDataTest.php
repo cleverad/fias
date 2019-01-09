@@ -33,7 +33,7 @@ class InsertDataTest extends DbTestCase
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
             ->setMethods([
-                'createFields',
+                'getMap',
                 'getSqlName',
                 'getSqlPrimary',
                 'getInsertFileMask',
@@ -41,7 +41,7 @@ class InsertDataTest extends DbTestCase
                 'extractArrayFromXml',
             ])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue([
+        $mapper->method('getMap')->will($this->returnValue([
             'id' => new field\IntNumber,
             'row1' => new field\Line,
         ]));
@@ -105,14 +105,14 @@ class InsertDataTest extends DbTestCase
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
             ->setMethods([
-                'createFields',
+                'getMap',
                 'getSqlName',
                 'getSqlPrimary',
                 'getInsertFileMask',
                 'getXmlPath',
             ])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue([
+        $mapper->method('getMap')->will($this->returnValue([
             'id' => new field\IntNumber,
             'row1' => new field\Line,
         ]));
@@ -150,14 +150,14 @@ class InsertDataTest extends DbTestCase
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
             ->setMethods([
-                'createFields',
+                'getMap',
                 'getSqlName',
                 'getSqlPrimary',
                 'getXmlPath',
                 'getInsertFileMask',
             ])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue([
+        $mapper->method('getMap')->will($this->returnValue([
             'id' => new field\IntNumber,
             'row1' => new field\Line,
         ]));

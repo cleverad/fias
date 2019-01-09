@@ -37,6 +37,14 @@ class MockMapper extends AbstractMapper
     /**
      * @inheritdoc
      */
+    public function getMap(): array
+    {
+        return $this->map;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getXmlPath(): string
     {
         return $this->path;

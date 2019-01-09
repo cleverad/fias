@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper;
 
 /**
- * Интерфейс для маппера, который поясняет как правильно записать данные в
+ * Интерфейс для объекта, который поясняет как правильно записать данные в
  * базу данных.
  */
 interface SqlMapperInterface extends MapperInterface

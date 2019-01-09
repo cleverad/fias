@@ -5,15 +5,52 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper\fias;
 
 use marvin255\fias\mapper\AbstractMapper;
-use marvin255\fias\mapper\field\Line;
-use marvin255\fias\mapper\field\IntNumber;
-use marvin255\fias\mapper\field\Date;
 
 /**
  * Адреса.
  */
 class AddressObjects extends AbstractMapper
 {
+    /**
+     * @var mixed[]
+     */
+    protected $fields = [
+        'AOID' => 'uuid',
+        'AOGUID' => 'uuid',
+        'PARENTGUID' => 'uuid',
+        'NEXTID' => 'uuid',
+        'FORMALNAME' => 'string',
+        'OFFNAME' => 'string',
+        'SHORTNAME' => 'string',
+        'AOLEVEL' => 'int',
+        'REGIONCODE' => ['string', 2],
+        'AREACODE' => ['string', 3],
+        'AUTOCODE' => ['string', 1],
+        'CITYCODE' => ['string', 3],
+        'CTARCODE' => ['string', 3],
+        'PLACECODE' => ['string', 4],
+        'PLANCODE' => ['string', 4],
+        'STREETCODE' => ['string', 4],
+        'EXTRCODE' => ['string', 4],
+        'SEXTCODE' => ['string', 3],
+        'PLAINCODE' => ['string', 15],
+        'CURRSTATUS' => 'int',
+        'ACTSTATUS' => 'int',
+        'LIVESTATUS' => 'int',
+        'CENTSTATUS' => 'int',
+        'OPERSTATUS' => 'int',
+        'IFNSFL' => ['string', 4],
+        'IFNSUL' => ['string', 4],
+        'TERRIFNSFL' => ['string', 4],
+        'TERRIFNSUL' => ['string', 4],
+        'OKATO' => ['string', 11],
+        'OKTMO' => ['string', 11],
+        'POSTALCODE' => ['string', 6],
+        'STARTDATE' => 'date',
+        'ENDDATE' => 'date',
+        'UPDATEDATE' => 'date',
+        'DIVTYPE' => 'int',
+    ];
     /**
      * @var string
      */
@@ -26,50 +63,6 @@ class AddressObjects extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_ADDROBJ_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    protected function createFields(): array
-    {
-        return [
-            'AOID' => new Line(36),
-            'AOGUID' => new Line(36),
-            'PARENTGUID' => new Line(36),
-            'NEXTID' => new Line(36),
-            'FORMALNAME' => new Line,
-            'OFFNAME' => new Line,
-            'SHORTNAME' => new Line,
-            'AOLEVEL' => new IntNumber,
-            'REGIONCODE' => new Line(2),
-            'AREACODE' => new Line(3),
-            'AUTOCODE' => new Line(1),
-            'CITYCODE' => new Line(3),
-            'CTARCODE' => new Line(3),
-            'PLACECODE' => new Line(3),
-            'PLANCODE' => new Line(4),
-            'STREETCODE' => new Line(4),
-            'EXTRCODE' => new Line(4),
-            'SEXTCODE' => new Line(3),
-            'PLAINCODE' => new Line(15),
-            'CURRSTATUS' => new IntNumber,
-            'ACTSTATUS' => new IntNumber,
-            'LIVESTATUS' => new IntNumber,
-            'CENTSTATUS' => new IntNumber,
-            'OPERSTATUS' => new IntNumber,
-            'IFNSFL' => new Line(4),
-            'IFNSUL' => new Line(4),
-            'TERRIFNSFL' => new Line(4),
-            'TERRIFNSUL' => new Line(4),
-            'OKATO' => new Line(11),
-            'OKTMO' => new Line(11),
-            'POSTALCODE' => new Line(6),
-            'STARTDATE' => new Date,
-            'ENDDATE' => new Date,
-            'UPDATEDATE' => new Date,
-            'DIVTYPE' => new IntNumber,
-        ];
-    }
 
     /**
      * @inheritdoc

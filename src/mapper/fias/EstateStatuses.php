@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper\fias;
 
 use marvin255\fias\mapper\AbstractMapper;
-use marvin255\fias\mapper\field\Line;
 
 /**
  * Статусы.
  */
 class EstateStatuses extends AbstractMapper
 {
+    /**
+     * @var mixed[]
+     */
+    protected $fields = [
+        'ESTSTATID' => 'uuid',
+        'NAME' => 'string',
+    ];
     /**
      * @var string
      */
@@ -24,17 +30,6 @@ class EstateStatuses extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_ESTSTAT_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    protected function createFields(): array
-    {
-        return [
-            'ESTSTATID' => new Line(36),
-            'NAME' => new Line,
-        ];
-    }
 
     /**
      * @inheritdoc

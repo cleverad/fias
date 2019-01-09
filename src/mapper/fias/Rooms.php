@@ -5,15 +5,30 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper\fias;
 
 use marvin255\fias\mapper\AbstractMapper;
-use marvin255\fias\mapper\field\Line;
-use marvin255\fias\mapper\field\Date;
-use marvin255\fias\mapper\field\IntNumber;
 
 /**
  * Комнаты.
  */
 class Rooms extends AbstractMapper
 {
+    /**
+     * @var mixed[]
+     */
+    protected $fields = [
+        'ROOMID' => 'uuid',
+        'ROOMGUID' => 'uuid',
+        'HOUSEGUID' => 'uuid',
+        'REGIONCODE' => ['string', 2],
+        'FLATNUMBER' => ['string', 50],
+        'FLATTYPE' => 'int',
+        'POSTALCODE' => ['string', 6],
+        'STARTDATE' => 'date',
+        'ENDDATE' => 'date',
+        'UPDATEDATE' => 'date',
+        'OPERSTATUS' => 'string',
+        'LIVESTATUS' => 'string',
+        'NORMDOC' => 'uuid',
+    ];
     /**
      * @var string
      */
@@ -26,28 +41,6 @@ class Rooms extends AbstractMapper
      * @var string
      */
     protected $deleteFileMask = 'AS_DEL_ROOM_*.XML';
-
-    /**
-     * @inheritdoc
-     */
-    protected function createFields(): array
-    {
-        return [
-            'ROOMID' => new Line(36),
-            'ROOMGUID' => new Line(36),
-            'HOUSEGUID' => new Line(36),
-            'REGIONCODE' => new Line(2),
-            'FLATNUMBER' => new Line(50),
-            'FLATTYPE' => new IntNumber(11),
-            'POSTALCODE' => new Line(6),
-            'STARTDATE' => new Date,
-            'ENDDATE' => new Date,
-            'UPDATEDATE' => new Date,
-            'OPERSTATUS' => new Line,
-            'LIVESTATUS' => new Line,
-            'NORMDOC' => new Line(36),
-        ];
-    }
 
     /**
      * @inheritdoc

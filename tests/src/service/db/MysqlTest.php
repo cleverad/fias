@@ -39,9 +39,9 @@ class MysqlTest extends DbTestCase
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
-            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
+            ->setMethods(['getMap', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue($columns));
+        $mapper->method('getMap')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
@@ -80,9 +80,9 @@ class MysqlTest extends DbTestCase
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
-            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
+            ->setMethods(['getMap', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue($columns));
+        $mapper->method('getMap')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
@@ -118,9 +118,9 @@ class MysqlTest extends DbTestCase
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
-            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
+            ->setMethods(['getMap', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue($columns));
+        $mapper->method('getMap')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
@@ -157,9 +157,9 @@ class MysqlTest extends DbTestCase
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
-            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
+            ->setMethods(['getMap', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue($columns));
+        $mapper->method('getMap')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 
@@ -188,9 +188,9 @@ class MysqlTest extends DbTestCase
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
-            ->setMethods(['createFields', 'getSqlName', 'getSqlPrimary'])
+            ->setMethods(['getMap', 'getSqlName', 'getSqlPrimary'])
             ->getMock();
-        $mapper->method('createFields')->will($this->returnValue($columns));
+        $mapper->method('getMap')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
         $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
 

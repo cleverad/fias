@@ -9,11 +9,13 @@ use Throwable;
 use RuntimeException;
 
 /**
- * Трэйт с хэлперами для объекта, который указывает как извлечь данные ФИАС из
+ * Трэйт с хэлперами для объекта, который поясняет как извлечь данные ФИАС из
  * XML в требуемом формате.
  */
 trait XmlMapperTrait
 {
+    use MapperTrait;
+
     /**
      * Псевдо xpath путь к сущности внутри xml.
      *
@@ -58,7 +60,7 @@ trait XmlMapperTrait
         try {
             $attributes = $this->convertStringToSimpleXml($xml)->attributes();
             foreach ($this->getMap() as $fieldName => $field) {
-                $value = (string) $attributes[$fieldName] ?? '';
+                $value = strval($attributes[$fieldName] ?? '');
                 $return[$fieldName] = $field->convertToData($value);
             }
         } catch (Throwable $e) {

@@ -4,80 +4,12 @@ declare(strict_types=1);
 
 namespace marvin255\fias\mapper;
 
-use marvin255\fias\mapper\field\FieldInterface;
-
 /**
  * Базовый класс для универсального маппера.
  */
 abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
 {
     use XmlMapperTrait;
-
-    /**
-     * Флаг, который указывает, что поля были закешированы.
-     *
-     * @var bool
-     */
-    protected $isMapCached = false;
-    /**
-     * Закешированный массив сущностей.
-     *
-     * @var FieldInterface[]
-     */
-    protected $cachedMap = [];
-
-    /**
-     * Создает список полей и возвращает ассоциативный массив, в котором ключами
-     * служат названия полей, а значениями - объекты FieldInterface.
-     *
-     * @return FieldInterface[]
-     */
-    abstract protected function createFields(): array;
-
-    /**
-     * @inheritdoc
-     */
-    public function getMap(): array
-    {
-        if (!$this->isMapCached) {
-            $this->isMapCached = true;
-            $this->cachedMap = $this->createFields();
-        }
-
-        return $this->cachedMap;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function mapArray(array $messyArray): array
-    {
-        $map = $this->getMap();
-        $mappedArray = [];
-
-        foreach ($map as $fieldName => $field) {
-            $mappedArray[$fieldName] = $messyArray[$fieldName] ?? null;
-        }
-
-        return $mappedArray;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function convertToStrings(array $messyArray): array
-    {
-        $map = $this->getMap();
-        $convertedArray = [];
-
-        foreach ($messyArray as $fieldName => $value) {
-            $convertedArray[$fieldName] = isset($map[$fieldName])
-                ? $map[$fieldName]->convertToString($value)
-                : $value;
-        }
-
-        return $convertedArray;
-    }
 
     /**
      * @inheritdoc
