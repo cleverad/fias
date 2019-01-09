@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper;
 
 use SimpleXMLElement;
+use LibXMLError;
 use Throwable;
 use RuntimeException;
 
@@ -125,6 +126,9 @@ trait XmlMapperTrait
         $errors = [];
 
         foreach (libxml_get_errors() as $error) {
+            if ($error instanceof LibXMLError) {
+                $errors[] = $error->message;
+            }
         }
 
         libxml_clear_errors();
