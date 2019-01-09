@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper;
 
 use SimpleXMLElement;
+use LibXMLError;
 use Throwable;
 use RuntimeException;
 
@@ -105,18 +106,34 @@ trait XmlMapperTrait
 
         $return = simplexml_load_string($xml);
 
-        if (!($return instanceof SimpleXMLElement) || libxml_get_errors()) {
-            $exceptionMessages = [];
-            $libXmlErrors = libxml_get_errors();
-            foreach ($libXmlErrors as $error) {
-                $exceptionMessages[] = $error->message;
-            }
-            libxml_clear_errors();
-            throw new RuntimeException(implode(', ', $exceptionMessages));
+        $xmlErrors = $this->extractLibXmlErrors();
+        if (!($return instanceof SimpleXMLElement) || !empty($xmlErrors)) {
+            throw new RuntimeException(implode(', ', $xmlErrors));
         }
 
         libxml_use_internal_errors(false);
 
         return $return;
+    }
+
+    /**
+     * Возвращает ошибки, которые произошли во время работы libxml.
+     *
+     * @return string[]
+     */
+    protected function extractLibXmlErrors(): array
+    {
+        $errors = [];
+        $libXmlErrors = libxml_get_errors();
+
+        foreach ($libXmlErrors as $error) {
+            if ($error instanceof LibXMLError) {
+                $errors[] = $error->message;
+            }
+        }
+
+        libxml_clear_errors();
+
+        return $errors;
     }
 }
