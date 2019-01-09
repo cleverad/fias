@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace marvin255\fias;
+namespace marvin255\fias\factory;
 
+use marvin255\fias\Pipe;
 use marvin255\fias\service\config\ConfigInterface;
 use marvin255\fias\service\fias\InformerInterface;
 use marvin255\fias\service\fias\Informer;
@@ -20,18 +21,22 @@ use marvin255\fias\service\db\PdoConnection;
 use marvin255\fias\mapper\AbstractMapper;
 use marvin255\fias\task\Cleanup;
 use marvin255\fias\task\DownloadFull;
+use marvin255\fias\task\DownloadDelta;
 use marvin255\fias\task\Unpack;
 use marvin255\fias\task\CreateStructure;
 use marvin255\fias\task\InsertData;
+use marvin255\fias\task\DeleteData;
+use marvin255\fias\task\UpdateData;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use PDO;
 use InvalidArgumentException;
 
 /**
- * Фабричный объект, который создает пайпы для соответствующих типов задач.
+ * Фабричный объект, который создает пайпы для соответствующих типов задач,
+ * используя классы сервисов, которые поставляются с библиотекой.
  */
-class Factory
+class InternalServicesFactory implements FactoryInterface
 {
     /**
      * @var ConfigInterface
@@ -47,9 +52,7 @@ class Factory
     }
 
     /**
-     * Создает пайп для полной загрузки базы ФИАС.
-     *
-     * @return Pipe
+     * {@inheritdoc}
      *
      * @throws Exception
      */
@@ -75,6 +78,37 @@ class Factory
                 $pipe->pipe(new CreateStructure($db, $mapper, $log));
             }
             $pipe->pipe(new InsertData($reader, $db, $mapper, $log));
+        }
+
+        $pipe->setCleanup(new Cleanup($log));
+
+        return $pipe;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     */
+    public function createUpdatePipe(): Pipe
+    {
+        $informer = $this->createInformer();
+        $downloader = $this->createDownloader();
+        $workDir = $this->createWorkDir();
+        $unpacker = $this->createUnpacker();
+        $reader = $this->createReader();
+        $db = $this->createDb();
+        $log = $this->createLog();
+        $mappers = $this->getMappers();
+
+        $pipe = new Pipe;
+
+        $pipe->pipe(new DownloadDelta($informer, $downloader, $workDir, $log));
+        $pipe->pipe(new Unpack($unpacker, $workDir, $log));
+
+        foreach ($mappers as $mapper) {
+            $pipe->pipe(new DeleteData($reader, $db, $mapper, $log));
+            $pipe->pipe(new UpdateData($reader, $db, $mapper, $log));
         }
 
         $pipe->setCleanup(new Cleanup($log));

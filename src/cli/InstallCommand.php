@@ -7,7 +7,7 @@ namespace marvin255\fias\cli;
 use marvin255\fias\service\config\YamlConfig;
 use marvin255\fias\service\log\SymfonyConsole;
 use marvin255\fias\state\ArrayState;
-use marvin255\fias\Factory;
+use marvin255\fias\factory\InternalServicesFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,7 +48,7 @@ class InstallCommand extends Command
             'log' => new SymfonyConsole($output),
         ]);
 
-        $pipe = (new Factory($configObject))->createInstallPipe();
+        $pipe = (new InternalServicesFactory($configObject))->createInstallPipe();
         $state = new ArrayState;
 
         $pipe->run($state);
