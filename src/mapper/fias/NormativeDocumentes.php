@@ -14,6 +14,19 @@ use marvin255\fias\mapper\field\Date;
 class NormativeDocumentes extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/NormativeDocumentes/NormativeDocument';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_NORMDOC_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_NORMDOC_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -25,30 +38,6 @@ class NormativeDocumentes extends AbstractMapper
             'DOCNUM' => new Line,
             'DOCTYPE' => new Line,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/NormativeDocumentes/NormativeDocument';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_NORMDOC_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_NORMDOC_*.XML';
     }
 
     /**

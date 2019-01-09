@@ -13,6 +13,19 @@ use marvin255\fias\mapper\field\Line;
 class CenterStatuses extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/CenterStatuses/CenterStatus';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_CENTERST_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_CENTERST_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -21,30 +34,6 @@ class CenterStatuses extends AbstractMapper
             'CENTERSTID' => new Line(36),
             'NAME' => new Line,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/CenterStatuses/CenterStatus';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_CENTERST_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_CENTERST_*.XML';
     }
 
     /**

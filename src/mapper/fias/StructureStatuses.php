@@ -13,6 +13,19 @@ use marvin255\fias\mapper\field\Line;
 class StructureStatuses extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/StructureStatuses/StructureStatus';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_STRSTAT_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_STRSTAT_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -22,30 +35,6 @@ class StructureStatuses extends AbstractMapper
             'NAME' => new Line,
             'SHORTNAME' => new Line,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/StructureStatuses/StructureStatus';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_STRSTAT_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_STRSTAT_*.XML';
     }
 
     /**

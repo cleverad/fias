@@ -13,6 +13,19 @@ use marvin255\fias\mapper\field\Line;
 class NormativeDocumentTypes extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/NormativeDocumentTypes/NormativeDocumentType';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_NDOCTYPE_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_NDOCTYPE_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -21,30 +34,6 @@ class NormativeDocumentTypes extends AbstractMapper
             'NDTYPEID' => new Line(36),
             'NAME' => new Line,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/NormativeDocumentTypes/NormativeDocumentType';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_NDOCTYPE_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_NDOCTYPE_*.XML';
     }
 
     /**

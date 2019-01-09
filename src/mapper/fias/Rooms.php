@@ -15,6 +15,19 @@ use marvin255\fias\mapper\field\IntNumber;
 class Rooms extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/Rooms/Room';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_ROOM_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_ROOM_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -34,30 +47,6 @@ class Rooms extends AbstractMapper
             'LIVESTATUS' => new Line,
             'NORMDOC' => new Line(36),
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/Rooms/Room';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_ROOM_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_ROOM_*.XML';
     }
 
     /**

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper;
 
 /**
- * Интерфейс для маппера, который поясняет как правильно извлечь данные
- * из xml файла.
+ * Интерфейс для объекта, который указывает как извлечь данные ФИАС из
+ * XML в требуемом формате.
  */
 interface XmlMapperInterface extends MapperInterface
 {

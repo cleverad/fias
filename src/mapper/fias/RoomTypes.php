@@ -13,6 +13,19 @@ use marvin255\fias\mapper\field\Line;
 class RoomTypes extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/RoomTypes/RoomType';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_ROOMTYPE_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_ROOMTYPE_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -22,30 +35,6 @@ class RoomTypes extends AbstractMapper
             'NAME' => new Line,
             'SHORTNAME' => new Line,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/RoomTypes/RoomType';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_ROOMTYPE_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_ROOMTYPE_*.XML';
     }
 
     /**

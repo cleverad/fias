@@ -15,6 +15,19 @@ use marvin255\fias\mapper\field\IntNumber;
 class Houses extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/Houses/House';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_HOUSE_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_HOUSE_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -38,30 +51,6 @@ class Houses extends AbstractMapper
             'COUNTER' => new IntNumber(11),
             'DIVTYPE' => new IntNumber(11),
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/Houses/House';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_HOUSE_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_HOUSE_*.XML';
     }
 
     /**

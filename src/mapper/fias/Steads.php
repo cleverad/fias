@@ -14,6 +14,19 @@ use marvin255\fias\mapper\field\Date;
 class Steads extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/Steads/Stead';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_STEAD_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_STEAD_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -37,30 +50,6 @@ class Steads extends AbstractMapper
             'DIVTYPE' => new Line,
             'NORMDOC' => new Line(36),
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/Steads/Stead';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_STEAD_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_STEAD_*.XML';
     }
 
     /**

@@ -14,6 +14,19 @@ use marvin255\fias\mapper\field\IntNumber;
 class AddressObjectTypes extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/AddressObjectTypes/AddressObjectType';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_SOCRBASE_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_SOCRBASE_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -24,30 +37,6 @@ class AddressObjectTypes extends AbstractMapper
             'SOCRNAME' => new Line,
             'SCNAME' => new Line,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/AddressObjectTypes/AddressObjectType';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_SOCRBASE_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_SOCRBASE_*.XML';
     }
 
     /**

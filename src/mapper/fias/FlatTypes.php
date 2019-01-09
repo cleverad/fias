@@ -13,6 +13,19 @@ use marvin255\fias\mapper\field\Line;
 class FlatTypes extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/FlatTypes/FlatType';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_FLATTYPE_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_FLATTYPE_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -22,30 +35,6 @@ class FlatTypes extends AbstractMapper
             'NAME' => new Line,
             'SHORTNAME' => new Line,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/FlatTypes/FlatType';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_FLATTYPE_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_FLATTYPE_*.XML';
     }
 
     /**

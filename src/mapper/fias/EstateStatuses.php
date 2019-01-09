@@ -13,6 +13,19 @@ use marvin255\fias\mapper\field\Line;
 class EstateStatuses extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/EstateStatuses/EstateStatus';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_ESTSTAT_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_ESTSTAT_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -21,30 +34,6 @@ class EstateStatuses extends AbstractMapper
             'ESTSTATID' => new Line(36),
             'NAME' => new Line,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/EstateStatuses/EstateStatus';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_ESTSTAT_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_ESTSTAT_*.XML';
     }
 
     /**

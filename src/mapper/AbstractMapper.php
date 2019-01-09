@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace marvin255\fias\mapper;
 
 use marvin255\fias\mapper\field\FieldInterface;
-use SimpleXMLElement;
-use Throwable;
-use RuntimeException;
 
 /**
  * Базовый класс для универсального маппера.
  */
 abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
 {
+    use XmlMapperTrait;
+
     /**
      * Флаг, который указывает, что поля были закешированы.
      *
@@ -114,52 +113,6 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws RuntimeException
-     */
-    public function extractArrayFromXml(string $xml): array
-    {
-        $return = [];
-
-        try {
-            $attributes = $this->convertStringToSimpleXml($xml)->attributes();
-            foreach ($this->getMap() as $fieldName => $field) {
-                $value = (string) $attributes[$fieldName] ?? '';
-                $return[$fieldName] = $field->convertToData($value);
-            }
-        } catch (Throwable $e) {
-            throw new RuntimeException($e->getMessage(), (int) $e->getCode(), $e);
-        }
-
-        return $return;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return '';
-    }
-
-    /**
      * @inheritdoc
      */
     public function getSqlName(): string
@@ -189,34 +142,5 @@ abstract class AbstractMapper implements SqlMapperInterface, XmlMapperInterface
     public function getSqlPartitionField(): string
     {
         return '';
-    }
-
-    /**
-     * Преобразует строку xml в объект SimpleXml.
-     *
-     * @param string $xml
-     *
-     * @return \SimpleXMLElement
-     *
-     * @throws \RuntimeException
-     */
-    protected function convertStringToSimpleXml(string $xml): SimpleXMLElement
-    {
-        libxml_use_internal_errors(true);
-
-        $return = simplexml_load_string($xml);
-
-        if (!($return instanceof SimpleXMLElement) || libxml_get_errors()) {
-            $exceptionMessages = [];
-            foreach (libxml_get_errors() as $error) {
-                $exceptionMessages[] = $error->message;
-            }
-            libxml_clear_errors();
-            throw new RuntimeException(implode(', ', $exceptionMessages));
-        }
-
-        libxml_use_internal_errors(false);
-
-        return $return;
     }
 }

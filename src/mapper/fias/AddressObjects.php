@@ -15,6 +15,19 @@ use marvin255\fias\mapper\field\Date;
 class AddressObjects extends AbstractMapper
 {
     /**
+     * @var string
+     */
+    protected $xmlPath = '/AddressObjects/Object';
+    /**
+     * @var string
+     */
+    protected $insertFileMask = 'AS_ADDROBJ_*.XML';
+    /**
+     * @var string
+     */
+    protected $deleteFileMask = 'AS_DEL_ADDROBJ_*.XML';
+
+    /**
      * @inheritdoc
      */
     protected function createFields(): array
@@ -56,30 +69,6 @@ class AddressObjects extends AbstractMapper
             'UPDATEDATE' => new Date,
             'DIVTYPE' => new IntNumber,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getXmlPath(): string
-    {
-        return '/AddressObjects/Object';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInsertFileMask(): string
-    {
-        return 'AS_ADDROBJ_*.XML';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDeleteFileMask(): string
-    {
-        return 'AS_DEL_ADDROBJ_*.XML';
     }
 
     /**
