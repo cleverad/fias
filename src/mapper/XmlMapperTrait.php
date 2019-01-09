@@ -124,9 +124,8 @@ trait XmlMapperTrait
     protected function extractLibXmlErrors(): array
     {
         $errors = [];
-        $libXmlErrors = libxml_get_errors();
 
-        foreach ($libXmlErrors as $error) {
+        foreach (libxml_get_errors() as $error) {
             if ($error instanceof LibXMLError) {
                 $errors[] = $error->message;
             }
