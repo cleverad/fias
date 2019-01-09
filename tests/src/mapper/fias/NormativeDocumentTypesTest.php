@@ -18,7 +18,7 @@ class NormativeDocumentTypesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'NDTYPEID' => $this->faker()->uuid,
+            'NDTYPEID' => $this->faker()->randomDigit + 1,
             'NAME' => $this->faker()->word,
         ];
     }

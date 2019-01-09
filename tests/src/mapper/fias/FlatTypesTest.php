@@ -18,7 +18,7 @@ class FlatTypesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'FLTYPEID' => $this->faker()->uuid,
+            'FLTYPEID' => $this->faker()->randomDigit + 1,
             'NAME' => $this->faker()->word,
             'SHORTNAME' => $this->faker()->word,
         ];

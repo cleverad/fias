@@ -15,7 +15,7 @@ class OperationStatuses extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'OPERSTATID' => 'uuid',
+        'OPERSTATID' => 'int',
         'NAME' => 'string',
     ];
     /**

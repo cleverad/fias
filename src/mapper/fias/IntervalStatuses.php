@@ -15,7 +15,7 @@ class IntervalStatuses extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'INTVSTATID' => 'uuid',
+        'INTVSTATID' => 'int',
         'NAME' => 'string',
     ];
     /**

@@ -15,7 +15,7 @@ class ActualStatuses extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'ACTSTATID' => 'uuid',
+        'ACTSTATID' => 'int',
         'NAME' => 'string',
     ];
     /**

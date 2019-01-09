@@ -18,8 +18,8 @@ class AddressObjectTypesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'KOD_T_ST' => $this->faker()->randomDigit,
-            'LEVEL' => $this->faker()->randomDigit,
+            'KOD_T_ST' => $this->faker()->randomDigit + 1,
+            'LEVEL' => $this->faker()->randomDigit + 1,
             'SOCRNAME' => $this->faker()->word,
             'SCNAME' => $this->faker()->word,
         ];

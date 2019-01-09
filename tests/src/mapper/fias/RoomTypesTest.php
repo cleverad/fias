@@ -18,7 +18,7 @@ class RoomTypesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'RMTYPEID' => $this->faker()->uuid,
+            'RMTYPEID' => $this->faker()->randomDigit + 1,
             'NAME' => $this->faker()->word,
             'SHORTNAME' => $this->faker()->word,
         ];

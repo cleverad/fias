@@ -15,7 +15,7 @@ class CenterStatuses extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'CENTERSTID' => 'uuid',
+        'CENTERSTID' => 'int',
         'NAME' => 'string',
     ];
     /**

@@ -18,7 +18,7 @@ class IntervalStatusesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'INTVSTATID' => $this->faker()->uuid,
+            'INTVSTATID' => $this->faker()->randomDigit + 1,
             'NAME' => $this->faker()->word,
         ];
     }

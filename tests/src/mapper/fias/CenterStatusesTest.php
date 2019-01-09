@@ -18,7 +18,7 @@ class CenterStatusesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'CENTERSTID' => $this->faker()->uuid,
+            'CENTERSTID' => $this->faker()->randomDigit + 1,
             'NAME' => $this->faker()->word,
         ];
     }

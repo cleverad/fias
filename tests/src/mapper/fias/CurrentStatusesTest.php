@@ -18,7 +18,7 @@ class CurrentStatusesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'CURENTSTID' => $this->faker()->uuid,
+            'CURENTSTID' => $this->faker()->randomDigit + 1,
             'NAME' => $this->faker()->word,
         ];
     }

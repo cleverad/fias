@@ -18,7 +18,7 @@ class StructureStatusesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'STRSTATID' => $this->faker()->uuid,
+            'STRSTATID' => $this->faker()->randomDigit + 1,
             'NAME' => $this->faker()->word,
             'SHORTNAME' => $this->faker()->word,
         ];

@@ -15,7 +15,7 @@ class NormativeDocumentTypes extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'NDTYPEID' => 'uuid',
+        'NDTYPEID' => 'int',
         'NAME' => 'string',
     ];
     /**

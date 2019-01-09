@@ -18,7 +18,7 @@ class EstateStatusesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'ESTSTATID' => $this->faker()->uuid,
+            'ESTSTATID' => $this->faker()->randomDigit + 1,
             'NAME' => $this->faker()->word,
         ];
     }

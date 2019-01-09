@@ -15,7 +15,7 @@ class HouseStateStatuses extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'HOUSESTID' => 'uuid',
+        'HOUSESTID' => 'int',
         'NAME' => 'string',
     ];
     /**

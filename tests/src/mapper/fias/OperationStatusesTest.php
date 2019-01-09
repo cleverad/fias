@@ -18,7 +18,7 @@ class OperationStatusesTest extends MapperCase
     protected function getTestData(): array
     {
         return [
-            'OPERSTATID' => $this->faker()->uuid,
+            'OPERSTATID' => $this->faker()->randomDigit + 1,
             'NAME' => $this->faker()->word,
         ];
     }

@@ -15,7 +15,7 @@ class EstateStatuses extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'ESTSTATID' => 'uuid',
+        'ESTSTATID' => 'int',
         'NAME' => 'string',
     ];
     /**

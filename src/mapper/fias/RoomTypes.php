@@ -15,7 +15,7 @@ class RoomTypes extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'RMTYPEID' => 'uuid',
+        'RMTYPEID' => 'int',
         'NAME' => 'string',
         'SHORTNAME' => 'string',
     ];

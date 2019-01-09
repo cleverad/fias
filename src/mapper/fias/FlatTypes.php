@@ -15,7 +15,7 @@ class FlatTypes extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'FLTYPEID' => 'uuid',
+        'FLTYPEID' => 'int',
         'NAME' => 'string',
         'SHORTNAME' => 'string',
     ];
