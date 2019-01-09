@@ -24,5 +24,5 @@ Fias
 1. `cd staging/mysql`,
 2. `vagrant up --provision`,
 3. `vagrant ssh`,
-4. `php /var/app/staging/app fias:install` для установки полного ФИАС,
-5. `php /var/app/staging/app fias:update 123` для установки указанной дельты ФИАС,
+4. `php /var/app/staging/app fias:install /var/app/staging/.conf.yaml` для установки полного ФИАС,
+5. `php /var/app/staging/app fias:update 123 /var/app/staging/.conf.yaml` для установки указанной дельты ФИАС,
