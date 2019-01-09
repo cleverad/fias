@@ -15,7 +15,7 @@ class StructureStatuses extends AbstractMapper
      * @var mixed[]
      */
     protected $fields = [
-        'STRSTATID' => 'uuid',
+        'STRSTATID' => 'int',
         'NAME' => 'string',
         'SHORTNAME' => 'string',
     ];

@@ -31,7 +31,7 @@ class RoomsTest extends MapperCase
             'UPDATEDATE' => new DateTime($this->faker()->date),
             'OPERSTATUS' => $this->faker()->word,
             'LIVESTATUS' => $this->faker()->word,
-            'NORMDOC' => $this->faker()->word,
+            'NORMDOC' => $this->faker()->uuid,
         ];
     }
 
