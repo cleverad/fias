@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace marvin255\fias\service\db;
 
 use marvin255\fias\mapper\SqlMapperInterface;
-use marvin255\fias\mapper\FieldInterface;
+use marvin255\fias\mapper\field\FieldInterface;
 use marvin255\fias\mapper\field;
 use PDO;
 use PDOStatement;

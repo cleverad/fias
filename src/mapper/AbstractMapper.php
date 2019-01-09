@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace marvin255\fias\mapper;
 
+use marvin255\fias\mapper\field\FieldInterface;
 use SimpleXMLElement;
 use Throwable;
 use RuntimeException;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace marvin255\fias\mapper;
 
+use marvin255\fias\mapper\field\FieldInterface;
+
 /**
  * Интерфейс для объекта, который возвращает список полей для сущности ФИАС.
  * Служит преждевсего для получения результатов из xml и записи их в базу данных.

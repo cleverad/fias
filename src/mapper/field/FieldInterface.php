@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace marvin255\fias\mapper;
+namespace marvin255\fias\mapper\field;
 
 /**
  * Интерфейс для поля сущности.
