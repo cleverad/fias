@@ -11,6 +11,7 @@ use marvin255\fias\mapper\field\IntNumber;
 use marvin255\fias\mapper\field\Uuid;
 use ReflectionClass;
 use UnexpectedValueException;
+use Exception;
 
 /**
  * Трэйт для объекта, который возвращает список полей для сущности ФИАС.
@@ -108,9 +109,15 @@ trait MapperTrait
         $convertedArray = [];
 
         foreach ($messyArray as $fieldName => $value) {
-            $convertedArray[$fieldName] = isset($map[$fieldName])
-                ? $map[$fieldName]->convertToString($value)
-                : $value;
+            try {
+                $convertedArray[$fieldName] = isset($map[$fieldName])
+                    ? $map[$fieldName]->convertToString($value)
+                    : $value;
+            } catch (Exception $e) {
+                throw new UnexpectedValueException(
+                    "Convert to string error, field {$fieldName}. " . $e->getMessage()
+                );
+            }
         }
 
         return $convertedArray;
@@ -131,9 +138,15 @@ trait MapperTrait
         $convertedArray = [];
 
         foreach ($messyArray as $fieldName => $value) {
-            $convertedArray[$fieldName] = isset($map[$fieldName])
-                ? $map[$fieldName]->convertToData($value)
-                : $value;
+            try {
+                $convertedArray[$fieldName] = isset($map[$fieldName])
+                    ? $map[$fieldName]->convertToData($value)
+                    : $value;
+            } catch (Exception $e) {
+                throw new UnexpectedValueException(
+                    "Convert to data error, field {$fieldName}. " . $e->getMessage()
+                );
+            }
         }
 
         return $convertedArray;

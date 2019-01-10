@@ -27,7 +27,7 @@ class Uuid extends Line
     {
         $input = (string) $input;
 
-        if (!preg_match('/^[a-zA-Z0-9]{8}\-[a-zA-Z0-9]{4}\-[a-zA-Z0-9]{4}\-[a-zA-Z0-9]{4}\-[a-zA-Z0-9]{12}$/', $input)) {
+        if ($input !== '' && !preg_match('/^[a-z0-9]{8}\-[a-z0-9]{4}\-[a-z0-9]{4}\-[a-z0-9]{4}\-[a-z0-9]{12}$/i', $input)) {
             throw new InvalidArgumentException(
                 "String must be valid uuid, got: {$input}"
             );
