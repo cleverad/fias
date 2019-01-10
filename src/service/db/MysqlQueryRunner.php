@@ -44,7 +44,6 @@ class MysqlQueryRunner
     {
         $this->pdoConnection->exec('SET unique_checks=0');
         $this->pdoConnection->exec('SET foreign_key_checks=0');
-        $this->pdoConnection->exec('SET autocommit=0');
     }
 
     /**
@@ -55,7 +54,6 @@ class MysqlQueryRunner
      */
     public function completeInsert()
     {
-        $this->pdoConnection->exec('COMMIT');
         $this->pdoConnection->exec('SET foreign_key_checks=1');
         $this->pdoConnection->exec('SET unique_checks=1');
     }
