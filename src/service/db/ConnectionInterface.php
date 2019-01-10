@@ -11,6 +11,8 @@ use marvin255\fias\mapper\SqlMapperInterface;
  */
 interface ConnectionInterface
 {
+    const SCENARIO_INSERT = 'insert';
+
     /**
      * Ищет строку в базе данных.
      *
@@ -88,6 +90,15 @@ interface ConnectionInterface
      * @throws \marvin255\fias\service\db\Exception
      */
     public function truncateTable(SqlMapperInterface $mapper);
+
+    /**
+     * Указывает, что данный потребитель начал работу с базой данных. В качестве
+     * единственного параметра может быть передан тот сценарий, который
+     * использует потребитель.
+     *
+     * @return void
+     */
+    public function begin(string $scenario = '');
 
     /**
      * Указывает, что данный потребитель закончил работу с базой данных и нужно

@@ -294,10 +294,11 @@ class PdoConnectionTest extends DbTestCase
         $mapper->method('getSqlName')->will($this->returnValue('testTable'));
 
         $pdo = $this->getMockBuilder(PDO::class)
-            ->setMethods(['prepare'])
+            ->setMethods(['prepare', 'getAttribute'])
             ->disableOriginalConstructor()
             ->getMock();
         $pdo->method('prepare')->will($this->returnValue(false));
+        $pdo->method('getAttribute')->will($this->returnValue('sqlite'));
 
         $mysql = new PdoConnection($pdo);
 
@@ -315,10 +316,11 @@ class PdoConnectionTest extends DbTestCase
         $mapper->method('getSqlName')->will($this->returnValue('testTable'));
 
         $pdo = $this->getMockBuilder(PDO::class)
-            ->setMethods(['prepare'])
+            ->setMethods(['prepare', 'getAttribute'])
             ->disableOriginalConstructor()
             ->getMock();
         $pdo->method('prepare')->will($this->throwException(new PDOException));
+        $pdo->method('getAttribute')->will($this->returnValue('sqlite'));
 
         $mysql = new PdoConnection($pdo);
 
@@ -349,10 +351,11 @@ class PdoConnectionTest extends DbTestCase
         ]));
 
         $pdo = $this->getMockBuilder(PDO::class)
-            ->setMethods(['prepare'])
+            ->setMethods(['prepare', 'getAttribute'])
             ->disableOriginalConstructor()
             ->getMock();
         $pdo->method('prepare')->will($this->returnValue($statement));
+        $pdo->method('getAttribute')->will($this->returnValue('sqlite'));
 
         $mysql = new PdoConnection($pdo);
 

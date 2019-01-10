@@ -24,6 +24,10 @@ class PdoConnection implements ConnectionInterface
      * @var mixed[]
      */
     protected $insertQueue = [];
+    /**
+     * @var string
+     */
+    protected $currentScenario = '';
 
     /**
      * Задает объект PDO для соединения с базой данных.
@@ -33,7 +37,11 @@ class PdoConnection implements ConnectionInterface
      */
     public function __construct(PDO $pdo, int $batchInsertLimit = 50)
     {
-        $this->queryRunner = new MysqlQueryRunner($pdo);
+        if ($pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'sqlite') {
+            $this->queryRunner = new SqliteQueryRunner($pdo);
+        } else {
+            $this->queryRunner = new MysqlQueryRunner($pdo);
+        }
         $this->batchInsertLimit = $batchInsertLimit;
     }
 
@@ -140,11 +148,29 @@ class PdoConnection implements ConnectionInterface
     /**
      * @inheritdoc
      */
+    public function begin(string $scenario = '')
+    {
+        $this->currentScenario = $scenario;
+
+        if ($this->currentScenario === ConnectionInterface::SCENARIO_INSERT) {
+            $this->queryRunner->beginInsert();
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function complete()
     {
         foreach ($this->insertQueue as $table => $items) {
             $this->flushInsert($table);
         }
+
+        if ($this->currentScenario === ConnectionInterface::SCENARIO_INSERT) {
+            $this->queryRunner->completeInsert();
+        }
+
+        $this->currentScenario = '';
     }
 
     /**

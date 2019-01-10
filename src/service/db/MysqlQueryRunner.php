@@ -35,6 +35,32 @@ class MysqlQueryRunner
     }
 
     /**
+     * Метод, который вызывается перед вставкой большого объема данных. Отключает
+     * автокоммиты, проверки уникальности и т.д.
+     *
+     * @return void
+     */
+    public function beginInsert()
+    {
+        $this->pdoConnection->exec('SET unique_checks=0');
+        $this->pdoConnection->exec('SET foreign_key_checks=0');
+        $this->pdoConnection->exec('SET autocommit=0');
+    }
+
+    /**
+     * Метод, который вызывается после вставки большого объема данных. Включает
+     * автокоммиты, проверки уникальности и т.д.
+     *
+     * @return void
+     */
+    public function completeInsert()
+    {
+        $this->pdoConnection->exec('COMMIT');
+        $this->pdoConnection->exec('SET foreign_key_checks=1');
+        $this->pdoConnection->exec('SET unique_checks=1');
+    }
+
+    /**
      * Ищет строку в указанной таблице по условию.
      *
      * @param string   $table
@@ -283,7 +309,7 @@ class MysqlQueryRunner
     /**
      * Создает строку с описаниями индексов для CREATE TABLE.
      *
-     * @param string[][] $fields
+     * @param string[][] $indexes
      *
      * @return string
      */
@@ -353,8 +379,6 @@ class MysqlQueryRunner
     /**
      * Создает строку с описанием первичного ключа для CREATE TABLE.
      *
-     * @param string[][] $fields
-     *
      * @return string
      */
     protected function makePrimaryForCreateTable(array $primary): string
@@ -367,19 +391,14 @@ class MysqlQueryRunner
     /**
      * Создает строку с описанием первичного ключа для CREATE TABLE.
      *
-     * @param string[][] $fields
-     *
      * @return string
      */
     protected function makeMetaForCreateTable(string $partitionField, int $partitionCount): string
     {
-        $meta = '';
-        if ($this->pdoConnection->getAttribute(PDO::ATTR_DRIVER_NAME) !== 'sqlite') {
-            $meta = 'ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci';
-            if ($partitionCount > 1 && !empty($partitionField)) {
-                $meta .= ' PARTITION BY KEY(' . $this->escapeDDLName($partitionField) . ')';
-                $meta .= " PARTITIONS {$partitionCount}";
-            }
+        $meta = 'ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+        if ($partitionCount > 1 && !empty($partitionField)) {
+            $meta .= ' PARTITION BY KEY(' . $this->escapeDDLName($partitionField) . ')';
+            $meta .= " PARTITIONS {$partitionCount}";
         }
 
         return $meta;

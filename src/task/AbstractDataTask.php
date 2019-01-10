@@ -115,6 +115,7 @@ abstract class AbstractDataTask extends AbstractTask
         }
 
         $this->beforeRead();
+        $this->db->begin($this->getScenario());
         $processedItems = 0;
         foreach ($this->reader as $item) {
             $this->processItem($item);
@@ -146,5 +147,13 @@ abstract class AbstractDataTask extends AbstractTask
      */
     protected function afterRead()
     {
+    }
+
+    /**
+     * Сценарий, который используется для задачи.
+     */
+    protected function getScenario(): string
+    {
+        return '';
     }
 }
