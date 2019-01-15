@@ -8,7 +8,6 @@ if (file_exists($envFile)) {
 }
 
 $requiredConstans = [
-    'PHPUNIT_PDO_DATABASE' => 'fias',
     'PHPUNIT_PDO_DSN' => 'mysql:host=localhost;dbname=fias;charset=UTF8',
     'PHPUNIT_PDO_USER' => 'travis',
     'PHPUNIT_PDO_PASSWORD' => '',
@@ -21,7 +20,3 @@ foreach ($requiredConstans as $constantName => $constantDefaultValue) {
         define($constantName, $constantDefaultValue);
     }
 }
-
-$pdo = new PDO(PHPUNIT_PDO_DSN, PHPUNIT_PDO_USER, PHPUNIT_PDO_PASSWORD);
-$pdo->exec('DROP DATABASE IF EXISTS ' . PHPUNIT_PDO_DATABASE);
-$pdo->exec('CREATE DATABASE ' . PHPUNIT_PDO_DATABASE . ' CHARACTER SET utf8 COLLATE utf8_unicode_ci');
