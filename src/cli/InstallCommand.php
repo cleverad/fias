@@ -45,7 +45,7 @@ class InstallCommand extends AbstractCommand
     {
         $config = $this->createConfigObject($input, $output);
         $factory = $this->createFactoryObject($config, $input, $output);
-        $pipe = $factory->createUpdatePipe();
+        $pipe = $factory->createInstallPipe();
 
         $state = new ArrayState;
 

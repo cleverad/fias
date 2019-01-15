@@ -45,7 +45,7 @@ abstract class AbstractCommand extends Command
      */
     public function createFactoryObject(ConfigInterface $config, InputInterface $input, OutputInterface $output): FactoryInterface
     {
-        $class = $input->getOption('title') ?: InternalServicesFactory::class;
+        $class = $input->getOption('factory') ?: InternalServicesFactory::class;
         $factoryInstance = (new ReflectionClass($class))->newInstance($config);
 
         if (!($factoryInstance instanceof FactoryInterface)) {
