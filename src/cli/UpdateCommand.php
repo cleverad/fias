@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace marvin255\fias\cli;
 
-use marvin255\fias\service\config\YamlConfig;
-use marvin255\fias\service\log\SymfonyConsole;
 use marvin255\fias\state\ArrayState;
-use marvin255\fias\factory\InternalServicesFactory;
 use marvin255\fias\service\fias\InformerResult;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Консольная команда для обновления ФИАС относительно указанной версии.
  */
-class UpdateCommand extends Command
+class UpdateCommand extends AbstractCommand
 {
     /**
      * {@inheritdoc}
@@ -37,7 +34,14 @@ class UpdateCommand extends Command
                 'config',
                 InputArgument::OPTIONAL,
                 'Path to config file'
-            );
+            )
+            ->addOption(
+                'factory',
+                'f',
+                InputOption::VALUE_OPTIONAL,
+                'Full specified class name for factory'
+            )
+        ;
     }
 
     /**
@@ -45,16 +49,9 @@ class UpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $confFile = $input->getArgument('config');
-        if (!$confFile || !is_string($confFile)) {
-            $confFile = getcwd() . '/.conf.yaml';
-        }
-
-        $configObject = new YamlConfig($confFile, [
-            'log' => new SymfonyConsole($output),
-        ]);
-
-        $pipe = (new InternalServicesFactory($configObject))->createUpdatePipe();
+        $config = $this->createConfigObject($input, $output);
+        $factory = $this->createFactoryObject($config, $input, $output);
+        $pipe = $factory->createUpdatePipe();
 
         $informerResult = new InformerResult;
         $informerResult->setVersion((int) $input->getArgument('version'));
