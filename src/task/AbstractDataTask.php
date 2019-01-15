@@ -56,12 +56,6 @@ abstract class AbstractDataTask extends AbstractTask
      */
     abstract protected function processItem(array $item);
 
-    /**
-     * @param ReaderInterface     $reader
-     * @param ConnectionInterface $db
-     * @param AbstractMapper      $mapper
-     * @param LoggerInterface     $logger
-     */
     public function __construct(ReaderInterface $reader, ConnectionInterface $db, AbstractMapper $mapper, LoggerInterface $logger = null)
     {
         $this->reader = $reader;
@@ -71,7 +65,9 @@ abstract class AbstractDataTask extends AbstractTask
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws InvalidArgumentException
      */
     public function run(StateInterface $state)
     {

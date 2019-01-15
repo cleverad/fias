@@ -30,6 +30,7 @@ use marvin255\fias\task\UpdateData;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use PDO;
+use RuntimeException;
 use InvalidArgumentException;
 
 /**
@@ -209,9 +210,24 @@ class InternalServicesFactory implements FactoryInterface
      *
      * @return ConnectionInterface
      *
-     * @throws Exception
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     protected function createDb(): ConnectionInterface
+    {
+        $pdo = $this->createPdo();
+        $butchInsertLimit = $this->config->getInt('pdo_batch_insert_limit', 50);
+
+        return new PdoConnection($pdo, $butchInsertLimit);
+    }
+
+    /**
+     * Создает и настраивает объект PDO для работы с БД.
+     *
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
+     */
+    protected function createPdo(): PDO
     {
         $dsn = $this->config->getString('pdo_dsn', '');
         $user = $this->config->getString('pdo_user', '');
@@ -224,10 +240,17 @@ class InternalServicesFactory implements FactoryInterface
             throw new InvalidArgumentException('Empty pdo_user config parameter');
         }
 
-        $pdo = new PDO($dsn, $user, $password);
-        $butchInsertLimit = $this->config->getInt('pdo_batch_insert_limit', 50);
+        try {
+            $pdo = new PDO($dsn, $user, $password);
+        } catch (\Exception $e) {
+            throw new RuntimeException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
-        return new PdoConnection($pdo, $butchInsertLimit);
+        return $pdo;
     }
 
     /**

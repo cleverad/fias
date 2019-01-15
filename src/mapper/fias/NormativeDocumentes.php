@@ -16,7 +16,7 @@ class NormativeDocumentes extends AbstractMapper
      */
     protected $fields = [
         'NORMDOCID' => 'uuid',
-        'DOCNAME' => 'string',
+        'DOCNAME' => ['string', 500],
         'DOCDATE' => 'date',
         'DOCNUM' => 'string',
         'DOCTYPE' => 'string',
