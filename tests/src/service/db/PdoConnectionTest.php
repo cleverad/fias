@@ -226,11 +226,21 @@ class PdoConnectionTest extends DbTestCase
         $columns = array_combine($columnsNames, $columnsDefinitions);
 
         $mapper = $this->getMockBuilder(AbstractMapper::class)
-            ->setMethods(['getMap', 'getSqlName', 'getSqlPrimary'])
+            ->setMethods([
+                'getMap',
+                'getSqlName',
+                'getSqlPrimary',
+                'getSqlIndexes',
+                'getSqlPartitionsCount',
+                'getSqlPartitionField',
+            ])
             ->getMock();
         $mapper->method('getMap')->will($this->returnValue($columns));
         $mapper->method('getSqlName')->will($this->returnValue($tableName));
-        $mapper->method('getSqlPrimary')->will($this->returnValue([reset($columnsNames)]));
+        $mapper->method('getSqlPrimary')->will($this->returnValue([$columnsNames[0]]));
+        $mapper->method('getSqlIndexes')->will($this->returnValue([[$columnsNames[1]]]));
+        $mapper->method('getSqlPartitionsCount')->will($this->returnValue(2));
+        $mapper->method('getSqlPartitionField')->will($this->returnValue($columnsNames[0]));
 
         $mysql = new PdoConnection($this->getPdo());
         $mysql->createTable($mapper);
@@ -392,9 +402,9 @@ class PdoConnectionTest extends DbTestCase
     /**
      * Перед тестом накатываем структуру базы данных для тестов.
      */
-    public function setUp()
+    public static function setUpBeforeClass()
     {
-        $pdo = $this->getPdo();
+        $pdo = self::getPdo();
 
         $pdo->exec('CREATE TABLE testSelectRow (
             id int(11) not null,
@@ -431,22 +441,24 @@ class PdoConnectionTest extends DbTestCase
             PRIMARY KEY(id)
         )');
 
-        return parent::setUp();
+        return parent::setUpBeforeClass();
     }
 
     /**
      * После теста удаляем всю структуру, которая была создана во время теста.
      */
-    public function tearDown()
+    public static function tearDownAfterClass()
     {
-        $this->getPdo()->exec('DROP TABLE IF EXISTS testSelectRow');
-        $this->getPdo()->exec('DROP TABLE IF EXISTS testInsert');
-        $this->getPdo()->exec('DROP TABLE IF EXISTS testUpdate');
-        $this->getPdo()->exec('DROP TABLE IF EXISTS testDelete');
-        $this->getPdo()->exec('DROP TABLE IF EXISTS testCreateTable');
-        $this->getPdo()->exec('DROP TABLE IF EXISTS testDropTable');
-        $this->getPdo()->exec('DROP TABLE IF EXISTS testTruncateTable');
+        $pdo = self::getPdo();
 
-        return parent::tearDown();
+        $pdo->exec('DROP TABLE IF EXISTS testSelectRow');
+        $pdo->exec('DROP TABLE IF EXISTS testInsert');
+        $pdo->exec('DROP TABLE IF EXISTS testUpdate');
+        $pdo->exec('DROP TABLE IF EXISTS testDelete');
+        $pdo->exec('DROP TABLE IF EXISTS testCreateTable');
+        $pdo->exec('DROP TABLE IF EXISTS testDropTable');
+        $pdo->exec('DROP TABLE IF EXISTS testTruncateTable');
+
+        return parent::tearDownAfterClass();
     }
 }

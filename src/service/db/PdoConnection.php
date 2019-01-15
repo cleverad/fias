@@ -37,11 +37,7 @@ class PdoConnection implements ConnectionInterface
      */
     public function __construct(PDO $pdo, int $batchInsertLimit = 50)
     {
-        if ($pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'sqlite') {
-            $this->queryRunner = new SqliteQueryRunner($pdo);
-        } else {
-            $this->queryRunner = new MysqlQueryRunner($pdo);
-        }
+        $this->queryRunner = new MysqlQueryRunner($pdo);
         $this->batchInsertLimit = $batchInsertLimit;
     }
 

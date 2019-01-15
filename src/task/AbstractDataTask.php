@@ -116,11 +116,6 @@ abstract class AbstractDataTask extends AbstractTask
         foreach ($this->reader as $item) {
             $this->processItem($item);
             ++$processedItems;
-            if ($processedItems % 10000 === 0) {
-                $this->debug(
-                    'Reading and processing, ' . number_format($processedItems, 0, '.', ' ') . ' items processed'
-                );
-            }
         }
         $this->db->complete();
         $this->afterRead();

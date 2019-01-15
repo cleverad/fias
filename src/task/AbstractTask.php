@@ -28,19 +28,4 @@ abstract class AbstractTask implements TaskInterface
             $this->logger->info($message, $context);
         }
     }
-
-    /**
-     * Записывает в лог информацию с уровнем DEBUG.
-     *
-     * @param string $message
-     * @param array  $context
-     *
-     * @return void
-     */
-    protected function debug(string $message, array $context = [])
-    {
-        if ($this->logger) {
-            $this->logger->debug($message, $context);
-        }
-    }
 }

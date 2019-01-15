@@ -4,6 +4,7 @@ composer.lock
 .php_cs.cache
 
 tests/coverage
+tests/.env.bootstrap.php
 
 staging/.vagrant
 staging/*/.vagrant

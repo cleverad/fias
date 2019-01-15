@@ -192,9 +192,9 @@ class UpdateDataTest extends DbTestCase
     /**
      * Перед тестом накатываем структуру базы данных для тестов.
      */
-    public function setUp()
+    public static function setUpBeforeClass()
     {
-        $pdo = $this->getPdo();
+        $pdo = self::getPdo();
 
         $pdo->exec('CREATE TABLE testRun (
             id int(11) not null,
@@ -202,16 +202,17 @@ class UpdateDataTest extends DbTestCase
             PRIMARY KEY(id)
         )');
 
-        return parent::setUp();
+        return parent::setUpBeforeClass();
     }
 
     /**
      * После теста удаляем всю структуру, которая была создана во время теста.
      */
-    public function tearDown()
+    public static function tearDownAfterClass()
     {
-        $this->getPdo()->exec('DROP TABLE IF EXISTS testRun');
+        $pdo = self::getPdo();
+        $pdo->exec('DROP TABLE IF EXISTS testRun');
 
-        return parent::tearDown();
+        return parent::tearDownAfterClass();
     }
 }

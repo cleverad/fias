@@ -38,13 +38,13 @@ class MysqlLoadDataInsert extends AbstractTask
      *
      * @var string
      */
-    protected $delimiter = ',';
+    protected $delimiter = ';';
     /**
      * Ограничитель полей для csv.
      *
      * @var string
      */
-    protected $enclosure = '"';
+    protected $enclosure = '\'';
     /**
      * Экранирующий символ полей для csv.
      *
@@ -200,19 +200,23 @@ class MysqlLoadDataInsert extends AbstractTask
      */
     protected function runLoadDataQuery(string $pathToCsv)
     {
-        $this->info('Running LOAD DATA query');
-
         $escapedTableName = '`' . str_replace('`', '', $this->mapper->getSqlName()) . '`';
         $escapedCols = '`' . implode('`, `', array_keys($this->mapper->getMap())) . '`';
         $escapedPathToCsv = $this->db->quote($pathToCsv);
+        $escapedLinesDelimiter = "'" . $this->linesDelimiter . "'";
+        $escapedDelimiter = $this->db->quote($this->delimiter);
+        $escapedEnclosure = $this->db->quote($this->enclosure);
+        $escapedEscapeChar = $this->db->quote($this->escapeChar);
 
-        $sql = "LOAD DATA CONCURRENT INFILE {$escapedPathToCsv} INTO TABLE {$escapedTableName} ({$escapedCols})";
-        $sql .= ' LINES TERMINATED BY ' . $this->db->quote($this->linesDelimiter) . " STARTING BY ''";
-        $sql .= ' FIELDS TERMINATED BY ' . $this->db->quote($this->delimiter)
-            . ' ENCLOSED BY ' . $this->db->quote($this->enclosure)
-            . ' ESCAPED BY ' . $this->db->quote($this->escapeChar)
-        ;
+        $sql = "LOAD DATA CONCURRENT LOCAL INFILE {$escapedPathToCsv} INTO TABLE {$escapedTableName}";
+        $sql .= " FIELDS TERMINATED BY {$escapedDelimiter} ENCLOSED BY {$escapedEnclosure} ESCAPED BY {$escapedEscapeChar}";
+        $sql .= " LINES TERMINATED BY {$escapedLinesDelimiter} STARTING BY ''";
+        $sql .= " ({$escapedCols})";
 
+        $this->info('Truncating ' . $this->mapper->getSqlName() . ' before inserting');
+        $this->db->exec("TRUNCATE TABLE {$escapedTableName}");
+
+        $this->info('Running LOAD DATA query');
         $this->db->exec($sql);
 
         $this->info('Query complete');

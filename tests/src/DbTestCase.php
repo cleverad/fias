@@ -33,7 +33,7 @@ abstract class DbTestCase extends BaseTestCase
     final public function getConnection(): Connection
     {
         if ($this->connection === null) {
-            $this->connection = $this->createDefaultDBConnection($this->getPdo(), ':memory:');
+            $this->connection = $this->createDefaultDBConnection(self::getPdo(), ':memory:');
         }
 
         return $this->connection;
@@ -44,10 +44,10 @@ abstract class DbTestCase extends BaseTestCase
      *
      * @return \PDO
      */
-    protected function getPdo(): PDO
+    protected static function getPdo(): PDO
     {
         if (self::$pdo == null) {
-            self::$pdo = new PDO('sqlite::memory:');
+            self::$pdo = new PDO(PHPUNIT_PDO_DSN, PHPUNIT_PDO_USER, PHPUNIT_PDO_PASSWORD, PHPUNIT_PDO_ATTRIBUTES);
         }
 
         return self::$pdo;
@@ -68,14 +68,17 @@ abstract class DbTestCase extends BaseTestCase
             throw new InvalidArgumentException("Wrong table name {$tableName}");
         }
 
-        $statement = $this->getPdo()->prepare('SELECT name FROM sqlite_master WHERE type = \'table\' AND name = :table');
+        $statement = $this->getPdo()->prepare('SHOW TABLES LIKE :table');
         $statement->bindParam(':table', $tableName);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         $this->assertThat(
             $result,
-            $this->identicalTo(['name' => $tableName]),
+            $this->logicalAnd(
+                $this->isType('array'),
+                $this->contains($tableName)
+            ),
             "Table {$tableName} not found"
         );
     }
@@ -95,12 +98,19 @@ abstract class DbTestCase extends BaseTestCase
             throw new InvalidArgumentException("Wrong table name {$tableName}");
         }
 
-        $statement = $this->getPdo()->prepare('SELECT name FROM sqlite_master WHERE type = \'table\' AND name = :table');
+        $statement = $this->getPdo()->prepare('SHOW TABLES LIKE :table');
         $statement->bindParam(':table', $tableName);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $this->assertEmpty($result, "Table {$tableName} found");
+        $this->assertThat(
+            $result,
+            $this->logicalOr(
+                $this->logicalNot($this->isType('array')),
+                $this->logicalNot($this->contains($tableName))
+            ),
+            "Table {$tableName} found"
+        );
     }
 
     /**
@@ -126,16 +136,19 @@ abstract class DbTestCase extends BaseTestCase
             throw new InvalidArgumentException("Wrong type name {$type}");
         }
 
-        $statement = $this->getPdo()->prepare('SELECT sql FROM sqlite_master WHERE type = \'table\' AND name = :table');
-        $statement->bindParam(':table', $tableName);
+        $statement = $this->getPdo()->prepare("SHOW COLUMNS FROM {$tableName} LIKE :column");
+        $statement->bindParam(':column', $colName);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
+        $assert = isset($result['Field'], $result['Type'])
+            && $result['Field'] === $colName
+            && strpos($result['Type'], $type) === 0
+        ;
+
         $this->assertThat(
-            !empty($result['sql'])
-                ? str_replace(["\r", "\n", "\t"], ' ', $result['sql'])
-                : '',
-            $this->matchesRegularExpression("/^.*{$tableName}.*\(.*{$colName}[^\(\),]+{$type}.*\).*$/iu"),
+            $assert,
+            $this->isTrue(),
             "Column {$colName} with type {$type} not found in table {$tableName}"
         );
     }

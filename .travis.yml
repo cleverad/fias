@@ -1,4 +1,6 @@
 language: php
+services:
+  - mysql
 sudo: false
 php:
   - 7.0
@@ -7,8 +9,9 @@ php:
 before_script:
   - composer self-update
   - composer install --no-interaction --prefer-source --dev
+  - echo "<?php define('PHPUNIT_PDO_USER', 'travis'); define('PHPUNIT_PDO_PASSWORD', '');" > tests/.env.bootstrap.php
 script:
   - vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no
-  - vendor/bin/phpunit -c phpunit.xml.dist
   - vendor/bin/phpcpd src
   - vendor/bin/psalm
+  - vendor/bin/phpunit -c phpunit.xml.dist
